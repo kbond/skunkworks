@@ -1,0 +1,8 @@
+--TEST--
+"url" filter
+--TEMPLATE--
+{{ 'https://example.com:8080/foo'|url.host }}
+--DATA--
+return []
+--EXPECT--
+example.com

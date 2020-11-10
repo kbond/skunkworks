@@ -17,6 +17,8 @@ final class FunctionsExtension extends AbstractExtension
             new TwigFilter('remove_whitespace', 'Zenstruck\Utilities\Functions\remove_whitespace'),
             new TwigFilter('truncate_word', 'Zenstruck\Utilities\Functions\truncate_word'),
             new TwigFilter('value', 'Zenstruck\Utilities\Functions\value'),
+            new TwigFilter('url', 'Zenstruck\Utilities\Functions\url'),
+            new TwigFilter('mailto', 'Zenstruck\Utilities\Functions\mailto'),
         ];
     }
 }

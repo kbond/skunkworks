@@ -2,6 +2,8 @@
 
 namespace Zenstruck\Utilities\Functions;
 
+use Zenstruck\Utilities\Dsn\Mailto;
+use Zenstruck\Utilities\Dsn\Url;
 use Zenstruck\Utilities\Sql\Pattern;
 
 /**
@@ -73,6 +75,26 @@ function truncate_word(?string $value, int $length = 255, string $suffix = '...'
 function value($value)
 {
     return $value instanceof \Closure ? $value() : $value;
+}
+
+/**
+ * @experimental
+ *
+ * @param Url|string|null $value
+ */
+function url($value = null): Url
+{
+    return $value instanceof Url ? $value : new Url($value);
+}
+
+/**
+ * @experimental
+ *
+ * @param Mailto|string|null $value
+ */
+function mailto($value = null): Mailto
+{
+    return $value instanceof Mailto ? $value : new Mailto($value);
 }
 
 /**

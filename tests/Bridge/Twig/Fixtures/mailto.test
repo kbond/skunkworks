@@ -1,0 +1,8 @@
+--TEST--
+"mailto" filter
+--TEMPLATE--
+{{ 'kevin@example.com?subject=subject'|mailto.subject }}
+--DATA--
+return []
+--EXPECT--
+subject

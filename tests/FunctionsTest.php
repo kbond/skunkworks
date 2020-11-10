@@ -3,6 +3,7 @@
 namespace Zenstruck\Utilities\Tests;
 
 use PHPUnit\Framework\TestCase;
+use function Zenstruck\Utilities\Functions\mailto;
 use function Zenstruck\Utilities\Functions\null_trim;
 use function Zenstruck\Utilities\Functions\remove_whitespace;
 use function Zenstruck\Utilities\Functions\sql_pattern;
@@ -10,6 +11,7 @@ use function Zenstruck\Utilities\Functions\sql_pattern_begins_with;
 use function Zenstruck\Utilities\Functions\sql_pattern_contains;
 use function Zenstruck\Utilities\Functions\sql_pattern_ends_with;
 use function Zenstruck\Utilities\Functions\truncate_word;
+use function Zenstruck\Utilities\Functions\url;
 use function Zenstruck\Utilities\Functions\value;
 
 /**
@@ -153,6 +155,22 @@ final class FunctionsTest extends TestCase
     {
         $this->assertSame('%foo', sql_pattern_ends_with('foo'));
         $this->assertSame('%f%o', sql_pattern_ends_with('f*o'));
+    }
+
+    /**
+     * @test
+     */
+    public function url(): void
+    {
+        $this->assertSame('example.com', (string) url('https://example.com:8080/foo')->host());
+    }
+
+    /**
+     * @test
+     */
+    public function mailto(): void
+    {
+        $this->assertSame('subject', mailto('kevin@example.com?subject=subject')->subject());
     }
 }
 
