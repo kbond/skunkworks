@@ -2,6 +2,8 @@
 
 namespace Zenstruck\Utilities\Functions;
 
+use Zenstruck\Utilities\SQL\Pattern;
+
 /**
  * Replaces "&nbsp;" with a single space and converts multiple sequential
  * spaces into a single space.
@@ -17,11 +19,11 @@ function remove_whitespace(?string $value): string
  * Similar to core "trim" but returns null instead of an empty string
  * When an array is passed, all elements get processed recursively.
  *
- * @author Kevin Bond <kevinbond@gmail.com>
- *
  * @param string|array $data
  *
  * @return array|string|null
+ *
+ * @author Kevin Bond <kevinbond@gmail.com>
  */
 function null_trim($data, ?string $charlist = null)
 {
@@ -62,13 +64,45 @@ function truncate_word(?string $value, int $length = 255, string $suffix = '...'
  * If passed value is a closure, execute and return. Otherwise,
  * return the value as is.
  *
- * @author Taylor Otwell <taylor@laravel.com>
- *
  * @param \Closure|mixed $value
  *
  * @return mixed
+ *
+ * @author Taylor Otwell <taylor@laravel.com>
  */
 function value($value)
 {
     return $value instanceof \Closure ? $value() : $value;
+}
+
+/**
+ * @see Pattern::__construct()
+ */
+function sql_pattern(?string $value, ?string $wildcard = '*'): string
+{
+    return new Pattern($value, $wildcard);
+}
+
+/**
+ * @see Pattern::contains()
+ */
+function sql_pattern_contains(?string $value, ?string $wildcard = '*'): string
+{
+    return Pattern::contains($value, $wildcard);
+}
+
+/**
+ * @see Pattern::beginsWith()
+ */
+function sql_pattern_begins_with(?string $value, ?string $wildcard = '*'): string
+{
+    return Pattern::beginsWith($value, $wildcard);
+}
+
+/**
+ * @see Pattern::endsWith()
+ */
+function sql_pattern_ends_with(?string $value, ?string $wildcard = '*'): string
+{
+    return Pattern::endsWith($value, $wildcard);
 }

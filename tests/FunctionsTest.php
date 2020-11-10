@@ -5,6 +5,10 @@ namespace Zenstruck\Utilities\Tests;
 use PHPUnit\Framework\TestCase;
 use function Zenstruck\Utilities\Functions\null_trim;
 use function Zenstruck\Utilities\Functions\remove_whitespace;
+use function Zenstruck\Utilities\Functions\sql_pattern;
+use function Zenstruck\Utilities\Functions\sql_pattern_begins_with;
+use function Zenstruck\Utilities\Functions\sql_pattern_contains;
+use function Zenstruck\Utilities\Functions\sql_pattern_ends_with;
 use function Zenstruck\Utilities\Functions\truncate_word;
 use function Zenstruck\Utilities\Functions\value;
 
@@ -113,6 +117,42 @@ final class FunctionsTest extends TestCase
             ['foo bar baz', 12, '...', 'foo bar baz'],
             ['      foo       bar  baz', 10, '...', 'foo bar...'],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function sql_pattern(): void
+    {
+        $this->assertSame('foo', sql_pattern('foo'));
+        $this->assertSame('f%o', sql_pattern('f*o'));
+    }
+
+    /**
+     * @test
+     */
+    public function sql_pattern_contains(): void
+    {
+        $this->assertSame('%foo%', sql_pattern_contains('foo'));
+        $this->assertSame('%f%o%', sql_pattern_contains('f*o'));
+    }
+
+    /**
+     * @test
+     */
+    public function sql_pattern_begins_with(): void
+    {
+        $this->assertSame('foo%', sql_pattern_begins_with('foo'));
+        $this->assertSame('f%o%', sql_pattern_begins_with('f*o'));
+    }
+
+    /**
+     * @test
+     */
+    public function sql_pattern_ends_with(): void
+    {
+        $this->assertSame('%foo', sql_pattern_ends_with('foo'));
+        $this->assertSame('%f%o', sql_pattern_ends_with('f*o'));
     }
 }
 
