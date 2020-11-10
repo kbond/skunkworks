@@ -1,0 +1,8 @@
+--TEST--
+"remove_whitespace" filter
+--TEMPLATE--
+{{ 'foo   &nbsp;  bar'|remove_whitespace }}
+--DATA--
+return []
+--EXPECT--
+foo bar

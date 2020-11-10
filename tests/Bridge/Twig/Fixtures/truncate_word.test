@@ -1,0 +1,8 @@
+--TEST--
+"truncate_word" filter
+--TEMPLATE--
+{{ 'foo bar baz'|truncate_word(7) }}
+--DATA--
+return []
+--EXPECT--
+foo...

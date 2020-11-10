@@ -1,0 +1,8 @@
+--TEST--
+"value" filter
+--TEMPLATE--
+{{ 'foo'|value }}
+--DATA--
+return []
+--EXPECT--
+foo

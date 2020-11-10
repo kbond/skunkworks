@@ -1,0 +1,8 @@
+--TEST--
+"null_trim" filter
+--TEMPLATE--
+{{ ' foo   '|null_trim }}
+--DATA--
+return []
+--EXPECT--
+foo
