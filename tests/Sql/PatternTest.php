@@ -1,9 +1,9 @@
 <?php
 
-namespace Zenstruck\Utilities\Tests\SQL;
+namespace Zenstruck\Utilities\Tests\Sql;
 
 use PHPUnit\Framework\TestCase;
-use Zenstruck\Utilities\SQL\Pattern;
+use Zenstruck\Utilities\Sql\Pattern;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

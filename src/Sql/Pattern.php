@@ -1,6 +1,6 @@
 <?php
 
-namespace Zenstruck\Utilities\SQL;
+namespace Zenstruck\Utilities\Sql;
 
 /**
  * Helper for normalizing SQL LIKE patterns with custom wildcard characters.

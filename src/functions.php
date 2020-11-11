@@ -2,7 +2,7 @@
 
 namespace Zenstruck\Utilities\Functions;
 
-use Zenstruck\Utilities\SQL\Pattern;
+use Zenstruck\Utilities\Sql\Pattern;
 
 /**
  * Replaces "&nbsp;" with a single space and converts multiple sequential
