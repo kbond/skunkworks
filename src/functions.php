@@ -2,6 +2,7 @@
 
 namespace Zenstruck\Utilities\Functions;
 
+use Zenstruck\Utilities\ArrayAccessor;
 use Zenstruck\Utilities\Dsn\Mailto;
 use Zenstruck\Utilities\Dsn\Url;
 use Zenstruck\Utilities\Sql\Pattern;
@@ -60,6 +61,14 @@ function truncate_word(?string $value, int $length = 255, string $suffix = '...'
     }
 
     return \mb_strlen($output) > $length ? '' : $output;
+}
+
+/**
+ * @see ArrayAccessor
+ */
+function array_accessor(array $value = []): ArrayAccessor
+{
+    return new ArrayAccessor($value);
 }
 
 /**
