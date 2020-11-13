@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 use Zenstruck\Utilities\Sql\Pattern;
 
 /**
+ * foo.
+ *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 final class PatternTest extends TestCase
