@@ -3,8 +3,8 @@
 namespace Zenstruck\Utilities\Dsn\Parser;
 
 use Zenstruck\Utilities\Dsn\Exception\UnableToParse;
-use Zenstruck\Utilities\Dsn\Mailto;
 use Zenstruck\Utilities\Dsn\Parser;
+use Zenstruck\Utilities\Mailto;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

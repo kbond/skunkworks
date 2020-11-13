@@ -5,9 +5,9 @@ namespace Zenstruck\Utilities\Tests;
 use PHPUnit\Framework\TestCase;
 use Zenstruck\Utilities\Dsn;
 use Zenstruck\Utilities\Dsn\Group;
-use Zenstruck\Utilities\Dsn\Mailto;
-use Zenstruck\Utilities\Dsn\Url;
-use Zenstruck\Utilities\Dsn\Url\Scheme;
+use Zenstruck\Utilities\Mailto;
+use Zenstruck\Utilities\Url;
+use Zenstruck\Utilities\Url\Scheme;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

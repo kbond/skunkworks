@@ -3,7 +3,7 @@
 namespace Zenstruck\Utilities\Dsn\Parser;
 
 use Zenstruck\Utilities\Dsn\Parser;
-use Zenstruck\Utilities\Dsn\Url\Scheme;
+use Zenstruck\Utilities\Url\Scheme;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

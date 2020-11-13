@@ -4,7 +4,7 @@ namespace Zenstruck\Utilities\Dsn\Parser;
 
 use Zenstruck\Utilities\Dsn\Exception\UnableToParse;
 use Zenstruck\Utilities\Dsn\Parser;
-use Zenstruck\Utilities\Dsn\Url;
+use Zenstruck\Utilities\Url;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

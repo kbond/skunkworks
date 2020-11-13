@@ -3,9 +3,9 @@
 namespace Zenstruck\Utilities\Functions;
 
 use Zenstruck\Utilities\ArrayAccessor;
-use Zenstruck\Utilities\Dsn\Mailto;
-use Zenstruck\Utilities\Dsn\Url;
+use Zenstruck\Utilities\Mailto;
 use Zenstruck\Utilities\Sql\Pattern;
+use Zenstruck\Utilities\Url;
 
 /**
  * Replaces "&nbsp;" with a single space and converts multiple sequential

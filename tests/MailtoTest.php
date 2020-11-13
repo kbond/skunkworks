@@ -1,9 +1,9 @@
 <?php
 
-namespace Zenstruck\Utilities\Tests\Dsn;
+namespace Zenstruck\Utilities\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Zenstruck\Utilities\Dsn\Mailto;
+use Zenstruck\Utilities\Mailto;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

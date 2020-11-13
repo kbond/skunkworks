@@ -1,6 +1,6 @@
 <?php
 
-namespace Zenstruck\Utilities\Dsn\Url;
+namespace Zenstruck\Utilities\Url;
 
 use function Zenstruck\Utilities\Functions\value;
 

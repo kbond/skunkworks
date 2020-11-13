@@ -1,6 +1,6 @@
 <?php
 
-namespace Zenstruck\Utilities\Dsn;
+namespace Zenstruck\Utilities;
 
 use function Zenstruck\Utilities\Functions\null_trim;
 
