@@ -9,8 +9,7 @@ use function Zenstruck\Utilities\Functions\null_trim;
  */
 final class Mailto implements \Stringable
 {
-    /** @var Url */
-    private $url;
+    private Url $url;
 
     public function __construct(?string $value = null)
     {

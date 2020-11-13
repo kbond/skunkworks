@@ -11,7 +11,7 @@ use Zenstruck\Utilities\Mailto;
  */
 final class MailtoParser implements Parser
 {
-    public function parse(string $value): \Stringable
+    public function parse(string $value): Mailto
     {
         if (0 === \mb_strpos($value, 'mailto:')) {
             return new Mailto($value);

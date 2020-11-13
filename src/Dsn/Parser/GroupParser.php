@@ -13,10 +13,9 @@ use Zenstruck\Utilities\Dsn\Parser;
  */
 final class GroupParser implements Parser, ParserAware
 {
-    /** @var Parser|null */
-    private $parser;
+    private ?Parser $parser = null;
 
-    public function parse(string $value): \Stringable
+    public function parse(string $value): Group
     {
         if (!\preg_match('#^(\w+)\((.+)\)$#', $value, $matches)) {
             throw new UnableToParse($value);

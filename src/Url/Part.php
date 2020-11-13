@@ -7,8 +7,7 @@ namespace Zenstruck\Utilities\Url;
  */
 abstract class Part implements \Stringable
 {
-    /** @var string */
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {

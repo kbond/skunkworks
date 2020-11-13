@@ -14,11 +14,8 @@ final class ArrayAccessor implements \ArrayAccess
 {
     private const INVALID_DEFAULT = '__INVALID__';
 
-    /** @var array */
-    private $value;
-
-    /** @var string */
-    private $delimiter;
+    private array $value;
+    private string $delimiter;
 
     /**
      * @param string $delimiter Change to customize the notation delimiter

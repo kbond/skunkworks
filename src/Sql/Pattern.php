@@ -9,14 +9,9 @@ namespace Zenstruck\Utilities\Sql;
  */
 final class Pattern implements \Stringable
 {
-    /** @var string|null */
-    private $value;
-
-    /** @var string|null */
-    private $wildcard;
-
-    /** @var string */
-    private $format = '%s';
+    private ?string $value;
+    private ?string $wildcard;
+    private string $format = '%s';
 
     /**
      * @param string|null $wildcard custom wildcard character to replace with "%" (ie "*")

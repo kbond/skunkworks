@@ -7,17 +7,10 @@ namespace Zenstruck\Utilities\Url;
  */
 final class Authority implements \Stringable
 {
-    /** @var Host */
-    private $host;
-
-    /** @var string|null */
-    private $username;
-
-    /** @var string|null */
-    private $password;
-
-    /** @var int|null */
-    private $port;
+    private Host $host;
+    private ?string $username;
+    private ?string $password;
+    private ?int $port;
 
     public function __construct(string $host, ?string $username, ?string $password, ?int $port)
     {

@@ -10,7 +10,7 @@ use Zenstruck\Utilities\Url\Scheme;
  */
 final class SchemeParser implements Parser
 {
-    public function parse(string $value): \Stringable
+    public function parse(string $value): Scheme
     {
         return new Scheme($value);
     }

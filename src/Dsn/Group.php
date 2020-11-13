@@ -7,11 +7,10 @@ namespace Zenstruck\Utilities\Dsn;
  */
 final class Group implements \Stringable
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
     /** @var \Stringable[] */
-    private $children;
+    private array $children;
 
     /**
      * @param \Stringable[] $children

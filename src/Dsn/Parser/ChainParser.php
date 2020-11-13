@@ -11,7 +11,7 @@ use Zenstruck\Utilities\Dsn\Parser;
 final class ChainParser implements Parser
 {
     /** @var Parser[] */
-    private $parsers;
+    private array $parsers;
 
     /**
      * @param Parser[] $parsers

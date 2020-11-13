@@ -15,8 +15,7 @@ use Zenstruck\Utilities\Dsn\Parser\UrlParser;
  */
 final class Dsn
 {
-    /** @var ChainParser|null */
-    private static $defaultParser;
+    private static ?ChainParser $defaultParser = null;
 
     public static function parse(string $value): object
     {

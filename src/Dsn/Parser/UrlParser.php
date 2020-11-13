@@ -11,7 +11,7 @@ use Zenstruck\Utilities\Url;
  */
 final class UrlParser implements Parser
 {
-    public function parse(string $value): \Stringable
+    public function parse(string $value): Url
     {
         try {
             return new Url($value);

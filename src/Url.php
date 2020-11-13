@@ -15,20 +15,11 @@ use Zenstruck\Utilities\Url\Scheme;
  */
 final class Url implements \Stringable
 {
-    /** @var Scheme */
-    private $scheme;
-
-    /** @var Authority */
-    private $authority;
-
-    /** @var Path */
-    private $path;
-
-    /** @var Query */
-    private $query;
-
-    /** @var string */
-    private $fragment;
+    private Scheme $scheme;
+    private Authority $authority;
+    private Path $path;
+    private Query $query;
+    private string $fragment;
 
     public function __construct(?string $value = null)
     {
