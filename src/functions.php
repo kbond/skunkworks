@@ -65,6 +65,8 @@ function truncate_word(?string $value, int $length = 255, string $suffix = '...'
 
 /**
  * @see ArrayAccessor
+ *
+ * @todo move to collection component
  */
 function array_accessor(array $value = []): ArrayAccessor
 {
