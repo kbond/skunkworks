@@ -2,7 +2,13 @@
 "mailto" filter
 --TEMPLATE--
 {{ 'kevin@example.com?subject=subject'|mailto.subject }}
+{{ mailto('kevin@example.com') }}
+{{ mailto() }}
+{{ mailto().withSubject('my subject') }}
 --DATA--
 return []
 --EXPECT--
 subject
+mailto:kevin%40example.com
+mailto:
+mailto:?subject=my%20subject

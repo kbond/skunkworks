@@ -4,6 +4,7 @@ namespace Zenstruck\Utilities\Bridge\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -19,6 +20,14 @@ final class FunctionsExtension extends AbstractExtension
             new TwigFilter('value', 'Zenstruck\Utilities\Functions\value'),
             new TwigFilter('url', 'Zenstruck\Utilities\Functions\url'),
             new TwigFilter('mailto', 'Zenstruck\Utilities\Functions\mailto'),
+        ];
+    }
+
+    public function getFunctions(): array
+    {
+        return [
+            new TwigFunction('url', 'Zenstruck\Utilities\Functions\url'),
+            new TwigFunction('mailto', 'Zenstruck\Utilities\Functions\mailto'),
         ];
     }
 }
