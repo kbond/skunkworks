@@ -3,17 +3,15 @@
 namespace Zenstruck\Utilities\Tests;
 
 use PHPUnit\Framework\TestCase;
-use function Zenstruck\Utilities\Functions\array_accessor;
-use function Zenstruck\Utilities\Functions\mailto;
-use function Zenstruck\Utilities\Functions\null_trim;
-use function Zenstruck\Utilities\Functions\remove_whitespace;
-use function Zenstruck\Utilities\Functions\sql_pattern;
-use function Zenstruck\Utilities\Functions\sql_pattern_begins_with;
-use function Zenstruck\Utilities\Functions\sql_pattern_contains;
-use function Zenstruck\Utilities\Functions\sql_pattern_ends_with;
-use function Zenstruck\Utilities\Functions\truncate_word;
-use function Zenstruck\Utilities\Functions\url;
-use function Zenstruck\Utilities\Functions\value;
+use function Zenstruck\Utilities\array_accessor;
+use function Zenstruck\Utilities\null_trim;
+use function Zenstruck\Utilities\remove_whitespace;
+use function Zenstruck\Utilities\sql_pattern;
+use function Zenstruck\Utilities\sql_pattern_begins_with;
+use function Zenstruck\Utilities\sql_pattern_contains;
+use function Zenstruck\Utilities\sql_pattern_ends_with;
+use function Zenstruck\Utilities\truncate_word;
+use function Zenstruck\Utilities\value;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -164,22 +162,6 @@ final class FunctionsTest extends TestCase
     public function array_accessor(): void
     {
         $this->assertSame('c', array_accessor(['a' => ['b' => 'c']])->get('a.b'));
-    }
-
-    /**
-     * @test
-     */
-    public function url(): void
-    {
-        $this->assertSame('example.com', (string) url('https://example.com:8080/foo')->host());
-    }
-
-    /**
-     * @test
-     */
-    public function mailto(): void
-    {
-        $this->assertSame('subject', mailto('kevin@example.com?subject=subject')->subject());
     }
 }
 

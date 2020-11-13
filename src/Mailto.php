@@ -1,8 +1,8 @@
 <?php
 
-namespace Zenstruck\Utilities;
+namespace Zenstruck;
 
-use function Zenstruck\Utilities\Functions\null_trim;
+use function Zenstruck\Utilities\null_trim;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

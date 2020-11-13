@@ -1,12 +1,12 @@
 <?php
 
-namespace Zenstruck\Utilities;
+namespace Zenstruck;
 
-use Zenstruck\Utilities\Dsn\Parser\ChainParser;
-use Zenstruck\Utilities\Dsn\Parser\GroupParser;
-use Zenstruck\Utilities\Dsn\Parser\MailtoParser;
-use Zenstruck\Utilities\Dsn\Parser\SchemeParser;
-use Zenstruck\Utilities\Dsn\Parser\UrlParser;
+use Zenstruck\Dsn\Parser\ChainParser;
+use Zenstruck\Dsn\Parser\GroupParser;
+use Zenstruck\Dsn\Parser\MailtoParser;
+use Zenstruck\Dsn\Parser\SchemeParser;
+use Zenstruck\Dsn\Parser\UrlParser;
 
 /**
  * Helper for parsing DSN objects provided by this component.

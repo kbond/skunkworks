@@ -1,8 +1,8 @@
 <?php
 
-namespace Zenstruck\Utilities\Url;
+namespace Zenstruck\Url;
 
-use function Zenstruck\Utilities\Functions\value;
+use function Zenstruck\Utilities\value;
 
 /**
  * @todo make collection once collection component exists

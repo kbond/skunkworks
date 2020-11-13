@@ -1,12 +1,12 @@
 <?php
 
-namespace Zenstruck\Utilities;
+namespace Zenstruck;
 
-use Zenstruck\Utilities\Url\Authority;
-use Zenstruck\Utilities\Url\Host;
-use Zenstruck\Utilities\Url\Path;
-use Zenstruck\Utilities\Url\Query;
-use Zenstruck\Utilities\Url\Scheme;
+use Zenstruck\Url\Authority;
+use Zenstruck\Url\Host;
+use Zenstruck\Url\Path;
+use Zenstruck\Url\Query;
+use Zenstruck\Url\Scheme;
 
 /**
  * Wrapper for parse_url().

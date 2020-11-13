@@ -26,12 +26,15 @@
         "sort-packages": true
     },
     "autoload": {
-        "psr-4": { "Zenstruck\\Utilities\\": "src/" },
-        "files": ["src/functions.php"]
+        "psr-4": { "Zenstruck\\": "src/" },
+        "files": [
+            "src/Utilities/functions.php",
+            "src/functions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
-            "Zenstruck\\Utilities\\Tests\\": "tests/"
+            "Zenstruck\\": "tests/"
         }
     }
 }

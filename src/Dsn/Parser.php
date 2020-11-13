@@ -1,8 +1,8 @@
 <?php
 
-namespace Zenstruck\Utilities\Dsn;
+namespace Zenstruck\Dsn;
 
-use Zenstruck\Utilities\Dsn\Exception\UnableToParse;
+use Zenstruck\Dsn\Exception\UnableToParse;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

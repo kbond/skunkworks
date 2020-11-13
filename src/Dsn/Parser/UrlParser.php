@@ -1,10 +1,10 @@
 <?php
 
-namespace Zenstruck\Utilities\Dsn\Parser;
+namespace Zenstruck\Dsn\Parser;
 
-use Zenstruck\Utilities\Dsn\Exception\UnableToParse;
-use Zenstruck\Utilities\Dsn\Parser;
-use Zenstruck\Utilities\Url;
+use Zenstruck\Dsn\Exception\UnableToParse;
+use Zenstruck\Dsn\Parser;
+use Zenstruck\Url;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

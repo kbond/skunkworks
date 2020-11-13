@@ -1,18 +1,18 @@
 <?php
 
-namespace Zenstruck\Utilities\Tests\Bridge\Twig;
+namespace Zenstruck\Url\Tests\Bridge\Twig;
 
 use Twig\Test\IntegrationTestCase;
-use Zenstruck\Utilities\Bridge\Twig\FunctionsExtension;
+use Zenstruck\Url\Bridge\Twig\UrlExtension;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class FunctionsExtensionTest extends IntegrationTestCase
+final class UrlExtensionTest extends IntegrationTestCase
 {
     protected function getExtensions(): array
     {
-        return [new FunctionsExtension()];
+        return [new UrlExtension()];
     }
 
     protected function getFixturesDir(): string

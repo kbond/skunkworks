@@ -1,6 +1,6 @@
 <?php
 
-namespace Zenstruck\Utilities\Url;
+namespace Zenstruck\Url;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

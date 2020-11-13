@@ -1,6 +1,6 @@
 <?php
 
-namespace Zenstruck\Utilities\Dsn\Exception;
+namespace Zenstruck\Dsn\Exception;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

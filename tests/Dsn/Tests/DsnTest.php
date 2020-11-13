@@ -1,13 +1,13 @@
 <?php
 
-namespace Zenstruck\Utilities\Tests;
+namespace Zenstruck\Dsn\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Zenstruck\Utilities\Dsn;
-use Zenstruck\Utilities\Dsn\Group;
-use Zenstruck\Utilities\Mailto;
-use Zenstruck\Utilities\Url;
-use Zenstruck\Utilities\Url\Scheme;
+use Zenstruck\Dsn;
+use Zenstruck\Dsn\Group;
+use Zenstruck\Mailto;
+use Zenstruck\Url;
+use Zenstruck\Url\Scheme;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

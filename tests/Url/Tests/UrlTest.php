@@ -1,9 +1,9 @@
 <?php
 
-namespace Zenstruck\Utilities\Tests;
+namespace Zenstruck\Url\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Zenstruck\Utilities\Url;
+use Zenstruck\Url;
 
 /**
  * @source https://github.com/guzzle/psr7/blob/7858757f390bbe4b3d81762a97d6e6e786bb70ad/tests/UriTest.php

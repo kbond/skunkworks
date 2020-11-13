@@ -1,9 +1,9 @@
 <?php
 
-namespace Zenstruck\Utilities\Dsn\Parser;
+namespace Zenstruck\Dsn\Parser;
 
-use Zenstruck\Utilities\Dsn\Parser;
-use Zenstruck\Utilities\Url\Scheme;
+use Zenstruck\Dsn\Parser;
+use Zenstruck\Url\Scheme;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

@@ -1,9 +1,9 @@
 <?php
 
-namespace Zenstruck\Utilities\Tests\Dsn\Parser;
+namespace Zenstruck\Dsn\Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
-use Zenstruck\Utilities\Dsn\Parser\GroupParser;
+use Zenstruck\Dsn\Parser\GroupParser;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

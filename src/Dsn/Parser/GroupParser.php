@@ -1,10 +1,10 @@
 <?php
 
-namespace Zenstruck\Utilities\Dsn\Parser;
+namespace Zenstruck\Dsn\Parser;
 
-use Zenstruck\Utilities\Dsn\Exception\UnableToParse;
-use Zenstruck\Utilities\Dsn\Group;
-use Zenstruck\Utilities\Dsn\Parser;
+use Zenstruck\Dsn\Exception\UnableToParse;
+use Zenstruck\Dsn\Group;
+use Zenstruck\Dsn\Parser;
 
 /**
  * Parses strings like "name(dsn1 dsn2)" into a Group dsn.

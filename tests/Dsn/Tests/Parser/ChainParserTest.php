@@ -1,10 +1,10 @@
 <?php
 
-namespace Zenstruck\Utilities\Tests\Dsn\Parser;
+namespace Zenstruck\Dsn\Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
-use Zenstruck\Utilities\Dsn\Exception\UnableToParse;
-use Zenstruck\Utilities\Dsn\Parser\ChainParser;
+use Zenstruck\Dsn\Exception\UnableToParse;
+use Zenstruck\Dsn\Parser\ChainParser;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

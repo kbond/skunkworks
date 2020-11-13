@@ -2,8 +2,6 @@
 
 namespace Zenstruck\Utilities;
 
-use function Zenstruck\Utilities\Functions\value;
-
 /**
  * Array wrapper to allow accessing/manipulating nested array items
  * by "dot" notation.
