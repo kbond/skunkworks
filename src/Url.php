@@ -125,10 +125,10 @@ final class Url implements \Stringable
 
     public function withHost(?string $host): self
     {
-        $dsn = clone $this;
-        $dsn->authority = $this->authority->withHost($host);
+        $url = clone $this;
+        $url->authority = $this->authority->withHost($host);
 
-        return $dsn;
+        return $url;
     }
 
     public function withoutHost(): self
@@ -138,10 +138,10 @@ final class Url implements \Stringable
 
     public function withScheme(?string $scheme): self
     {
-        $dsn = clone $this;
-        $dsn->scheme = new Scheme((string) $scheme);
+        $url = clone $this;
+        $url->scheme = new Scheme((string) $scheme);
 
-        return $dsn;
+        return $url;
     }
 
     public function withoutScheme(): self
@@ -151,10 +151,10 @@ final class Url implements \Stringable
 
     public function withPort(?int $port): self
     {
-        $dsn = clone $this;
-        $dsn->authority = $this->authority->withPort($port);
+        $url = clone $this;
+        $url->authority = $this->authority->withPort($port);
 
-        return $dsn;
+        return $url;
     }
 
     public function withoutPort(): self
@@ -164,10 +164,10 @@ final class Url implements \Stringable
 
     public function withUser(?string $user): self
     {
-        $dsn = clone $this;
-        $dsn->authority = $this->authority->withUsername($user);
+        $url = clone $this;
+        $url->authority = $this->authority->withUsername($user);
 
-        return $dsn;
+        return $url;
     }
 
     public function withoutUser(): self
@@ -177,10 +177,10 @@ final class Url implements \Stringable
 
     public function withPass(?string $pass): self
     {
-        $dsn = clone $this;
-        $dsn->authority = $this->authority->withPassword($pass);
+        $url = clone $this;
+        $url->authority = $this->authority->withPassword($pass);
 
-        return $dsn;
+        return $url;
     }
 
     public function withoutPass(): self
@@ -190,10 +190,10 @@ final class Url implements \Stringable
 
     public function withPath(?string $path): self
     {
-        $dsn = clone $this;
-        $dsn->path = new Path((string) $path);
+        $url = clone $this;
+        $url->path = new Path((string) $path);
 
-        return $dsn;
+        return $url;
     }
 
     public function withoutPath(): self
@@ -203,10 +203,10 @@ final class Url implements \Stringable
 
     public function withQuery(?array $query): self
     {
-        $dsn = clone $this;
-        $dsn->query = new Query($query ?? []);
+        $url = clone $this;
+        $url->query = new Query($query ?? []);
 
-        return $dsn;
+        return $url;
     }
 
     /**
@@ -214,18 +214,18 @@ final class Url implements \Stringable
      */
     public function withQueryParam(string $param, $value): self
     {
-        $dsn = clone $this;
-        $dsn->query = $this->query->withQueryParam($param, $value);
+        $url = clone $this;
+        $url->query = $this->query->withQueryParam($param, $value);
 
-        return $dsn;
+        return $url;
     }
 
     public function withOnlyQueryParams(string ...$params): self
     {
-        $dsn = clone $this;
-        $dsn->query = $this->query->withOnlyQueryParams(...$params);
+        $url = clone $this;
+        $url->query = $this->query->withOnlyQueryParams(...$params);
 
-        return $dsn;
+        return $url;
     }
 
     public function withoutQuery(): self
@@ -235,18 +235,18 @@ final class Url implements \Stringable
 
     public function withoutQueryParams(string ...$params): self
     {
-        $dsn = clone $this;
-        $dsn->query = $this->query->withoutQueryParams(...$params);
+        $url = clone $this;
+        $url->query = $this->query->withoutQueryParams(...$params);
 
-        return $dsn;
+        return $url;
     }
 
     public function withFragment(?string $fragment): self
     {
-        $dsn = clone $this;
-        $dsn->fragment = \ltrim($fragment, '#');
+        $url = clone $this;
+        $url->fragment = \ltrim($fragment, '#');
 
-        return $dsn;
+        return $url;
     }
 
     public function withoutFragment(): self

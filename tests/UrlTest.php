@@ -15,21 +15,21 @@ final class UrlTest extends TestCase
     /**
      * @test
      */
-    public function parses_provided_dsn(): void
+    public function parses_provided_url(): void
     {
-        $dsn = new Url('https://user:pass@example.com:8080/path/123?q=abc#test');
+        $url = new Url('https://user:pass@example.com:8080/path/123?q=abc#test');
 
-        $this->assertSame('https', (string) $dsn->scheme());
-        $this->assertSame('user:pass@example.com:8080', (string) $dsn->authority());
-        $this->assertSame('user:pass', $dsn->authority()->userInfo());
-        $this->assertSame('user', $dsn->user());
-        $this->assertSame('pass', $dsn->pass());
-        $this->assertSame('example.com', (string) $dsn->host());
-        $this->assertSame(8080, $dsn->port());
-        $this->assertSame('/path/123', (string) $dsn->path());
-        $this->assertSame('q=abc', (string) $dsn->query());
-        $this->assertSame('test', $dsn->fragment());
-        $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string) $dsn);
+        $this->assertSame('https', (string) $url->scheme());
+        $this->assertSame('user:pass@example.com:8080', (string) $url->authority());
+        $this->assertSame('user:pass', $url->authority()->userInfo());
+        $this->assertSame('user', $url->user());
+        $this->assertSame('pass', $url->pass());
+        $this->assertSame('example.com', (string) $url->host());
+        $this->assertSame(8080, $url->port());
+        $this->assertSame('/path/123', (string) $url->path());
+        $this->assertSame('q=abc', (string) $url->query());
+        $this->assertSame('test', $url->fragment());
+        $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string) $url);
     }
 
     /**
@@ -37,7 +37,7 @@ final class UrlTest extends TestCase
      */
     public function can_transform_and_retrieve_parts_individually(): void
     {
-        $dsn = (new Url())
+        $url = (new Url())
             ->withScheme('https')
             ->withHost('example.com')
             ->withUser('user')
@@ -48,15 +48,15 @@ final class UrlTest extends TestCase
             ->withFragment('test')
         ;
 
-        $this->assertSame('https', (string) $dsn->scheme());
-        $this->assertSame('user:pass@example.com:8080', (string) $dsn->authority());
-        $this->assertSame('user:pass', $dsn->authority()->userInfo());
-        $this->assertSame('example.com', (string) $dsn->host());
-        $this->assertSame(8080, $dsn->port());
-        $this->assertSame('/path/123', (string) $dsn->path());
-        $this->assertSame('q=abc', (string) $dsn->query());
-        $this->assertSame('test', $dsn->fragment());
-        $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string) $dsn);
+        $this->assertSame('https', (string) $url->scheme());
+        $this->assertSame('user:pass@example.com:8080', (string) $url->authority());
+        $this->assertSame('user:pass', $url->authority()->userInfo());
+        $this->assertSame('example.com', (string) $url->host());
+        $this->assertSame(8080, $url->port());
+        $this->assertSame('/path/123', (string) $url->path());
+        $this->assertSame('q=abc', (string) $url->query());
+        $this->assertSame('test', $url->fragment());
+        $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string) $url);
     }
 
     /**
@@ -64,7 +64,7 @@ final class UrlTest extends TestCase
      */
     public function can_remove_all_parts(): void
     {
-        $dsn = (new Url('https://user:pass@example.com:8080/path/123?q=abc#test'))
+        $url = (new Url('https://user:pass@example.com:8080/path/123?q=abc#test'))
             ->withoutHost()
             ->withoutPass()
             ->withoutUser()
@@ -75,7 +75,7 @@ final class UrlTest extends TestCase
             ->withoutScheme()
         ;
 
-        $this->assertSame('', (string) $dsn);
+        $this->assertSame('', (string) $url);
     }
 
     /**
@@ -83,26 +83,24 @@ final class UrlTest extends TestCase
      */
     public function can_transform_query_with_array(): void
     {
-        $dsn = (new Url('http://example.com?foo=bar'))
+        $url = (new Url('http://example.com?foo=bar'))
             ->withQuery(['q' => 'abc'])
         ;
 
-        $this->assertSame('q=abc', (string) $dsn->query());
-        $this->assertSame('http://example.com?q=abc', (string) $dsn);
+        $this->assertSame('q=abc', (string) $url->query());
+        $this->assertSame('http://example.com?q=abc', (string) $url);
     }
 
     /**
      * @test
-     * @dataProvider getValidDsns
+     * @dataProvider getValidUrls
      */
-    public function valid_dsns_stay_valid(string $input): void
+    public function valid_urls_stay_valid(string $input): void
     {
-        $dsn = new Url($input);
-
-        $this->assertSame($input, (string) $dsn);
+        $this->assertSame($input, (string) new Url($input));
     }
 
-    public static function getValidDsns(): iterable
+    public static function getValidUrls(): iterable
     {
         return [
             ['urn:path-rootless'],
@@ -145,24 +143,24 @@ final class UrlTest extends TestCase
     /**
      * @test
      */
-    public function can_parse_filesystem_path_dsn(): void
+    public function can_parse_filesystem_path_url(): void
     {
-        $dsn = new Url('file:///var/run/foo.txt');
+        $url = new Url('file:///var/run/foo.txt');
 
-        $this->assertSame('/var/run/foo.txt', (string) $dsn->path());
-        $this->assertSame('file', (string) $dsn->scheme());
+        $this->assertSame('/var/run/foo.txt', (string) $url->path());
+        $this->assertSame('file', (string) $url->scheme());
 
-        $dsn = new Url('file:/var/run/foo.txt');
+        $url = new Url('file:/var/run/foo.txt');
 
-        $this->assertSame('/var/run/foo.txt', (string) $dsn->path());
-        $this->assertSame('file', (string) $dsn->scheme());
+        $this->assertSame('/var/run/foo.txt', (string) $url->path());
+        $this->assertSame('file', (string) $url->scheme());
     }
 
     /**
      * @test
-     * @dataProvider getInvalidDsns
+     * @dataProvider getInvalidUrls
      */
-    public function invalid_dsns_throw_exception(string $input): void
+    public function invalid_urls_throw_exception(string $input): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Unable to parse \"{$input}\".");
@@ -170,7 +168,7 @@ final class UrlTest extends TestCase
         new Url($input);
     }
 
-    public function getInvalidDsns(): iterable
+    public function getInvalidUrls(): iterable
     {
         return [
             // parse_url() requires the host component which makes sense for http(s)
@@ -206,26 +204,26 @@ final class UrlTest extends TestCase
     /**
      * @test
      */
-    public function can_parse_falsey_dsn_parts(): void
+    public function can_parse_falsey_url_parts(): void
     {
-        $dsn = new Url('0://0:0@0/0?0#0');
+        $url = new Url('0://0:0@0/0?0#0');
 
-        $this->assertSame('0', (string) $dsn->scheme());
-        $this->assertSame('0:0@0', (string) $dsn->authority());
-        $this->assertSame('0:0', $dsn->authority()->userInfo());
-        $this->assertSame('0', (string) $dsn->host());
-        $this->assertSame('/0', (string) $dsn->path());
-        $this->assertSame([0 => ''], $dsn->query()->all());
-        $this->assertSame('0', $dsn->fragment());
-        $this->assertSame('0://0:0@0/0?0=#0', (string) $dsn);
+        $this->assertSame('0', (string) $url->scheme());
+        $this->assertSame('0:0@0', (string) $url->authority());
+        $this->assertSame('0:0', $url->authority()->userInfo());
+        $this->assertSame('0', (string) $url->host());
+        $this->assertSame('/0', (string) $url->path());
+        $this->assertSame([0 => ''], $url->query()->all());
+        $this->assertSame('0', $url->fragment());
+        $this->assertSame('0://0:0@0/0?0=#0', (string) $url);
     }
 
     /**
      * @test
      */
-    public function can_construct_falsey_dsn_parts(): void
+    public function can_construct_falsey_url_parts(): void
     {
-        $dsn = (new Url())
+        $url = (new Url())
             ->withScheme('0')
             ->withHost('0')
             ->withUser('0')
@@ -235,14 +233,14 @@ final class UrlTest extends TestCase
             ->withFragment('0')
         ;
 
-        $this->assertSame('0', (string) $dsn->scheme());
-        $this->assertSame('0:0@0', (string) $dsn->authority());
-        $this->assertSame('0:0', $dsn->authority()->userInfo());
-        $this->assertSame('0', (string) $dsn->host());
-        $this->assertSame('/0', (string) $dsn->path());
-        $this->assertSame('', (string) $dsn->query());
-        $this->assertSame('0', $dsn->fragment());
-        $this->assertSame('0://0:0@0/0#0', (string) $dsn);
+        $this->assertSame('0', (string) $url->scheme());
+        $this->assertSame('0:0@0', (string) $url->authority());
+        $this->assertSame('0:0', $url->authority()->userInfo());
+        $this->assertSame('0', (string) $url->host());
+        $this->assertSame('/0', (string) $url->path());
+        $this->assertSame('', (string) $url->query());
+        $this->assertSame('0', $url->fragment());
+        $this->assertSame('0://0:0@0/0#0', (string) $url);
     }
 
     /**
@@ -250,15 +248,15 @@ final class UrlTest extends TestCase
      */
     public function scheme_is_normalized_to_lowercase(): void
     {
-        $dsn = new Url('HTTP://example.com');
+        $url = new Url('HTTP://example.com');
 
-        $this->assertSame('http', (string) $dsn->scheme());
-        $this->assertSame('http://example.com', (string) $dsn);
+        $this->assertSame('http', (string) $url->scheme());
+        $this->assertSame('http://example.com', (string) $url);
 
-        $dsn = (new Url('//example.com'))->withScheme('HTTP');
+        $url = (new Url('//example.com'))->withScheme('HTTP');
 
-        $this->assertSame('http', (string) $dsn->scheme());
-        $this->assertSame('http://example.com', (string) $dsn);
+        $this->assertSame('http', (string) $url->scheme());
+        $this->assertSame('http://example.com', (string) $url);
     }
 
     /**
@@ -266,15 +264,15 @@ final class UrlTest extends TestCase
      */
     public function host_is_normalized_to_lowercase(): void
     {
-        $dsn = new Url('//eXaMpLe.CoM');
+        $url = new Url('//eXaMpLe.CoM');
 
-        $this->assertSame('example.com', (string) $dsn->host());
-        $this->assertSame('//example.com', (string) $dsn);
+        $this->assertSame('example.com', (string) $url->host());
+        $this->assertSame('//example.com', (string) $url);
 
-        $dsn = (new Url())->withHost('eXaMpLe.CoM');
+        $url = (new Url())->withHost('eXaMpLe.CoM');
 
-        $this->assertSame('example.com', (string) $dsn->host());
-        $this->assertSame('//example.com', (string) $dsn);
+        $this->assertSame('example.com', (string) $url->host());
+        $this->assertSame('//example.com', (string) $url);
     }
 
     /**
@@ -282,10 +280,10 @@ final class UrlTest extends TestCase
      */
     public function port_can_be_removed(): void
     {
-        $dsn = (new Url('http://example.com:8080'))->withPort(null);
+        $url = (new Url('http://example.com:8080'))->withPort(null);
 
-        $this->assertNull($dsn->port());
-        $this->assertSame('http://example.com', (string) $dsn);
+        $this->assertNull($url->port());
+        $this->assertSame('http://example.com', (string) $url);
     }
 
     /**
@@ -293,18 +291,18 @@ final class UrlTest extends TestCase
      */
     public function immutability(): void
     {
-        $dsn = new Url('http://user@example.com');
+        $url = new Url('http://user@example.com');
 
-        $this->assertNotSame($dsn, $dsn->withScheme('https'));
-        $this->assertNotSame($dsn, $dsn->withUser('user'));
-        $this->assertNotSame($dsn, $dsn->withPass('pass'));
-        $this->assertNotSame($dsn, $dsn->withHost('example.com'));
-        $this->assertNotSame($dsn, $dsn->withPort(8080));
-        $this->assertNotSame($dsn, $dsn->withPath('/path/123'));
-        $this->assertNotSame($dsn, $dsn->withQuery(['q' => 'abc']));
-        $this->assertNotSame($dsn, $dsn->withFragment('test'));
-        $this->assertNotSame($dsn, $dsn->withoutQueryParams('test'));
-        $this->assertNotSame($dsn, $dsn->withQueryParam('test', 'value'));
+        $this->assertNotSame($url, $url->withScheme('https'));
+        $this->assertNotSame($url, $url->withUser('user'));
+        $this->assertNotSame($url, $url->withPass('pass'));
+        $this->assertNotSame($url, $url->withHost('example.com'));
+        $this->assertNotSame($url, $url->withPort(8080));
+        $this->assertNotSame($url, $url->withPath('/path/123'));
+        $this->assertNotSame($url, $url->withQuery(['q' => 'abc']));
+        $this->assertNotSame($url, $url->withFragment('test'));
+        $this->assertNotSame($url, $url->withoutQueryParams('test'));
+        $this->assertNotSame($url, $url->withQueryParam('test', 'value'));
     }
 
     /**
@@ -312,9 +310,9 @@ final class UrlTest extends TestCase
      */
     public function adding_user_and_pass_urlencodes_them(): void
     {
-        $dsn = (new Url())->withUser('foo@bar.com')->withPass('pass#word');
+        $url = (new Url())->withUser('foo@bar.com')->withPass('pass#word');
 
-        $this->assertSame('foo%40bar.com:pass%23word', $dsn->authority()->userInfo());
+        $this->assertSame('foo%40bar.com:pass%23word', $url->authority()->userInfo());
     }
 
     /**
@@ -322,10 +320,10 @@ final class UrlTest extends TestCase
      */
     public function user_and_pass_are_urldecoded(): void
     {
-        $dsn = new Url('http://foo%40bar.com:pass%23word@example.com');
+        $url = new Url('http://foo%40bar.com:pass%23word@example.com');
 
-        $this->assertSame('foo@bar.com', $dsn->user());
-        $this->assertSame('pass#word', $dsn->pass());
+        $this->assertSame('foo@bar.com', $url->user());
+        $this->assertSame('pass#word', $url->pass());
     }
 
     /**
@@ -342,16 +340,16 @@ final class UrlTest extends TestCase
      */
     public function default_return_values_of_getters(): void
     {
-        $dsn = new Url();
+        $url = new Url();
 
-        $this->assertSame('', (string) $dsn->scheme());
-        $this->assertSame('', (string) $dsn->authority());
-        $this->assertNull($dsn->authority()->userInfo());
-        $this->assertSame('', (string) $dsn->host());
-        $this->assertNull($dsn->port());
-        $this->assertSame('', (string) $dsn->path());
-        $this->assertSame('', (string) $dsn->query());
-        $this->assertSame('', $dsn->fragment());
+        $this->assertSame('', (string) $url->scheme());
+        $this->assertSame('', (string) $url->authority());
+        $this->assertNull($url->authority()->userInfo());
+        $this->assertSame('', (string) $url->host());
+        $this->assertNull($url->port());
+        $this->assertSame('', (string) $url->path());
+        $this->assertSame('', (string) $url->query());
+        $this->assertSame('', $url->fragment());
     }
 
     /**
@@ -478,18 +476,18 @@ final class UrlTest extends TestCase
      */
     public function can_read_query_array(): void
     {
-        $dsn = new Url('/');
+        $url = new Url('/');
 
-        $this->assertSame([], $dsn->query()->all());
-        $this->assertNull($dsn->query()->get('foo'));
-        $this->assertSame('default', $dsn->query()->get('foo', 'default'));
-        $this->assertFalse($dsn->query()->has('foo'));
+        $this->assertSame([], $url->query()->all());
+        $this->assertNull($url->query()->get('foo'));
+        $this->assertSame('default', $url->query()->get('foo', 'default'));
+        $this->assertFalse($url->query()->has('foo'));
 
-        $dsn = new Url('/?a=b&c=d');
+        $url = new Url('/?a=b&c=d');
 
-        $this->assertSame(['a' => 'b', 'c' => 'd'], $dsn->query()->all());
-        $this->assertSame('d', $dsn->query()->get('c'));
-        $this->assertTrue($dsn->query()->has('a'));
+        $this->assertSame(['a' => 'b', 'c' => 'd'], $url->query()->all());
+        $this->assertSame('d', $url->query()->get('c'));
+        $this->assertTrue($url->query()->has('a'));
     }
 
     /**
@@ -497,20 +495,20 @@ final class UrlTest extends TestCase
      */
     public function can_manipulate_query_params(): void
     {
-        $dsn = new Url('/?a=b&c=d&e=f');
+        $url = new Url('/?a=b&c=d&e=f');
 
-        $this->assertSame('/?c=d&e=f', (string) $dsn->withoutQueryParams('a'));
-        $this->assertSame('/?c=d', (string) $dsn->withoutQueryParams('a', 'e'));
+        $this->assertSame('/?c=d&e=f', (string) $url->withoutQueryParams('a'));
+        $this->assertSame('/?c=d', (string) $url->withoutQueryParams('a', 'e'));
 
-        $this->assertSame('/', (string) $dsn->withOnlyQueryParams('z'));
-        $this->assertSame('/?a=b&e=f', (string) $dsn->withOnlyQueryParams('a', 'e', 'z'));
+        $this->assertSame('/', (string) $url->withOnlyQueryParams('z'));
+        $this->assertSame('/?a=b&e=f', (string) $url->withOnlyQueryParams('a', 'e', 'z'));
 
-        $this->assertSame('/?a=foo&c=d&e=f', (string) $dsn->withQueryParam('a', 'foo'));
-        $this->assertSame('/?a=b&c=d&e=f&foo=bar', (string) $dsn->withQueryParam('foo', 'bar'));
-        $this->assertSame(['a' => 'b', 'c' => 'd', 'e' => 'f', 'foo' => [1, 2]], $dsn->withQueryParam('foo', [1, 2])->query()->all());
-        $this->assertSame('/?a=b&c=d&e=f&foo%5B0%5D=1&foo%5B1%5D=2', (string) $dsn->withQueryParam('foo', [1, 2]));
-        $this->assertSame('/?a=b&c=d&e=f&foo%5Bg%5D=h', (string) $dsn->withQueryParam('foo', ['g' => 'h']));
-        $this->assertSame(['a' => 'b', 'c' => 'd', 'e' => 'f', 'foo' => ['g' => 'h']], $dsn->withQueryParam('foo', ['g' => 'h'])->query()->all());
+        $this->assertSame('/?a=foo&c=d&e=f', (string) $url->withQueryParam('a', 'foo'));
+        $this->assertSame('/?a=b&c=d&e=f&foo=bar', (string) $url->withQueryParam('foo', 'bar'));
+        $this->assertSame(['a' => 'b', 'c' => 'd', 'e' => 'f', 'foo' => [1, 2]], $url->withQueryParam('foo', [1, 2])->query()->all());
+        $this->assertSame('/?a=b&c=d&e=f&foo%5B0%5D=1&foo%5B1%5D=2', (string) $url->withQueryParam('foo', [1, 2]));
+        $this->assertSame('/?a=b&c=d&e=f&foo%5Bg%5D=h', (string) $url->withQueryParam('foo', ['g' => 'h']));
+        $this->assertSame(['a' => 'b', 'c' => 'd', 'e' => 'f', 'foo' => ['g' => 'h']], $url->withQueryParam('foo', ['g' => 'h'])->query()->all());
     }
 
     /**

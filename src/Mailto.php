@@ -10,15 +10,15 @@ use function Zenstruck\Utilities\Functions\null_trim;
 final class Mailto implements \Stringable
 {
     /** @var Url */
-    private $dsn;
+    private $url;
 
     public function __construct(?string $value = null)
     {
-        $dsn = (new Url($value));
+        $url = (new Url($value));
 
-        $this->dsn = $dsn
+        $this->url = $url
             ->withScheme('mailto')
-            ->withPath($dsn->path()->trim())
+            ->withPath($url->path()->trim())
             ->withoutHost()
             ->withoutPort()
             ->withoutUser()
@@ -29,38 +29,38 @@ final class Mailto implements \Stringable
 
     public function __toString(): string
     {
-        return (string) $this->dsn;
+        return (string) $this->url;
     }
 
     public function to(): array
     {
-        return \array_filter(\array_map('trim', $this->dsn->path()->segments(',')));
+        return \array_filter(\array_map('trim', $this->url->path()->segments(',')));
     }
 
     public function cc(): array
     {
-        return \array_filter(\array_map('trim', \explode(',', $this->dsn->query()->get('cc'))));
+        return \array_filter(\array_map('trim', \explode(',', $this->url->query()->get('cc'))));
     }
 
     public function bcc(): array
     {
-        return \array_filter(\array_map('trim', \explode(',', $this->dsn->query()->get('bcc'))));
+        return \array_filter(\array_map('trim', \explode(',', $this->url->query()->get('bcc'))));
     }
 
     public function subject(): ?string
     {
-        return $this->dsn->query()->get('subject');
+        return $this->url->query()->get('subject');
     }
 
     public function body(): ?string
     {
-        return $this->dsn->query()->get('body');
+        return $this->url->query()->get('body');
     }
 
     public function withTo(string ...$to): self
     {
         $mailto = clone $this;
-        $mailto->dsn = $this->dsn->withPath(null_trim(\implode(',', $to)));
+        $mailto->url = $this->url->withPath(null_trim(\implode(',', $to)));
 
         return $mailto;
     }
@@ -73,7 +73,7 @@ final class Mailto implements \Stringable
     public function withoutTo(): self
     {
         $mailto = clone $this;
-        $mailto->dsn = $this->dsn->withoutPath();
+        $mailto->url = $this->url->withoutPath();
 
         return $mailto;
     }
@@ -81,7 +81,7 @@ final class Mailto implements \Stringable
     public function withSubject(string $subject): self
     {
         $mailto = clone $this;
-        $mailto->dsn = $this->dsn->withQueryParam('subject', $subject);
+        $mailto->url = $this->url->withQueryParam('subject', $subject);
 
         return $mailto;
     }
@@ -89,7 +89,7 @@ final class Mailto implements \Stringable
     public function withoutSubject(): self
     {
         $mailto = clone $this;
-        $mailto->dsn = $this->dsn->withoutQueryParams('subject');
+        $mailto->url = $this->url->withoutQueryParams('subject');
 
         return $mailto;
     }
@@ -97,7 +97,7 @@ final class Mailto implements \Stringable
     public function withBody(string $body): self
     {
         $mailto = clone $this;
-        $mailto->dsn = $this->dsn->withQueryParam('body', $body);
+        $mailto->url = $this->url->withQueryParam('body', $body);
 
         return $mailto;
     }
@@ -105,7 +105,7 @@ final class Mailto implements \Stringable
     public function withoutBody(): self
     {
         $mailto = clone $this;
-        $mailto->dsn = $this->dsn->withoutQueryParams('body');
+        $mailto->url = $this->url->withoutQueryParams('body');
 
         return $mailto;
     }
@@ -115,12 +115,12 @@ final class Mailto implements \Stringable
         $mailto = clone $this;
 
         if (empty($cc)) {
-            $mailto->dsn = $this->dsn->withoutQueryParams('cc');
+            $mailto->url = $this->url->withoutQueryParams('cc');
 
             return $mailto;
         }
 
-        $mailto->dsn = $this->dsn->withQueryParam('cc', null_trim(\implode(',', $cc)));
+        $mailto->url = $this->url->withQueryParam('cc', null_trim(\implode(',', $cc)));
 
         return $mailto;
     }
@@ -140,12 +140,12 @@ final class Mailto implements \Stringable
         $mailto = clone $this;
 
         if (empty($bcc)) {
-            $mailto->dsn = $this->dsn->withoutQueryParams('bcc');
+            $mailto->url = $this->url->withoutQueryParams('bcc');
 
             return $mailto;
         }
 
-        $mailto->dsn = $this->dsn->withQueryParam('bcc', null_trim(\implode(',', $bcc)));
+        $mailto->url = $this->url->withQueryParam('bcc', null_trim(\implode(',', $bcc)));
 
         return $mailto;
     }
