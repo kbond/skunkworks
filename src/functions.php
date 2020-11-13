@@ -87,8 +87,6 @@ function value($value)
 }
 
 /**
- * @experimental
- *
  * @param Url|string|null $value
  */
 function url($value = null): Url
@@ -97,8 +95,6 @@ function url($value = null): Url
 }
 
 /**
- * @experimental
- *
  * @param Mailto|string|null $value
  */
 function mailto($value = null): Mailto

@@ -5,8 +5,6 @@ namespace Zenstruck\Utilities\Url;
 use function Zenstruck\Utilities\Functions\value;
 
 /**
- * @experimental
- *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 final class Query implements \Stringable

@@ -5,8 +5,6 @@ namespace Zenstruck\Utilities;
 use function Zenstruck\Utilities\Functions\null_trim;
 
 /**
- * @experimental
- *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 final class Mailto implements \Stringable

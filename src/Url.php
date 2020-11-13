@@ -11,8 +11,6 @@ use Zenstruck\Utilities\Url\Scheme;
 /**
  * Wrapper for parse_url().
  *
- * @experimental
- *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 final class Url implements \Stringable

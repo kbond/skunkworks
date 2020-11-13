@@ -3,8 +3,6 @@
 namespace Zenstruck\Utilities\Url;
 
 /**
- * @experimental
- *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 abstract class LowercasePart extends Part
