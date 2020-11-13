@@ -1,0 +1,7 @@
+coverage:
+  status:
+    project:
+      target: auto
+      threshold: 0%
+
+comment: false

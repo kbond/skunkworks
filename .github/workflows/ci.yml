@@ -69,12 +69,12 @@ jobs:
           vendor/bin/simple-phpunit install
 
       - name: Test with coverage
-        run: vendor/bin/simple-phpunit -v --coverage-text --coverage-clover=coverage.clover
+        run: vendor/bin/simple-phpunit -v --coverage-text --coverage-clover coverage.xml
 
-#      - name: Send code coverage
-#        run: |
-#          wget https://scrutinizer-ci.com/ocular.phar
-#          php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+      - name: Publish coverage report to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage.xml
 
   static-analysis:
     name: Psalm Static Analysis
