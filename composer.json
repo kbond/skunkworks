@@ -16,10 +16,12 @@
         "symfony/polyfill-php80": "^1.20"
     },
     "require-dev": {
+        "doctrine/collections": "^1.6",
+        "doctrine/orm": "^2.7",
+        "pagerfanta/pagerfanta": "^1.0|^2.0",
         "symfony/phpunit-bridge": "^5.1",
         "symfony/var-dumper": "^4.4|^5.0",
-        "twig/twig": "^2.12|^3.0",
-        "vimeo/psalm": "^4.1"
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "preferred-install": "dist",
