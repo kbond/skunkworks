@@ -2,8 +2,6 @@
 
 namespace Zenstruck\Url;
 
-use function Zenstruck\Utilities\value;
-
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -49,7 +47,7 @@ final class Query implements \Stringable
      */
     public function get(string $param, $default = null)
     {
-        return $this->all()[$param] ?? value($default);
+        return $this->all()[$param] ?? $default;
     }
 
     public function withoutQueryParams(string ...$params): self

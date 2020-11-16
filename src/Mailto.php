@@ -2,8 +2,6 @@
 
 namespace Zenstruck;
 
-use function Zenstruck\Utilities\null_trim;
-
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -59,7 +57,7 @@ final class Mailto implements \Stringable
     public function withTo(string ...$to): self
     {
         $mailto = clone $this;
-        $mailto->url = $this->url->withPath(null_trim(\implode(',', $to)));
+        $mailto->url = $this->url->withPath(\implode(',', $to));
 
         return $mailto;
     }
@@ -119,7 +117,7 @@ final class Mailto implements \Stringable
             return $mailto;
         }
 
-        $mailto->url = $this->url->withQueryParam('cc', null_trim(\implode(',', $cc)));
+        $mailto->url = $this->url->withQueryParam('cc', \implode(',', $cc));
 
         return $mailto;
     }
@@ -144,7 +142,7 @@ final class Mailto implements \Stringable
             return $mailto;
         }
 
-        $mailto->url = $this->url->withQueryParam('bcc', null_trim(\implode(',', $bcc)));
+        $mailto->url = $this->url->withQueryParam('bcc', \implode(',', $bcc));
 
         return $mailto;
     }
