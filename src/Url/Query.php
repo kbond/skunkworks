@@ -5,8 +5,6 @@ namespace Zenstruck\Url;
 use function Zenstruck\Utilities\value;
 
 /**
- * @todo make collection once collection component exists
- *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 final class Query implements \Stringable
@@ -41,7 +39,6 @@ final class Query implements \Stringable
 
     public function has(string $param): bool
     {
-        // todo dot notation
         return \array_key_exists($param, $this->all());
     }
 
@@ -52,13 +49,11 @@ final class Query implements \Stringable
      */
     public function get(string $param, $default = null)
     {
-        // todo dot notation
         return $this->all()[$param] ?? value($default);
     }
 
     public function withoutQueryParams(string ...$params): self
     {
-        // todo dot notation?
         $array = $this->all();
 
         foreach ($params as $key) {
@@ -70,7 +65,6 @@ final class Query implements \Stringable
 
     public function withOnlyQueryParams(string ...$params): self
     {
-        // todo dot notation?
         $array = $this->all();
 
         foreach (\array_keys($array) as $param) {
