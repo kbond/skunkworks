@@ -7,6 +7,8 @@ namespace Zenstruck\Url;
  */
 abstract class Part implements \Stringable
 {
+    use Stringable;
+
     private string $value;
 
     public function __construct(string $value)
@@ -14,12 +16,7 @@ abstract class Part implements \Stringable
         $this->value = $value;
     }
 
-    final public function __toString(): string
-    {
-        return $this->value;
-    }
-
-    final public function value(): string
+    final public function toString(): string
     {
         return $this->value;
     }

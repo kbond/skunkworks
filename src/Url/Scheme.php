@@ -23,7 +23,7 @@ final class Scheme extends LowercasePart
      */
     public function segments(string $delimiter = self::DEFAULT_DELIMITER): array
     {
-        return \array_filter(\explode($delimiter, $this->value()));
+        return \array_filter(\explode($delimiter, $this->toString()));
     }
 
     /**

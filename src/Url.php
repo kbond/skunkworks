@@ -7,6 +7,7 @@ use Zenstruck\Url\Host;
 use Zenstruck\Url\Path;
 use Zenstruck\Url\Query;
 use Zenstruck\Url\Scheme;
+use Zenstruck\Url\Stringable;
 
 /**
  * Wrapper for parse_url().
@@ -15,6 +16,8 @@ use Zenstruck\Url\Scheme;
  */
 final class Url implements \Stringable
 {
+    use Stringable;
+
     private Scheme $scheme;
     private Authority $authority;
     private Path $path;
@@ -39,16 +42,11 @@ final class Url implements \Stringable
         );
     }
 
-    public function __toString(): string
-    {
-        return $this->toString();
-    }
-
     public function toString(): string
     {
         $ret = '';
 
-        if ('' !== $scheme = $this->scheme->value()) {
+        if ('' !== $scheme = $this->scheme->toString()) {
             $ret .= "{$scheme}:";
         }
 

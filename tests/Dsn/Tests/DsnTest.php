@@ -49,9 +49,9 @@ final class DsnTest extends TestCase
         $this->assertInstanceOf(Group::class, $dsn);
         $this->assertSame('failover', $dsn->name());
         $this->assertInstanceOf(Url::class, $dsn->children()[0]);
-        $this->assertSame('smtp', $dsn->children()[0]->scheme()->value());
+        $this->assertSame('smtp', $dsn->children()[0]->scheme()->toString());
         $this->assertInstanceOf(Url::class, $dsn->children()[1]);
-        $this->assertSame('mail+api', $dsn->children()[1]->scheme()->value());
+        $this->assertSame('mail+api', $dsn->children()[1]->scheme()->toString());
     }
 
     /**

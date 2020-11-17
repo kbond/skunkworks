@@ -7,6 +7,8 @@ namespace Zenstruck\Url;
  */
 final class Authority implements \Stringable
 {
+    use Stringable;
+
     private Host $host;
     private ?string $username;
     private ?string $password;
@@ -20,7 +22,7 @@ final class Authority implements \Stringable
         $this->password = null !== $password ? \rawurldecode($password) : null;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         $ret = $this->userInfo();
         $ret = $ret ? "{$ret}@{$this->host}" : (string) $this->host;

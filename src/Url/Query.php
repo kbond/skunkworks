@@ -7,6 +7,8 @@ namespace Zenstruck\Url;
  */
 final class Query implements \Stringable
 {
+    use Stringable;
+
     /** @var array|string */
     private $value;
 
@@ -18,7 +20,7 @@ final class Query implements \Stringable
         $this->value = $value;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return \http_build_query($this->all(), '', '&', PHP_QUERY_RFC3986);
     }

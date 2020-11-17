@@ -529,7 +529,7 @@ final class UrlTest extends TestCase
     {
         $url = new Url($input);
 
-        $this->assertSame($expectedPath, $url->path()->value());
+        $this->assertSame($expectedPath, $url->path()->toString());
         $this->assertSame($expectedPath, (string) $url->path());
         $this->assertSame($expectedQ, $url->query()->get('q'));
         $this->assertSame($expectedUser, $url->user());

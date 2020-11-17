@@ -32,17 +32,17 @@ final class Path extends Part
 
     public function trim(): string
     {
-        return \trim($this->value(), '/');
+        return \trim($this->toString(), '/');
     }
 
     public function rtrim(): string
     {
-        return \rtrim($this->value(), '/');
+        return \rtrim($this->toString(), '/');
     }
 
     public function ltrim(): string
     {
-        return \ltrim($this->value(), '/');
+        return \ltrim($this->toString(), '/');
     }
 
     public function absolute(): string
@@ -52,11 +52,11 @@ final class Path extends Part
 
     public function extension(): ?string
     {
-        return \pathinfo($this->value(), PATHINFO_EXTENSION) ?: null;
+        return \pathinfo($this->toString(), PATHINFO_EXTENSION) ?: null;
     }
 
     public function encoded(): string
     {
-        return \implode('/', \array_map('rawurlencode', \explode('/', $this->value())));
+        return \implode('/', \array_map('rawurlencode', \explode('/', $this->toString())));
     }
 }
