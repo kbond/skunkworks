@@ -41,6 +41,11 @@ final class Url implements \Stringable
 
     public function __toString(): string
     {
+        return $this->toString();
+    }
+
+    public function toString(): string
+    {
         $ret = '';
 
         if ('' !== $scheme = $this->scheme->value()) {
