@@ -468,6 +468,7 @@ final class UrlTest extends TestCase
     public function scheme_equals(): void
     {
         $this->assertFalse((new Url('/foo'))->scheme()->equals('http'));
+        $this->assertTrue((new Url('/foo'))->scheme()->equals(''));
         $this->assertTrue((new Url('http://localhost/foo'))->scheme()->equals('http'));
         $this->assertFalse((new Url('http://localhost/foo'))->scheme()->equals('https'));
     }
@@ -478,6 +479,7 @@ final class UrlTest extends TestCase
     public function scheme_in(): void
     {
         $this->assertFalse((new Url('/foo'))->scheme()->in(['http', 'https']));
+        $this->assertTrue((new Url('/foo'))->scheme()->in(['http', 'https', '']));
         $this->assertTrue((new Url('http://localhost/foo'))->scheme()->in(['http', 'https']));
         $this->assertFalse((new Url('ftp://localhost/foo'))->scheme()->in(['http', 'https']));
     }
