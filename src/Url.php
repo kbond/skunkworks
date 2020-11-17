@@ -197,6 +197,16 @@ final class Url implements \Stringable
         return $url;
     }
 
+    public function appendPath(string $path): self
+    {
+        return $this->withPath($this->path->append($path));
+    }
+
+    public function prependPath(string $path): self
+    {
+        return $this->withPath($this->path->prepend($path));
+    }
+
     public function withoutPath(): self
     {
         return $this->withPath(null);

@@ -64,4 +64,37 @@ final class Path extends Part
     {
         return 0 === \mb_strpos($this->toString(), '/');
     }
+
+    public function append(string $path): string
+    {
+        if ('' === $path) {
+            return $this->toString();
+        }
+
+        if ($this->isEmpty()) {
+            return $path;
+        }
+
+        return $this->rtrim().'/'.\ltrim($path, '/');
+    }
+
+    public function prepend(string $path): string
+    {
+        if ('' === $path) {
+            return $this->toString();
+        }
+
+        if ($this->isEmpty()) {
+            return $path;
+        }
+
+        $ret = \rtrim($path, '/').'/'.$this->ltrim();
+
+        if ('/' !== $ret[0] && $this->isAbsolute()) {
+            // if current path is absolute, then returned path must also be absolute
+            $ret = "/{$ret}";
+        }
+
+        return $ret;
+    }
 }

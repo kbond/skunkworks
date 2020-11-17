@@ -461,6 +461,63 @@ final class UrlTest extends TestCase
     /**
      * @test
      */
+    public function can_append_path(): void
+    {
+        $this->assertSame('http://localhost', (new Url('http://localhost'))->appendPath('')->toString());
+        $this->assertSame('http://localhost/', (new Url('http://localhost/'))->appendPath('')->toString());
+        $this->assertSame('http://localhost/', (new Url('http://localhost'))->appendPath('/')->toString());
+        $this->assertSame('http://localhost/', (new Url('http://localhost/'))->appendPath('/')->toString());
+        $this->assertSame('http://localhost/', (new Url('http://localhost'))->appendPath('/')->toString());
+        $this->assertSame('http://localhost/foo', (new Url('http://localhost'))->appendPath('foo')->toString());
+        $this->assertSame('http://localhost/foo', (new Url('http://localhost'))->appendPath('/foo')->toString());
+        $this->assertSame('http://localhost/foo/bar', (new Url('http://localhost'))->appendPath('/foo/bar')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz', (new Url('http://localhost/foo'))->appendPath('/bar/baz')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz', (new Url('http://localhost/foo/'))->appendPath('/bar/baz')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz', (new Url('http://localhost/foo'))->appendPath('bar/baz')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz', (new Url('http://localhost/foo/'))->appendPath('bar/baz')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz/', (new Url('http://localhost/foo'))->appendPath('/bar/baz/')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz/', (new Url('http://localhost/foo/'))->appendPath('/bar/baz/')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz/', (new Url('http://localhost/foo'))->appendPath('bar/baz/')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz/', (new Url('http://localhost/foo/'))->appendPath('bar/baz/')->toString());
+        $this->assertSame('foo', (new Url())->appendPath('foo')->toString());
+        $this->assertSame('/foo', (new Url())->appendPath('/foo')->toString());
+        $this->assertSame('foo/bar', (new Url('foo'))->appendPath('bar')->toString());
+        $this->assertSame('foo/bar', (new Url('foo'))->appendPath('/bar')->toString());
+        $this->assertSame('/foo/bar', (new Url('/foo'))->appendPath('bar')->toString());
+        $this->assertSame('/foo/bar', (new Url('/foo'))->appendPath('/bar')->toString());
+    }
+
+    /**
+     * @test
+     */
+    public function can_prepend_path(): void
+    {
+        $this->assertSame('http://localhost', (new Url('http://localhost'))->prependPath('')->toString());
+        $this->assertSame('http://localhost/', (new Url('http://localhost'))->prependPath('/')->toString());
+        $this->assertSame('http://localhost/', (new Url('http://localhost/'))->prependPath('/')->toString());
+        $this->assertSame('http://localhost/', (new Url('http://localhost'))->prependPath('/')->toString());
+        $this->assertSame('http://localhost/foo', (new Url('http://localhost'))->prependPath('foo')->toString());
+        $this->assertSame('http://localhost/foo', (new Url('http://localhost'))->prependPath('/foo')->toString());
+        $this->assertSame('http://localhost/foo/bar', (new Url('http://localhost'))->prependPath('/foo/bar')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo', (new Url('http://localhost/foo'))->prependPath('/bar/baz')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo/', (new Url('http://localhost/foo/'))->prependPath('/bar/baz')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo', (new Url('http://localhost/foo'))->prependPath('bar/baz')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo/', (new Url('http://localhost/foo/'))->prependPath('bar/baz')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo', (new Url('http://localhost/foo'))->prependPath('/bar/baz/')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo/', (new Url('http://localhost/foo/'))->prependPath('/bar/baz/')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo', (new Url('http://localhost/foo'))->prependPath('bar/baz/')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo/', (new Url('http://localhost/foo/'))->prependPath('bar/baz/')->toString());
+        $this->assertSame('foo', (new Url())->prependPath('foo')->toString());
+        $this->assertSame('/foo', (new Url())->prependPath('/foo')->toString());
+        $this->assertSame('bar/foo', (new Url('foo'))->prependPath('bar')->toString());
+        $this->assertSame('/bar/foo', (new Url('foo'))->prependPath('/bar')->toString());
+        $this->assertSame('/bar/foo', (new Url('/foo'))->prependPath('/bar')->toString());
+        $this->assertSame('/bar/foo', (new Url('/foo'))->prependPath('bar')->toString()); // absolute path must remain absolute
+    }
+
+    /**
+     * @test
+     */
     public function can_get_scheme_segments(): void
     {
         $this->assertSame([], (new Url('/foo'))->scheme()->segments());
