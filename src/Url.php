@@ -50,8 +50,12 @@ final class Url implements \Stringable
             $ret .= "{$scheme}:";
         }
 
-        if ($authority = (string) $this->authority) {
+        if (($authority = (string) $this->authority) || $this->scheme->equals('file')) {
             $ret .= "//{$authority}";
+        }
+
+        if ('' !== $this->path->toString() && '' !== $this->host()->toString() && !$this->path->isAbsolute()) {
+            $ret .= '/';
         }
 
         $ret .= $this->path->encoded();

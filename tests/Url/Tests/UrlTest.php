@@ -132,7 +132,7 @@ final class UrlTest extends TestCase
             //[':foo'], // todo
             ['/var/run/foo.txt'],
             ['/var/run/foo.txt?foo=bar'],
-            ['file://var/run/foo.txt'],
+            ['file:///var/run/foo.txt'],
             ['http://username:password@hostname:9090/path?arg=value#anchor'],
             ['http://username@hostname/path?arg=value#anchor'],
             ['http://hostname/path?arg=value#anchor'],
@@ -371,6 +371,21 @@ final class UrlTest extends TestCase
         $this->expectExceptionMessage('Cannot have a password without a username.');
 
         (new Url('https://example.com/foo'))->withPass('pass');
+    }
+
+    /**
+     * @test
+     */
+    public function path_without_host(): void
+    {
+        $this->assertSame('https://example.com', (new Url('https://example.com'))->toString());
+        $this->assertSame('https://example.com/foo', (new Url('https://example.com'))->withPath('foo')->toString());
+        $this->assertSame('https://example.com/foo', (new Url('https://example.com'))->withPath('/foo')->toString());
+        $this->assertSame('https://example.com/', (new Url('https://example.com/'))->toString());
+        $this->assertSame('foo/bar', (new Url())->withPath('foo/bar')->toString());
+        $this->assertSame('/foo/bar', (new Url())->withPath('/foo/bar')->toString());
+        $this->assertSame('//example.com/foo/bar', (new Url('foo/bar'))->withHost('example.com')->toString());
+        $this->assertSame('//example.com/foo/bar', (new Url('/foo/bar'))->withHost('example.com')->toString());
     }
 
     /**

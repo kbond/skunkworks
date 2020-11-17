@@ -59,4 +59,9 @@ final class Path extends Part
     {
         return \implode('/', \array_map('rawurlencode', \explode('/', $this->toString())));
     }
+
+    public function isAbsolute(): bool
+    {
+        return 0 === \mb_strpos($this->toString(), '/');
+    }
 }
