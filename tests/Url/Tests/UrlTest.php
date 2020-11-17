@@ -465,6 +465,37 @@ final class UrlTest extends TestCase
     /**
      * @test
      */
+    public function scheme_equals(): void
+    {
+        $this->assertFalse((new Url('/foo'))->scheme()->equals('http'));
+        $this->assertTrue((new Url('http://localhost/foo'))->scheme()->equals('http'));
+        $this->assertFalse((new Url('http://localhost/foo'))->scheme()->equals('https'));
+    }
+
+    /**
+     * @test
+     */
+    public function scheme_in(): void
+    {
+        $this->assertFalse((new Url('/foo'))->scheme()->in(['http', 'https']));
+        $this->assertTrue((new Url('http://localhost/foo'))->scheme()->in(['http', 'https']));
+        $this->assertFalse((new Url('ftp://localhost/foo'))->scheme()->in(['http', 'https']));
+    }
+
+    /**
+     * @test
+     */
+    public function scheme_contains(): void
+    {
+        $this->assertFalse((new Url('/foo'))->scheme()->contains('ftp'));
+        $this->assertTrue((new Url('foo+bar://localhost/foo'))->scheme()->contains('foo'));
+        $this->assertTrue((new Url('foo+bar://localhost/foo'))->scheme()->contains('bar'));
+        $this->assertFalse((new Url('foo+bar://localhost/foo'))->scheme()->contains('ftp'));
+    }
+
+    /**
+     * @test
+     */
     public function can_get_host_segments(): void
     {
         $this->assertSame([], (new Url('/foo'))->host()->segments());

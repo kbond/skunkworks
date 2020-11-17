@@ -33,4 +33,19 @@ final class Scheme extends LowercasePart
     {
         return $this->segments($delimiter)[$index - 1] ?? $default;
     }
+
+    public function equals(string $value): bool
+    {
+        return $value === $this->toString();
+    }
+
+    public function in(array $value): bool
+    {
+        return \in_array($this->toString(), $value, true);
+    }
+
+    public function contains(string $value, string $delimiter = self::DEFAULT_DELIMITER): bool
+    {
+        return \in_array($value, $this->segments($delimiter), true);
+    }
 }
