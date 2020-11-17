@@ -45,6 +45,11 @@ final class Path extends Part
         return \ltrim($this->value(), '/');
     }
 
+    public function absolute(): string
+    {
+        return '/'.$this->ltrim();
+    }
+
     public function extension(): ?string
     {
         return \pathinfo($this->value(), PATHINFO_EXTENSION) ?: null;

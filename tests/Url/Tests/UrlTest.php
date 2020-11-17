@@ -414,6 +414,16 @@ final class UrlTest extends TestCase
     /**
      * @test
      */
+    public function can_get_absolute_path(): void
+    {
+        $this->assertSame('/', (new Url('http://localhost'))->path()->absolute());
+        $this->assertSame('/foo/bar', (new Url('http://localhost/foo/bar'))->path()->absolute());
+        $this->assertSame('/foo/bar', (new Url('foo/bar'))->path()->absolute());
+    }
+
+    /**
+     * @test
+     */
     public function can_get_path_segments(): void
     {
         $this->assertSame([], (new Url('http://localhost'))->path()->segments());
