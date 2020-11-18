@@ -2,8 +2,8 @@
 "url" filter
 --TEMPLATE--
 {{ 'https://example.com:8080/foo'|url.host }}
-{{ url('https://example.com:8080/foo') }}
-{{ url().withScheme('ftp').withHost('example.com') }}
+{{ 'https://example.com:8080/foo'|url }}
+{{ null|url.withScheme('ftp').withHost('example.com') }}
 --DATA--
 return []
 --EXPECT--
