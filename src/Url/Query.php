@@ -11,6 +11,7 @@ final class Query implements \Stringable
 
     /** @var array|string */
     private $value;
+    private ?string $string;
 
     /**
      * @param array|string $value
@@ -22,7 +23,7 @@ final class Query implements \Stringable
 
     public function toString(): string
     {
-        return \http_build_query($this->all(), '', '&', PHP_QUERY_RFC3986);
+        return $this->string ??= \http_build_query($this->all(), '', '&', PHP_QUERY_RFC3986);
     }
 
     public function all(): array
@@ -32,9 +33,9 @@ final class Query implements \Stringable
         }
 
         // convert string to array
-        \parse_str($this->value, $array);
+        \parse_str($this->value, $this->value);
 
-        return $this->value = $array;
+        return $this->value;
     }
 
     public function has(string $param): bool

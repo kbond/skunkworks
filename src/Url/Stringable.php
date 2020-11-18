@@ -12,5 +12,10 @@ trait Stringable
         return $this->toString();
     }
 
+    public function isEmpty(): bool
+    {
+        return '' === $this->toString();
+    }
+
     abstract public function toString(): string;
 }

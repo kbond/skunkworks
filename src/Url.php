@@ -46,22 +46,25 @@ final class Url implements \Stringable
     {
         $ret = '';
 
-        if ('' !== $scheme = $this->scheme->toString()) {
-            $ret .= "{$scheme}:";
+        if (!$this->scheme->isEmpty()) {
+            $ret .= "{$this->scheme}:";
         }
 
-        if (($authority = (string) $this->authority) || $this->scheme->equals('file')) {
-            $ret .= "//{$authority}";
+        if (!$this->authority->isEmpty() || $this->scheme->equals('file')) {
+            // The file scheme is special in that it requires the "//" prefix.
+            // PHP stream functions do not work with "file:/myfile.txt".
+            $ret .= "//{$this->authority}";
         }
 
-        if ('' !== $this->path->toString() && '' !== $this->host()->toString() && !$this->path->isAbsolute()) {
+        if (!$this->path->isEmpty() && !$this->path->isAbsolute() && !$this->host()->isEmpty()) {
+            // if host is set and path is non-absolute, make path absolute
             $ret .= '/';
         }
 
         $ret .= $this->path->encoded();
 
-        if ('' !== $query = (string) $this->query) {
-            $ret .= "?{$query}";
+        if (!$this->query->isEmpty()) {
+            $ret .= "?{$this->query}";
         }
 
         if ('' !== $this->fragment) {
@@ -118,7 +121,7 @@ final class Url implements \Stringable
 
     public function isAbsolute(): bool
     {
-        return '' !== (string) $this->scheme;
+        return !$this->scheme->isEmpty();
     }
 
     public function withHost(?string $host): self
