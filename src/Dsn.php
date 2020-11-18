@@ -24,7 +24,7 @@ final class Dsn
 
     private static function defaultParser(): ChainParser
     {
-        return self::$defaultParser ?? self::$defaultParser = new ChainParser([
+        return self::$defaultParser ??= new ChainParser([
             new GroupParser(),
             new MailtoParser(),
             new UrlParser(),
