@@ -40,7 +40,7 @@ abstract class Repository implements \IteratorAggregate, \Countable
 
     final protected function repo(): EntityRepository
     {
-        return $this->repo ?: $this->repo = new EntityRepository($this->em(), $this->em()->getClassMetadata(static::className()));
+        return $this->repo ??= new EntityRepository($this->em(), $this->em()->getClassMetadata(static::className()));
     }
 
     final protected function qb(string $alias = 'entity', ?string $indexBy = null): QueryBuilder
