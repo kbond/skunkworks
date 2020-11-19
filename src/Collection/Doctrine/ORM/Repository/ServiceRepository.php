@@ -35,7 +35,7 @@ trait ServiceRepository
             throw new \BadMethodCallException(); // todo
         }
 
-        $em = $this->managerRegistry()->getRepository($this->getClassName());
+        $em = $this->managerRegistry()->getManagerForClass($this->getClassName());
 
         if (!$em instanceof EntityManagerInterface) {
             throw new \RuntimeException(); // todo
