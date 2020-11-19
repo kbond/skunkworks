@@ -22,12 +22,20 @@ abstract class Repository implements \IteratorAggregate, \Countable
 
     protected static function createResult(QueryBuilder $qb): Result
     {
-        return new Result($qb);
+        return new Result($qb, static::countModifier());
     }
 
     final protected function qb(): QueryBuilder
     {
         return $this->connection()->createQueryBuilder()->select('*')->from(static::tableName());
+    }
+
+    /**
+     * Override to define your own count modifier.
+     */
+    protected static function countModifier(): ?callable
+    {
+        return null;
     }
 
     abstract protected static function tableName(): string;
