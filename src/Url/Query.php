@@ -18,6 +18,10 @@ final class Query implements \Stringable
      */
     public function __construct($value)
     {
+        if (\is_string($value)) {
+            $value = \ltrim($value, '?');
+        }
+
         $this->value = $value;
     }
 

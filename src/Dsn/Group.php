@@ -2,6 +2,8 @@
 
 namespace Zenstruck\Dsn;
 
+use Zenstruck\Url\Query;
+
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -12,13 +14,16 @@ final class Group implements \Stringable
     /** @var \Stringable[] */
     private array $children;
 
+    private Query $query;
+
     /**
      * @param \Stringable[] $children
      */
-    public function __construct(string $name, array $children)
+    public function __construct(string $name, array $children, Query $query)
     {
         $this->name = $name;
         $this->children = $children;
+        $this->query = $query;
     }
 
     public function __toString(): string
@@ -37,5 +42,10 @@ final class Group implements \Stringable
     public function children(): array
     {
         return $this->children;
+    }
+
+    public function query(): Query
+    {
+        return $this->query;
     }
 }

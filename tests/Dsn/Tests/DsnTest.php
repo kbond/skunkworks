@@ -47,6 +47,7 @@ final class DsnTest extends TestCase
         $dsn = Dsn::parse('failover(smtp://default mail+api://default)');
 
         $this->assertInstanceOf(Group::class, $dsn);
+        $this->assertEmpty($dsn->query()->all());
         $this->assertSame('failover', $dsn->name());
         $this->assertInstanceOf(Url::class, $dsn->children()[0]);
         $this->assertSame('smtp', $dsn->children()[0]->scheme()->toString());
@@ -63,6 +64,7 @@ final class DsnTest extends TestCase
         $dsn = Dsn::parse('failover(smtp://default roundrobin(mail+api://default mailto:kevin) failover(mail+api://default roundrobin(mail+api://default)))');
 
         $this->assertInstanceOf(Group::class, $dsn);
+        $this->assertEmpty($dsn->query()->all());
         $this->assertCount(3, $dsn->children());
         $this->assertInstanceOf(Url::class, $dsn->children()[0]);
         $this->assertSame('smtp://default', (string) $dsn->children()[0]);
@@ -71,5 +73,37 @@ final class DsnTest extends TestCase
         $this->assertCount(2, $dsn->children()[1]->children());
         $this->assertCount(2, $dsn->children()[2]->children());
         $this->assertCount(1, $dsn->children()[2]->children()[1]->children());
+    }
+
+    /**
+     * @test
+     */
+    public function can_parse_group_dsn_with_parameters(): void
+    {
+        /** @var Group $dsn */
+        $dsn = Dsn::parse('failover(smtp://default mail+api://default)?a=b&c=d');
+
+        $this->assertInstanceOf(Group::class, $dsn);
+        $this->assertSame(['a' => 'b', 'c' => 'd'], $dsn->query()->all());
+        $this->assertSame('failover', $dsn->name());
+        $this->assertInstanceOf(Url::class, $dsn->children()[0]);
+        $this->assertSame('smtp', $dsn->children()[0]->scheme()->toString());
+        $this->assertInstanceOf(Url::class, $dsn->children()[1]);
+        $this->assertSame('mail+api', $dsn->children()[1]->scheme()->toString());
+    }
+
+    /**
+     * @test
+     */
+    public function can_parse_nested_group_dsn_with_parameters(): void
+    {
+        /** @var Group $dsn */
+        $dsn = Dsn::parse('failover(smtp://default roundrobin(mail+api://default mailto:kevin)?a=b&c=d failover(mail+api://default roundrobin(mail+api://default)?e=f&g=h)?i=j&k=l)?m=n&o=p');
+
+        $this->assertInstanceOf(Group::class, $dsn);
+        $this->assertSame(['m' => 'n', 'o' => 'p'], $dsn->query()->all());
+        $this->assertSame(['a' => 'b', 'c' => 'd'], $dsn->children()[1]->query()->all());
+        $this->assertSame(['i' => 'j', 'k' => 'l'], $dsn->children()[2]->query()->all());
+        $this->assertSame(['e' => 'f', 'g' => 'h'], $dsn->children()[2]->children()[1]->query()->all());
     }
 }
