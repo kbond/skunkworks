@@ -3,37 +3,42 @@
 namespace Zenstruck\Dsn;
 
 use Zenstruck\Url\Query;
+use Zenstruck\Url\Scheme;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 final class Group implements \Stringable
 {
-    private string $name;
+    private Scheme $scheme;
+    private Query $query;
 
     /** @var \Stringable[] */
     private array $children;
 
-    private Query $query;
-
     /**
      * @param \Stringable[] $children
      */
-    public function __construct(string $name, array $children, Query $query)
+    public function __construct(Scheme $scheme, Query $query, array $children)
     {
-        $this->name = $name;
-        $this->children = $children;
+        $this->scheme = $scheme;
         $this->query = $query;
+        $this->children = $children;
     }
 
     public function __toString(): string
     {
-        return \sprintf('%s(%s)', $this->name, \implode(' ', $this->children));
+        return \sprintf('%s(%s)', $this->scheme, \implode(' ', $this->children));
     }
 
-    public function name(): string
+    public function scheme(): Scheme
     {
-        return $this->name;
+        return $this->scheme;
+    }
+
+    public function query(): Query
+    {
+        return $this->query;
     }
 
     /**
@@ -42,10 +47,5 @@ final class Group implements \Stringable
     public function children(): array
     {
         return $this->children;
-    }
-
-    public function query(): Query
-    {
-        return $this->query;
     }
 }

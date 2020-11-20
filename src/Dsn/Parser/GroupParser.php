@@ -6,6 +6,7 @@ use Zenstruck\Dsn\Exception\UnableToParse;
 use Zenstruck\Dsn\Group;
 use Zenstruck\Dsn\Parser;
 use Zenstruck\Url\Query;
+use Zenstruck\Url\Scheme;
 
 /**
  * Parses strings like "name(dsn1 dsn2)" into a Group dsn.
@@ -18,14 +19,14 @@ final class GroupParser implements Parser, ParserAware
 
     public function parse(string $value): Group
     {
-        if (!\preg_match('#^(\w+)\((.+)\)(\?.+)?$#', $value, $matches)) {
+        if (!\preg_match('#^([\w+]+)\((.+)\)(\?.+)?$#', $value, $matches)) {
             throw new UnableToParse($value);
         }
 
         return new Group(
-            $matches[1],
-            \array_map(function(string $dsn) { return $this->parser()->parse($dsn); }, self::explode($matches[2])),
-            new Query($matches[3] ?? '')
+            new Scheme($matches[1]),
+            new Query($matches[3] ?? ''),
+            \array_map(function(string $dsn) { return $this->parser()->parse($dsn); }, self::explode($matches[2]))
         );
     }
 
