@@ -8,11 +8,8 @@ use Zenstruck\Url\Scheme;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class Group implements \Stringable
+final class Group extends Wrapped
 {
-    private Scheme $scheme;
-    private Query $query;
-
     /** @var \Stringable[] */
     private array $children;
 
@@ -21,24 +18,9 @@ final class Group implements \Stringable
      */
     public function __construct(Scheme $scheme, Query $query, array $children)
     {
-        $this->scheme = $scheme;
-        $this->query = $query;
         $this->children = $children;
-    }
 
-    public function __toString(): string
-    {
-        return \sprintf('%s(%s)', $this->scheme, \implode(' ', $this->children));
-    }
-
-    public function scheme(): Scheme
-    {
-        return $this->scheme;
-    }
-
-    public function query(): Query
-    {
-        return $this->query;
+        parent::__construct($scheme, $query);
     }
 
     /**
@@ -47,5 +29,10 @@ final class Group implements \Stringable
     public function children(): array
     {
         return $this->children;
+    }
+
+    protected function innerString(): string
+    {
+        return \implode(' ', $this->children);
     }
 }

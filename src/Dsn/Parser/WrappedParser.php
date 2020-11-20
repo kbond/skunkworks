@@ -2,9 +2,11 @@
 
 namespace Zenstruck\Dsn\Parser;
 
+use Zenstruck\Dsn\Decorated;
 use Zenstruck\Dsn\Exception\UnableToParse;
 use Zenstruck\Dsn\Group;
 use Zenstruck\Dsn\Parser;
+use Zenstruck\Dsn\Wrapped;
 use Zenstruck\Url\Query;
 use Zenstruck\Url\Scheme;
 
@@ -13,19 +15,29 @@ use Zenstruck\Url\Scheme;
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class GroupParser implements Parser, ParserAware
+final class WrappedParser implements Parser, ParserAware
 {
     private ?Parser $parser = null;
 
-    public function parse(string $value): Group
+    /**
+     * @return Group|Decorated
+     */
+    public function parse(string $value): Wrapped
     {
         if (!\preg_match('#^([\w+]+)\((.+)\)(\?.+)?$#', $value, $matches)) {
             throw new UnableToParse($value);
         }
 
+        $scheme = new Scheme($matches[1]);
+        $query = new Query($matches[3] ?? '');
+
+        if (1 === \count(\explode(' ', $matches[2]))) {
+            return new Decorated($scheme, $query, $this->parser()->parse($matches[2]));
+        }
+
         return new Group(
-            new Scheme($matches[1]),
-            new Query($matches[3] ?? ''),
+            $scheme,
+            $query,
             \array_map(function(string $dsn) { return $this->parser()->parse($dsn); }, self::explode($matches[2]))
         );
     }

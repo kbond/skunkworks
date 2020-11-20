@@ -3,7 +3,7 @@
 namespace Zenstruck\Dsn\Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
-use Zenstruck\Dsn\Parser\GroupParser;
+use Zenstruck\Dsn\Parser\WrappedParser;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -18,6 +18,6 @@ final class GroupParserTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Parser not set.');
 
-        (new GroupParser())->parse('failover(foo)');
+        (new WrappedParser())->parse('failover(foo)');
     }
 }

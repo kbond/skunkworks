@@ -3,10 +3,10 @@
 namespace Zenstruck;
 
 use Zenstruck\Dsn\Parser\ChainParser;
-use Zenstruck\Dsn\Parser\GroupParser;
 use Zenstruck\Dsn\Parser\MailtoParser;
 use Zenstruck\Dsn\Parser\SchemeParser;
 use Zenstruck\Dsn\Parser\UrlParser;
+use Zenstruck\Dsn\Parser\WrappedParser;
 
 /**
  * Helper for parsing DSN objects provided by this component.
@@ -25,7 +25,7 @@ final class Dsn
     private static function defaultParser(): ChainParser
     {
         return self::$defaultParser ??= new ChainParser([
-            new GroupParser(),
+            new WrappedParser(),
             new MailtoParser(),
             new UrlParser(),
             new SchemeParser(),

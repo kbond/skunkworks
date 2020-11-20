@@ -4,6 +4,7 @@ namespace Zenstruck\Dsn\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Zenstruck\Dsn;
+use Zenstruck\Dsn\Decorated;
 use Zenstruck\Dsn\Group;
 use Zenstruck\Mailto;
 use Zenstruck\Url;
@@ -33,9 +34,10 @@ final class DsnTest extends TestCase
         yield ['null', Url::class, 'null'];
         yield ['null://', Scheme::class, 'null'];
         yield ['In-Memory://', Scheme::class, 'in-memory'];
-        yield ['failover(smtp://default mail+api://default)', Group::class, 'failover(smtp://default mail+api://default)'];
+        yield ['failover(smtp://default mail+api://default)?foo=bar', Group::class, 'failover(smtp://default mail+api://default)?foo=bar'];
         yield ['fail+over(smtp://default roundrobin(mail+api://default postmark+api://default))', Group::class, 'fail+over(smtp://default roundrobin(mail+api://default postmark+api://default))'];
         yield ['failover()', Url::class, 'failover%28%29'];
+        yield ['fail+over(smtp://default)?foo=bar', Decorated::class, 'fail+over(smtp://default)?foo=bar'];
     }
 
     /**
@@ -72,7 +74,8 @@ final class DsnTest extends TestCase
         $this->assertSame('round+robin(mail+api://default?foo=bar#hash mailto:kevin)', (string) $dsn->children()[1]);
         $this->assertCount(2, $dsn->children()[1]->children());
         $this->assertCount(2, $dsn->children()[2]->children());
-        $this->assertCount(1, $dsn->children()[2]->children()[1]->children());
+        $this->assertInstanceOf(Decorated::class, $dsn->children()[2]->children()[1]);
+        $this->assertInstanceOf(Url::class, $dsn->children()[2]->children()[1]->inner());
         $this->assertSame('mail+api://default?foo=bar#hash', $dsn->children()[1]->children()[0]->toString());
     }
 
@@ -106,5 +109,20 @@ final class DsnTest extends TestCase
         $this->assertSame(['a' => 'b', 'c' => 'd'], $dsn->children()[1]->query()->all());
         $this->assertSame(['i' => 'j', 'k' => 'l'], $dsn->children()[2]->query()->all());
         $this->assertSame(['e' => 'f', 'g' => 'h'], $dsn->children()[2]->children()[1]->query()->all());
+    }
+
+    /**
+     * @test
+     */
+    public function can_parse_decorated_dsn(): void
+    {
+        /** @var Decorated $dsn */
+        $dsn = Dsn::parse('fail+over(smtp://default)?foo=bar');
+
+        $this->assertInstanceOf(Decorated::class, $dsn);
+        $this->assertSame('fail+over', $dsn->scheme()->toString());
+        $this->assertInstanceOf(Url::class, $dsn->inner());
+        $this->assertSame('smtp://default', $dsn->inner()->toString());
+        $this->assertSame(['foo' => 'bar'], $dsn->query()->all());
     }
 }
