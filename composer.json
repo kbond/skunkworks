@@ -31,6 +31,7 @@
         "psr-4": { "Zenstruck\\": "src/" },
         "files": [
             "src/Utilities/functions.php",
+            "src/Dimension/functions.php",
             "src/functions.php"
         ]
     },

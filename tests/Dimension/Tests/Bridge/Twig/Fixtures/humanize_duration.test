@@ -1,0 +1,8 @@
+--TEST--
+"humanize_duration" filter
+--TEMPLATE--
+{{ 121|humanize_duration }}
+--DATA--
+return []
+--EXPECT--
+2 mins

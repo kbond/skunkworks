@@ -1,0 +1,10 @@
+--TEST--
+"dimension" filter/function
+--TEMPLATE--
+{{ '32mm'|dimension }}
+{{ dimension(45, 'in') }}
+--DATA--
+return []
+--EXPECT--
+32 mm
+45 in

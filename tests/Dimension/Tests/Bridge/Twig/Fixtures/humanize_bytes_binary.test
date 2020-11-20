@@ -1,0 +1,8 @@
+--TEST--
+"humanize_bytes_binary" filter
+--TEMPLATE--
+{{ 1050|humanize_bytes_binary }}
+--DATA--
+return []
+--EXPECT--
+1.03 KiB
