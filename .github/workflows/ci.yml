@@ -17,6 +17,8 @@ jobs:
         include:
           - php: 7.4
             stability: prefer-lowest
+    env:
+      LANG: en_US.UTF-8 # (for dimension)
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.3.3
@@ -25,6 +27,7 @@ jobs:
         uses: shivammathur/setup-php@2.7.0
         with:
           php-version: ${{ matrix.php }}
+          extensions: intl # (for dimension)
           coverage: none
 
       - name: Cache dependencies
@@ -47,6 +50,8 @@ jobs:
   code-coverage:
     name: Code Coverage
     runs-on: ubuntu-latest
+    env:
+      LANG: en_US.UTF-8 # (for dimension)
     steps:
       - name: Checkout code
         uses: actions/checkout@v2.3.3
@@ -55,6 +60,7 @@ jobs:
         uses: shivammathur/setup-php@2.7.0
         with:
           php-version: 7.4
+          extensions: intl # (for dimension)
           coverage: xdebug
 
       - name: Cache dependencies
