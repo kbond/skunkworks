@@ -82,9 +82,17 @@ class Result implements Collection
         $this->count = null;
     }
 
-    final protected function rawIterator(): \Traversable
+    final protected function rawIterator(): iterable
     {
-        return new IterableResultDecorator($this->cloneQuery()->iterate());
+        $query = $this->cloneQuery();
+
+        if (!\method_exists($query, 'toIterable')) {
+            // AbstractQuery::toIterable() was introduced in ORM 2.8 and fixes
+            // the issue IterableResultDecorator solves so it is no longer required.
+            return new IterableResultDecorator($this->cloneQuery()->iterate());
+        }
+
+        return $query->toIterable();
     }
 
     private function callbackCollection(): CallbackCollection

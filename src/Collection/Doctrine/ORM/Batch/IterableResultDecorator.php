@@ -5,7 +5,8 @@ namespace Zenstruck\Collection\Doctrine\ORM\Batch;
 use Doctrine\ORM\Internal\Hydration\IterableResult;
 
 /**
- * Fixes https://github.com/doctrine/orm/issues/2821.
+ * Fixes https://github.com/doctrine/orm/issues/2821. This issue has been
+ * fixed in ORM 2.8 so this class is not required when using doctrine/orm:2.8+.
  *
  * @internal
  *
