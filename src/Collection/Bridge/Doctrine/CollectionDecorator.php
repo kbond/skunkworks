@@ -12,7 +12,7 @@ use Zenstruck\Collection\Paginatable;
  */
 final class CollectionDecorator implements Collection, DoctrineCollection
 {
-    use Paginatable, CollectionBridge;
+    use CollectionBridge, Paginatable;
 
     private DoctrineCollection $inner;
 

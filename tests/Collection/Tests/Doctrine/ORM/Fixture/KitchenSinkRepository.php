@@ -17,7 +17,7 @@ use Zenstruck\Collection\Tests\Doctrine\Fixture\Entity;
  */
 final class KitchenSinkRepository extends ObjectRepository implements Collection
 {
-    use Flushable, Writable, Removable, EntityRepositoryMixin, Paginatable;
+    use EntityRepositoryMixin, Flushable, Paginatable, Removable, Writable;
 
     private EntityManagerInterface $em;
 
