@@ -13,10 +13,10 @@ jobs:
     strategy:
       matrix:
         php: [7.4, 8.0]
-        stability: [prefer-stable]
+        stability: [highest]
         include:
           - php: 7.4
-            stability: prefer-lowest
+            stability: lowest
     env:
       LANG: en_US.UTF-8 # (for dimension)
     steps:
@@ -30,16 +30,11 @@ jobs:
           extensions: intl # (for dimension)
           coverage: none
 
-      - name: Cache dependencies
-        uses: actions/cache@v2.1.2
-        with:
-          path: ~/.composer/cache/files
-          key: dependencies-${{ matrix.php }}-${{ matrix.stability }}-${{ hashFiles('composer.json') }}
-
       - name: Install dependencies
-        run: |
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-suggest
-          vendor/bin/simple-phpunit install
+        uses: ramsey/composer-install@v1
+        with:
+          dependency-versions: ${{ matrix.stability }}
+          composer-options: --prefer-dist
 
       - name: Test
         run: vendor/bin/simple-phpunit -v
@@ -60,16 +55,10 @@ jobs:
           extensions: intl # (for dimension)
           coverage: xdebug
 
-      - name: Cache dependencies
-        uses: actions/cache@v2.1.2
-        with:
-          path: ~/.composer/cache/files
-          key: dependencies-7.4-prefer-stable-${{ hashFiles('composer.json') }}
-
       - name: Install dependencies
-        run: |
-          composer update --prefer-dist --no-interaction --no-suggest
-          vendor/bin/simple-phpunit install
+        uses: ramsey/composer-install@v1
+        with:
+          composer-options: --prefer-dist
 
       - name: Test with coverage
         run: vendor/bin/simple-phpunit -v --coverage-text --coverage-clover coverage.xml
