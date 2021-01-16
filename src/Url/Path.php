@@ -2,6 +2,8 @@
 
 namespace Zenstruck\Url;
 
+use Zenstruck\Url\Exception\PathOutsideRoot;
+
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -47,7 +49,31 @@ final class Path extends Part
 
     public function absolute(): string
     {
-        return '/'.$this->ltrim();
+        $path = \explode('/', $this->toString());
+        $stack = [];
+
+        foreach ($path as $segment) {
+            $segment = \trim($segment);
+
+            switch (true) {
+                case '..' === $segment && empty($stack):
+                    throw new PathOutsideRoot(\sprintf('Cannot resolve absolute path for "%s". It is outside of the root.', $this->toString()));
+                case '..' === $segment:
+                    \array_pop($stack);
+
+                    continue 2;
+                case '.' === $segment:
+                case '' === $segment:
+                    continue 2;
+            }
+
+            $stack[] = $segment;
+        }
+
+        $stack = \array_filter($stack);
+        $trailingSlash = \count($stack) && '/' === \mb_substr($this->toString(), -1) ? '/' : '';
+
+        return '/'.\ltrim(\implode('/', $stack), '/').$trailingSlash;
     }
 
     public function extension(): ?string

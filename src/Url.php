@@ -44,7 +44,7 @@ final class Url implements \Stringable
 
     public static function create($value = null): self
     {
-        return $value instanceof self ? $value : new Url($value);
+        return $value instanceof self ? $value : new self($value);
     }
 
     public function toString(): string

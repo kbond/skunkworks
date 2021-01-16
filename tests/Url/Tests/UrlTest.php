@@ -428,12 +428,49 @@ final class UrlTest extends TestCase
 
     /**
      * @test
+     * @dataProvider validAbsolutePaths
      */
-    public function can_get_absolute_path(): void
+    public function can_get_absolute_path($url, $expected): void
     {
-        $this->assertSame('/', (new Url('http://localhost'))->path()->absolute());
-        $this->assertSame('/foo/bar', (new Url('http://localhost/foo/bar'))->path()->absolute());
-        $this->assertSame('/foo/bar', (new Url('foo/bar'))->path()->absolute());
+        $this->assertSame($expected, Url::create($url)->path()->absolute());
+    }
+
+    public static function validAbsolutePaths(): iterable
+    {
+        yield ['http://localhost', '/'];
+        yield ['http://localhost/', '/'];
+        yield ['http://localhost//', '/'];
+        yield ['http://localhost/./', '/'];
+        yield ['http://localhost/foo/bar', '/foo/bar'];
+        yield ['http://localhost/foo/bar/', '/foo/bar/'];
+        yield ['foo/bar', '/foo/bar'];
+        yield ['/foo/bar', '/foo/bar'];
+        yield ['foo/bar/../baz', '/foo/baz'];
+        yield ['/foo/bar/../baz', '/foo/baz'];
+        yield ['/foo/bar/../baz/../qux', '/foo/qux'];
+        yield ['foo/bar/../..', '/'];
+        yield ['foo/bar/../../', '/'];
+        yield ['foo/bar/.//baz/.././..', '/foo'];
+        yield ['foo/bar/.//baz/.././../', '/foo/'];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidAbsolutePaths
+     */
+    public function cannot_get_absolute_path_outside_root($url): void
+    {
+        $this->expectException(Url\Exception\PathOutsideRoot::class);
+
+        Url::create($url)->path()->absolute();
+    }
+
+    public static function invalidAbsolutePaths(): iterable
+    {
+        yield ['http://localhost/..'];
+        yield ['http://localhost/../'];
+        yield ['http://localhost/foo/bar/../../..'];
+        yield ['http://localhost/foo/bar/../../../'];
     }
 
     /**
