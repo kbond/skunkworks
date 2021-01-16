@@ -42,6 +42,11 @@ final class Url implements \Stringable
         );
     }
 
+    public static function create($value = null): self
+    {
+        return $value instanceof self ? $value : new Url($value);
+    }
+
     public function toString(): string
     {
         $ret = '';
