@@ -1,3 +1,3 @@
-# zenstruck/utilities
+# zenstruck/skunkworks
 
-WIP...
+PHP package nursery. DO NOT USE!
