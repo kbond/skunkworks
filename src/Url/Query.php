@@ -27,7 +27,7 @@ final class Query implements \Stringable
 
     public function toString(): string
     {
-        return $this->string ??= \http_build_query($this->all(), '', '&', PHP_QUERY_RFC3986);
+        return $this->string ??= \http_build_query($this->all(), '', '&', \PHP_QUERY_RFC3986);
     }
 
     public function all(): array

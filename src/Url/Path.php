@@ -78,7 +78,7 @@ final class Path extends Part
 
     public function extension(): ?string
     {
-        return \pathinfo($this->toString(), PATHINFO_EXTENSION) ?: null;
+        return \pathinfo($this->toString(), \PATHINFO_EXTENSION) ?: null;
     }
 
     public function encoded(): string

@@ -66,7 +66,7 @@ final class Dimension implements \Stringable, \JsonSerializable
         }
 
         try {
-            if (\is_array($decoded = \json_decode($value, true, 2, JSON_THROW_ON_ERROR))) {
+            if (\is_array($decoded = \json_decode($value, true, 2, \JSON_THROW_ON_ERROR))) {
                 return self::create($decoded);
             }
         } catch (\JsonException $e) {
