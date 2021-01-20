@@ -3,6 +3,7 @@
 namespace Zenstruck\Utilities\Tests;
 
 use PHPUnit\Framework\TestCase;
+use function Zenstruck\Utilities\array_accessor;
 use function Zenstruck\Utilities\null_trim;
 use function Zenstruck\Utilities\remove_whitespace;
 use function Zenstruck\Utilities\sql_pattern;
@@ -153,6 +154,14 @@ final class FunctionsTest extends TestCase
     {
         $this->assertSame('%foo', sql_pattern_ends_with('foo'));
         $this->assertSame('%f%o', sql_pattern_ends_with('f*o'));
+    }
+
+    /**
+     * @test
+     */
+    public function array_accessor(): void
+    {
+        $this->assertSame('c', array_accessor(['a' => ['b' => 'c']])->get('a.b'));
     }
 }
 

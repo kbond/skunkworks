@@ -61,6 +61,14 @@ function truncate_word(?string $value, int $length = 255, string $suffix = '...'
 }
 
 /**
+ * @see ArrayAccessor
+ */
+function array_accessor(array $value = []): ArrayAccessor
+{
+    return new ArrayAccessor($value);
+}
+
+/**
  * If passed value is a closure, execute and return. Otherwise,
  * return the value as is.
  *
