@@ -665,6 +665,33 @@ final class UrlTest extends TestCase
 
     /**
      * @test
+     */
+    public function can_get_query_param_as_boolean(): void
+    {
+        $this->assertTrue(Url::create('/?foo=true')->query()->getBool('foo'));
+        $this->assertTrue(Url::create('/?foo=1')->query()->getBool('foo'));
+        $this->assertFalse(Url::create('/?foo=false')->query()->getBool('foo'));
+        $this->assertFalse(Url::create('/?foo=0')->query()->getBool('foo'));
+        $this->assertFalse(Url::create('/?foo=something')->query()->getBool('foo'));
+        $this->assertTrue(Url::create('/')->query()->getBool('foo', true));
+        $this->assertFalse(Url::create('/')->query()->getBool('foo', false));
+        $this->assertFalse(Url::create('/?foo[]=bar')->query()->getBool('foo', true));
+    }
+
+    /**
+     * @test
+     */
+    public function can_get_query_param_as_int(): void
+    {
+        $this->assertSame(5, Url::create('/?foo=5')->query()->getInt('foo'));
+        $this->assertSame(0, Url::create('/?foo=something')->query()->getInt('foo'));
+        $this->assertSame(0, Url::create('/')->query()->getInt('foo'));
+        $this->assertSame(1, Url::create('/?foo[]=bar')->query()->getInt('foo'));
+        $this->assertSame(3, Url::create('/')->query()->getInt('foo', 3));
+    }
+
+    /**
+     * @test
      * @dataProvider urlComponentsEncodingProvider
      */
     public function url_components_are_properly_encoded($input, $expectedPath, $expectedQ, $expectedUser, $expectedPass, $expectedFragment, $expectedString): void

@@ -57,6 +57,16 @@ final class Query implements \Stringable
         return $this->all()[$param] ?? $default;
     }
 
+    public function getBool(string $param, bool $default = false): bool
+    {
+        return \filter_var($this->get($param, $default), \FILTER_VALIDATE_BOOLEAN);
+    }
+
+    public function getInt(string $param, int $default = 0): int
+    {
+        return (int) $this->get($param, $default);
+    }
+
     public function withoutQueryParams(string ...$params): self
     {
         $array = $this->all();
