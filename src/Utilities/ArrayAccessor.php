@@ -10,8 +10,6 @@ namespace Zenstruck\Utilities;
  */
 final class ArrayAccessor implements \ArrayAccess
 {
-    private const INVALID_DEFAULT = '__INVALID__';
-
     private array $value;
     private string $delimiter;
 
@@ -35,9 +33,11 @@ final class ArrayAccessor implements \ArrayAccess
      * @author Taylor Otwell <taylor@laravel.com>
      * @source https://github.com/laravel/framework/blob/e9483c441d5f0c8598d438d6024db8b1a7aa55fe/src/Illuminate/Collections/Arr.php#L286
      *
-     * @param mixed|null $default
+     * @param \Throwable|mixed|null $default
      *
      * @return mixed $default if no match
+     *
+     * @throws \Throwable If passed as default and no match
      */
     public function get(string $path, $default = null)
     {
@@ -50,6 +50,10 @@ final class ArrayAccessor implements \ArrayAccess
 
         foreach (\explode($this->delimiter, $path) as $segment) {
             if (!\is_array($current) || !\array_key_exists($segment, $current)) {
+                if ($default instanceof \Throwable) {
+                    throw $default;
+                }
+
                 return value($default);
             }
 
@@ -69,7 +73,9 @@ final class ArrayAccessor implements \ArrayAccess
         }
 
         foreach ($paths as $path) {
-            if (self::INVALID_DEFAULT === $this->get($path, self::INVALID_DEFAULT)) {
+            try {
+                $this->get($path, new \OutOfBoundsException());
+            } catch (\OutOfBoundsException $e) {
                 return false;
             }
         }

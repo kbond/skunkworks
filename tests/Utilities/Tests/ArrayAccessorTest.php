@@ -46,6 +46,27 @@ final class ArrayAccessorTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function if_default_is_throwable_it_is_thrown_when_not_found(): void
+    {
+        $throwable = new \RuntimeException();
+        $array = new ArrayAccessor(['products' => ['desk' => ['price' => 100]]]);
+
+        $this->assertSame(100, $array->get('products.desk.price', $throwable));
+
+        try {
+            $array->get('does.not.exist', $throwable);
+        } catch (\RuntimeException $e) {
+            $this->assertSame($throwable, $e);
+
+            return;
+        }
+
+        $this->fail('Exception not thrown.');
+    }
+
+    /**
      * @author Taylor Otwell <taylor@laravel.com>
      * @source https://github.com/laravel/framework/blob/56f79e2b6e4ee99b26be0c5c73d57cd3a3974fd1/tests/Support/SupportArrTest.php#L333
      *
