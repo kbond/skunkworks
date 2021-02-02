@@ -184,6 +184,10 @@ final class ArrayAccessorTest extends TestCase
         // Does not work for nested keys
         $array = new ArrayAccessor(['emails' => ['joe@example.com' => ['name' => 'Joe'], 'jane@localhost' => ['name' => 'Jane']]]);
         $this->assertSame(['emails' => ['joe@example.com' => ['name' => 'Joe']]], $array->unset('emails.joe@example.com', 'emails.jane@localhost')->all());
+
+        // alternate delimiter
+        $array = new ArrayAccessor(['products' => ['desk' => ['price' => 100]]], '/');
+        $this->assertSame(['products' => []], $array->unset('products/desk')->all());
     }
 
     /**

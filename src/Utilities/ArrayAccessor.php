@@ -134,7 +134,7 @@ final class ArrayAccessor implements \ArrayAccess
                 continue;
             }
 
-            $parts = \explode('.', $path);
+            $parts = \explode($this->delimiter, $path);
 
             // clean up before each pass
             $array = &$this->value;
