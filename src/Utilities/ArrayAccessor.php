@@ -28,7 +28,7 @@ final class ArrayAccessor implements \ArrayAccess
     }
 
     /**
-     * Get an item using "dot" notation.
+     * Get an item using "delimiter" notation.
      *
      * @author Taylor Otwell <taylor@laravel.com>
      * @source https://github.com/laravel/framework/blob/e9483c441d5f0c8598d438d6024db8b1a7aa55fe/src/Illuminate/Collections/Arr.php#L286
@@ -64,7 +64,7 @@ final class ArrayAccessor implements \ArrayAccess
     }
 
     /**
-     * Check if an item or items exist using "dot" notation.
+     * Check if an item or items exist using "delimiter" notation.
      */
     public function has(string ...$paths): bool
     {
@@ -84,7 +84,7 @@ final class ArrayAccessor implements \ArrayAccess
     }
 
     /**
-     * Set item to a given value using "dot" notation.
+     * Set item to a given value using "delimiter" notation.
      *
      * @author Taylor Otwell <taylor@laravel.com>
      * @source https://github.com/laravel/framework/blob/e9483c441d5f0c8598d438d6024db8b1a7aa55fe/src/Illuminate/Collections/Arr.php#L553
@@ -119,7 +119,7 @@ final class ArrayAccessor implements \ArrayAccess
     }
 
     /**
-     * Remove one or many items using "dot" notation.
+     * Remove one or many items using "delimiter" notation.
      *
      * @author Taylor Otwell <taylor@laravel.com>
      * @source https://github.com/laravel/framework/blob/e9483c441d5f0c8598d438d6024db8b1a7aa55fe/src/Illuminate/Collections/Arr.php#L241
