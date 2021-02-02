@@ -29,11 +29,14 @@
         "sort-packages": true
     },
     "autoload": {
-        "psr-4": { "Zenstruck\\": ["src/", "tests/"] },
+        "psr-4": { "Zenstruck\\": ["src/"] },
         "files": [
             "src/Utilities/functions.php",
             "src/Dimension/functions.php",
             "src/functions.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": { "Zenstruck\\": ["tests/"] }
     }
 }
