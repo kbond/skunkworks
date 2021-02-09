@@ -29,9 +29,7 @@ final class TempFile extends \SplFileInfo
      */
     public static function forStream($resource): self
     {
-        ResourceWrapper::wrap($resource)->copyTo($handle = ResourceWrapper::open($file = new self(), 'w'));
-
-        $handle->close();
+        ResourceWrapper::open($file = new self(), 'w')->write($resource)->close();
 
         return $file;
     }

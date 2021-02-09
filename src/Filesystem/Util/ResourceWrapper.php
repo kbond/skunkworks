@@ -35,6 +35,11 @@ final class ResourceWrapper
         return self::open('php://memory', 'rw');
     }
 
+    public static function inOutput(): self
+    {
+        return self::open('php://output', 'rw');
+    }
+
     /**
      * @see \fopen
      */
@@ -124,16 +129,6 @@ final class ResourceWrapper
     }
 
     /**
-     * @param resource|self $destination
-     */
-    public function copyTo($destination): self
-    {
-        $this->writeStream(self::wrap($destination)->get());
-
-        return $this;
-    }
-
-    /**
      * @see \fclose
      */
     public function close(): void
@@ -155,7 +150,7 @@ final class ResourceWrapper
      */
     private function writeStream($data): self
     {
-        if (false === \stream_copy_to_stream($this->resource, $data)) {
+        if (false === \stream_copy_to_stream($data, $this->resource)) {
             throw new \RuntimeException('Unable to copy stream.');
         }
 

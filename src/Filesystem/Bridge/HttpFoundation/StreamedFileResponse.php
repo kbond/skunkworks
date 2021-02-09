@@ -19,7 +19,7 @@ final class StreamedFileResponse extends StreamedResponse
     public function __construct(File $file, int $status = 200, array $headers = [])
     {
         parent::__construct(function() use ($file) {
-            ResourceWrapper::wrap($file->read())->copyTo(ResourceWrapper::open('php://output', 'wb'));
+            ResourceWrapper::inOutput()->write($file->read());
         }, $status, $headers);
 
         if (!$this->headers->has('Last-Modified')) {
