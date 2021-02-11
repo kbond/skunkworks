@@ -38,6 +38,7 @@ final class DsnTest extends TestCase
         yield ['fail+over(smtp://default roundrobin(mail+api://default postmark+api://default))', Group::class, 'fail+over(smtp://default roundrobin(mail+api://default postmark+api://default))'];
         yield ['failover()', Url::class, 'failover%28%29'];
         yield ['fail+over(smtp://default)?foo=bar', Decorated::class, 'fail+over(smtp://default)?foo=bar'];
+        yield ['fail-over(smtp://default)?foo=bar', Decorated::class, 'fail-over(smtp://default)?foo=bar'];
     }
 
     /**

@@ -11,7 +11,8 @@ use Zenstruck\Url\Query;
 use Zenstruck\Url\Scheme;
 
 /**
- * Parses strings like "name(dsn1 dsn2)" into a Group dsn.
+ * Parses strings like "name(dsn1 dsn2)" into a "Group" dsn and
+ * strings like "name(dsn)" into a "Decorated" dsn.
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
@@ -24,7 +25,7 @@ final class WrappedParser implements Parser, ParserAware
      */
     public function parse(string $value): Wrapped
     {
-        if (!\preg_match('#^([\w+]+)\((.+)\)(\?.+)?$#', $value, $matches)) {
+        if (!\preg_match('#^([\w+-]+)\((.+)\)(\?.+)?$#', $value, $matches)) {
             throw new UnableToParse($value);
         }
 
