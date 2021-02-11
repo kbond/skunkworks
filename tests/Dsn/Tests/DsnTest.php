@@ -5,10 +5,10 @@ namespace Zenstruck\Dsn\Tests;
 use PHPUnit\Framework\TestCase;
 use Zenstruck\Dsn;
 use Zenstruck\Dsn\Decorated;
+use Zenstruck\Dsn\Exception\UnableToParse;
 use Zenstruck\Dsn\Group;
 use Zenstruck\Mailto;
 use Zenstruck\Url;
-use Zenstruck\Url\Scheme;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -17,9 +17,9 @@ final class DsnTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider valueProvider
+     * @dataProvider validValueProvider
      */
-    public function can_parse($input, $expectedClass, $expectedString)
+    public function can_parse_valid_value($input, $expectedClass, $expectedString)
     {
         $dsn = Dsn::parse($input);
 
@@ -27,17 +27,33 @@ final class DsnTest extends TestCase
         $this->assertSame($expectedString, (string) $dsn);
     }
 
-    public static function valueProvider(): iterable
+    public static function validValueProvider(): iterable
     {
         yield ['mailto:kevin@example.com', Mailto::class, 'mailto:kevin%40example.com'];
         yield ['http://www.example.com', Url::class, 'http://www.example.com'];
         yield ['null', Url::class, 'null'];
-        yield ['null://', Scheme::class, 'null'];
-        yield ['In-Memory://', Scheme::class, 'in-memory'];
+        yield ['scheme:', Url::class, 'scheme:'];
+        yield ['scheme:?foo=bar', Url::class, 'scheme:?foo=bar'];
         yield ['failover(smtp://default mail+api://default)?foo=bar', Group::class, 'failover(smtp://default mail+api://default)?foo=bar'];
         yield ['fail+over(smtp://default roundrobin(mail+api://default postmark+api://default))', Group::class, 'fail+over(smtp://default roundrobin(mail+api://default postmark+api://default))'];
         yield ['failover()', Url::class, 'failover%28%29'];
         yield ['fail+over(smtp://default)?foo=bar', Decorated::class, 'fail+over(smtp://default)?foo=bar'];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidValueProvider
+     */
+    public function cannot_parse_invalid_value($input): void
+    {
+        $this->expectException(UnableToParse::class);
+
+        Dsn::parse($input);
+    }
+
+    public static function invalidValueProvider(): iterable
+    {
+        yield ['null://'];
     }
 
     /**
@@ -123,6 +139,24 @@ final class DsnTest extends TestCase
         $this->assertSame('fail+over', $dsn->scheme()->toString());
         $this->assertInstanceOf(Url::class, $dsn->inner());
         $this->assertSame('smtp://default', $dsn->inner()->toString());
+        $this->assertSame(['foo' => 'bar'], $dsn->query()->all());
+    }
+
+    /**
+     * @test
+     */
+    public function can_parse_scheme_dsn(): void
+    {
+        $dsn = Dsn::parse('in-memory:');
+
+        $this->assertInstanceOf(Url::class, $dsn);
+        $this->assertSame('in-memory', $dsn->scheme()->toString());
+        $this->assertSame([], $dsn->query()->all());
+
+        $dsn = Dsn::parse('in-memory:?foo=bar');
+
+        $this->assertInstanceOf(Url::class, $dsn);
+        $this->assertSame('in-memory', $dsn->scheme()->toString());
         $this->assertSame(['foo' => 'bar'], $dsn->query()->all());
     }
 }

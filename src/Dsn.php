@@ -2,9 +2,9 @@
 
 namespace Zenstruck;
 
+use Zenstruck\Dsn\Parser;
 use Zenstruck\Dsn\Parser\ChainParser;
 use Zenstruck\Dsn\Parser\MailtoParser;
-use Zenstruck\Dsn\Parser\SchemeParser;
 use Zenstruck\Dsn\Parser\UrlParser;
 use Zenstruck\Dsn\Parser\WrappedParser;
 
@@ -22,13 +22,12 @@ final class Dsn
         return self::defaultParser()->parse($value);
     }
 
-    private static function defaultParser(): ChainParser
+    public static function defaultParser(): Parser
     {
         return self::$defaultParser ??= new ChainParser([
             new WrappedParser(),
             new MailtoParser(),
             new UrlParser(),
-            new SchemeParser(),
         ]);
     }
 }
