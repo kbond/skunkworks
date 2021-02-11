@@ -48,21 +48,37 @@ final class Query implements \Stringable
     }
 
     /**
-     * @param mixed|null $default
+     * @param mixed|\Throwable|null $default
      *
      * @return mixed
+     *
+     * @throws \Throwable If passed as default and no match
      */
     public function get(string $param, $default = null)
     {
+        if ($default instanceof \Throwable && !$this->has($param)) {
+            throw $default;
+        }
+
         return $this->all()[$param] ?? $default;
     }
 
-    public function getBool(string $param, bool $default = false): bool
+    /**
+     * @param bool|\Throwable $default
+     *
+     * @throws \Throwable If passed as default and no match
+     */
+    public function getBool(string $param, $default = false): bool
     {
         return \filter_var($this->get($param, $default), \FILTER_VALIDATE_BOOLEAN);
     }
 
-    public function getInt(string $param, int $default = 0): int
+    /**
+     * @param int|\Throwable $default
+     *
+     * @throws \Throwable If passed as default and no match
+     */
+    public function getInt(string $param, $default = 0): int
     {
         return (int) $this->get($param, $default);
     }

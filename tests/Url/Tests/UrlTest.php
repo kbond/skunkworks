@@ -692,6 +692,39 @@ final class UrlTest extends TestCase
 
     /**
      * @test
+     */
+    public function can_pass_throwable_to_query_get_default(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('invalid');
+
+        Url::create('/?foo=5')->query()->get('bar', new \RuntimeException('invalid'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_pass_throwable_to_query_get_bool_default(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('invalid');
+
+        Url::create('/?foo=5')->query()->getBool('bar', new \RuntimeException('invalid'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_pass_throwable_to_query_get_int_default(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('invalid');
+
+        Url::create('/?foo=5')->query()->getInt('bar', new \RuntimeException('invalid'));
+    }
+
+    /**
+     * @test
      * @dataProvider urlComponentsEncodingProvider
      */
     public function url_components_are_properly_encoded($input, $expectedPath, $expectedQ, $expectedUser, $expectedPass, $expectedFragment, $expectedString): void
