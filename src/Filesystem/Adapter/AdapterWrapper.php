@@ -141,7 +141,7 @@ class AdapterWrapper implements Adapter, All
     }
 
     /**
-     * @return All
+     * @return All|Adapter
      */
     private function ensureSupports(string $feature): Adapter
     {
