@@ -12,6 +12,6 @@ final class ArrayMultiFilesystemTest extends MultiFilesystemTest
 {
     protected function createForArray(array $filesystems): MultiFilesystem
     {
-        return new MultiFilesystem($filesystems);
+        return new MultiFilesystem($filesystems, \array_key_first($filesystems));
     }
 }

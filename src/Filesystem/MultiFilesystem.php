@@ -3,7 +3,6 @@
 namespace Zenstruck\Filesystem;
 
 use Psr\Container\ContainerInterface;
-use Symfony\Contracts\Service\ServiceProviderInterface;
 use Zenstruck\Filesystem;
 use Zenstruck\Filesystem\Node\Directory;
 use Zenstruck\Filesystem\Node\File;
@@ -14,7 +13,7 @@ use Zenstruck\Filesystem\Node\File;
 final class MultiFilesystem implements Filesystem
 {
     private $filesystems;
-    private string $default;
+    private ?string $default;
 
     /**
      * @param array|ContainerInterface $filesystems
@@ -25,18 +24,6 @@ final class MultiFilesystem implements Filesystem
             throw new \InvalidArgumentException('$filesystems must be an array or a container.');
         }
 
-        if (null === $default && \is_array($filesystems)) {
-            $default = (string) \array_key_first($filesystems);
-        }
-
-        if ($filesystems instanceof ServiceProviderInterface) {
-            $default = (string) \array_key_first($filesystems->getProvidedServices());
-        }
-
-        if (null === $default) {
-            throw new \InvalidArgumentException('$default must be set.');
-        }
-
         $this->filesystems = $filesystems;
         $this->default = $default;
     }
@@ -44,6 +31,10 @@ final class MultiFilesystem implements Filesystem
     public function get(?string $name = null): Filesystem
     {
         $name = $name ?? $this->default;
+
+        if (null === $name) {
+            throw new \LogicException('Default filesystem name not set.');
+        }
 
         if (\is_array($this->filesystems) && \array_key_exists($name, $this->filesystems)) {
             return $this->filesystems[$name];
