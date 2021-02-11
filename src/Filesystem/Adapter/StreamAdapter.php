@@ -14,6 +14,7 @@ use Zenstruck\Filesystem\Feature\CopyFile;
 use Zenstruck\Filesystem\Feature\CreateDirectory;
 use Zenstruck\Filesystem\Feature\DeleteDirectory;
 use Zenstruck\Filesystem\Feature\DeleteFile;
+use Zenstruck\Filesystem\Feature\FileChecksum;
 use Zenstruck\Filesystem\Feature\MoveDirectory;
 use Zenstruck\Filesystem\Feature\MoveFile;
 use Zenstruck\Filesystem\Feature\ReadDirectory;
@@ -25,7 +26,7 @@ use Zenstruck\Url;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class StreamAdapter implements Adapter, AccessRealFile, AccessRealDirectory, DeleteDirectory, MoveDirectory, DeleteFile, MoveFile, ReadDirectory, CreateDirectory, CopyDirectory, CopyFile, WriteFile
+final class StreamAdapter implements Adapter, AccessRealFile, AccessRealDirectory, DeleteDirectory, MoveDirectory, DeleteFile, MoveFile, ReadDirectory, CreateDirectory, CopyDirectory, CopyFile, WriteFile, FileChecksum
 {
     private static SymfonyFilesystem $fs;
     private Url $root;
@@ -152,6 +153,11 @@ final class StreamAdapter implements Adapter, AccessRealFile, AccessRealDirector
         foreach (Finder::create()->in((string) $this->realFile($path))->depth(0) as $file) {
             yield (new Url\Path($path))->append($file->getFilename()) => $file->isDir() ? Adapter::TYPE_DIRECTORY : Adapter::TYPE_FILE;
         }
+    }
+
+    public function fileChecksum(string $path): string
+    {
+        return \md5_file($this->realFile($path), false);
     }
 
     private static function fs(): SymfonyFilesystem

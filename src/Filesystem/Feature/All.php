@@ -7,6 +7,6 @@ namespace Zenstruck\Filesystem\Feature;
  *
  * @internal
  */
-interface All extends AccessUrl, DeleteDirectory, MoveDirectory, DeleteFile, MoveFile, ReadDirectory, CopyDirectory, CreateDirectory, CopyFile, WriteFile, AccessRealFile, AccessRealDirectory
+interface All extends AccessUrl, DeleteDirectory, MoveDirectory, DeleteFile, MoveFile, ReadDirectory, CopyDirectory, CreateDirectory, CopyFile, WriteFile, AccessRealFile, AccessRealDirectory, FileChecksum
 {
 }

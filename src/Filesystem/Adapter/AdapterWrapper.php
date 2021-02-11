@@ -13,6 +13,7 @@ use Zenstruck\Filesystem\Feature\CopyFile;
 use Zenstruck\Filesystem\Feature\CreateDirectory;
 use Zenstruck\Filesystem\Feature\DeleteDirectory;
 use Zenstruck\Filesystem\Feature\DeleteFile;
+use Zenstruck\Filesystem\Feature\FileChecksum;
 use Zenstruck\Filesystem\Feature\MoveDirectory;
 use Zenstruck\Filesystem\Feature\MoveFile;
 use Zenstruck\Filesystem\Feature\ReadDirectory;
@@ -119,6 +120,11 @@ class AdapterWrapper implements Adapter, All
     public function listing(string $path): iterable
     {
         return $this->ensureSupports(ReadDirectory::class)->listing($path);
+    }
+
+    public function fileChecksum(string $path): string
+    {
+        return $this->ensureSupports(FileChecksum::class)->fileChecksum($path);
     }
 
     public function supports(string $feature): bool

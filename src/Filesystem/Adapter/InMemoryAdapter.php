@@ -9,6 +9,7 @@ use Zenstruck\Filesystem\Feature\CopyFile;
 use Zenstruck\Filesystem\Feature\CreateDirectory;
 use Zenstruck\Filesystem\Feature\DeleteDirectory;
 use Zenstruck\Filesystem\Feature\DeleteFile;
+use Zenstruck\Filesystem\Feature\FileChecksum;
 use Zenstruck\Filesystem\Feature\MoveDirectory;
 use Zenstruck\Filesystem\Feature\MoveFile;
 use Zenstruck\Filesystem\Feature\ReadDirectory;
@@ -20,7 +21,7 @@ use Zenstruck\Utilities\ArrayAccessor;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class InMemoryAdapter implements Adapter, DeleteDirectory, MoveDirectory, DeleteFile, MoveFile, ReadDirectory, CreateDirectory, CopyDirectory, CopyFile, WriteFile
+final class InMemoryAdapter implements Adapter, DeleteDirectory, MoveDirectory, DeleteFile, MoveFile, ReadDirectory, CreateDirectory, CopyDirectory, CopyFile, WriteFile, FileChecksum
 {
     private const ROOT = 'root';
 
@@ -150,6 +151,11 @@ final class InMemoryAdapter implements Adapter, DeleteDirectory, MoveDirectory, 
 
         $this->data()->set($path = $this->normalizePath($path), $value);
         $this->modifiedAtCache[$path] = \time();
+    }
+
+    public function fileChecksum(string $path): string
+    {
+        return \md5($this->file($path), false);
     }
 
     private function normalizePath(string $path): string

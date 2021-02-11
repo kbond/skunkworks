@@ -8,6 +8,7 @@ use Zenstruck\Filesystem\Feature\CopyFile;
 use Zenstruck\Filesystem\Feature\CreateDirectory;
 use Zenstruck\Filesystem\Feature\DeleteDirectory;
 use Zenstruck\Filesystem\Feature\DeleteFile;
+use Zenstruck\Filesystem\Feature\FileChecksum;
 use Zenstruck\Filesystem\Feature\MoveDirectory;
 use Zenstruck\Filesystem\Feature\MoveFile;
 use Zenstruck\Filesystem\Feature\ReadDirectory;
@@ -16,7 +17,7 @@ use Zenstruck\Filesystem\Feature\WriteFile;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class StaticInMemoryAdapter implements Adapter, DeleteDirectory, MoveDirectory, DeleteFile, MoveFile, ReadDirectory, CreateDirectory, CopyDirectory, CopyFile, WriteFile
+final class StaticInMemoryAdapter implements Adapter, DeleteDirectory, MoveDirectory, DeleteFile, MoveFile, ReadDirectory, CreateDirectory, CopyDirectory, CopyFile, WriteFile, FileChecksum
 {
     /** @var InMemoryAdapter[] */
     private static array $adapters = [];
@@ -105,6 +106,11 @@ final class StaticInMemoryAdapter implements Adapter, DeleteDirectory, MoveDirec
     public function write(string $path, $value): void
     {
         $this->adapter()->write($path, $value);
+    }
+
+    public function fileChecksum(string $path): string
+    {
+        return $this->adapter()->fileChecksum($path);
     }
 
     private function adapter(): InMemoryAdapter

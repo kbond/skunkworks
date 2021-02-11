@@ -110,6 +110,21 @@ final class File extends Node
     }
 
     /**
+     * @throws UnsupportedFeature If adapter does not support a file's checksum
+     * @throws RuntimeException   If unable to access file's checksum
+     */
+    public function checksum(): string
+    {
+        try {
+            return $this->adapter->fileChecksum($this->path());
+        } catch (UnsupportedFeature $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            throw RuntimeException::wrap($e, 'Unable to get checksum for "%s".', $this->path());
+        }
+    }
+
+    /**
      * @throws UnsupportedFeature If adapter does not support accessing a real file
      * @throws RuntimeException   If unable to access real file
      */

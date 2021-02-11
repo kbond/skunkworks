@@ -9,6 +9,7 @@ use Zenstruck\Filesystem\Tests\Feature\CopyFileTests;
 use Zenstruck\Filesystem\Tests\Feature\CreateDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\DeleteDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\DeleteFileTests;
+use Zenstruck\Filesystem\Tests\Feature\FileChecksumTests;
 use Zenstruck\Filesystem\Tests\Feature\MoveDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\MoveFileTests;
 use Zenstruck\Filesystem\Tests\Feature\ReadDirectoryTests;
@@ -19,7 +20,7 @@ use Zenstruck\Filesystem\Tests\Feature\WriteFileTests;
  */
 final class InMemoryAdapterTest extends AdapterTest
 {
-    use CopyDirectoryTests, CopyFileTests, CreateDirectoryTests, DeleteDirectoryTests, DeleteFileTests, MoveDirectoryTests, MoveFileTests, ReadDirectoryTests, WriteFileTests;
+    use CopyDirectoryTests, CopyFileTests, CreateDirectoryTests, DeleteDirectoryTests, DeleteFileTests, FileChecksumTests, MoveDirectoryTests, MoveFileTests, ReadDirectoryTests, WriteFileTests;
 
     protected function createAdapter(): Adapter
     {
