@@ -75,7 +75,9 @@ abstract class FilesystemTest extends TestCase
         $this->assertSame(8, $file->size());
         $this->assertSame((new \DateTime())->format('Y-m-d O'), $file->lastModified()->format('Y-m-d O'));
         $this->assertSame('contents', $file->contents());
-        $this->assertIsResource($file->read());
+        $this->assertSame('contents', \stream_get_contents($file->read()));
+        // stream is reset on each call to read
+        $this->assertSame('contents', \stream_get_contents($file->read()));
     }
 
     /**
