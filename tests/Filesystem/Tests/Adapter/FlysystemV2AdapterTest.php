@@ -2,12 +2,13 @@
 
 namespace Zenstruck\Filesystem\Tests\Adapter;
 
-use League\Flysystem\Filesystem;
+use League\Flysystem\Filesystem as FlysystemFilesystem;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
-use Zenstruck\Filesystem\Adapter;
+use Zenstruck\Filesystem;
 use Zenstruck\Filesystem\Adapter\FlysystemV2Adapter;
+use Zenstruck\Filesystem\AdapterFilesystem;
 use Zenstruck\Filesystem\Tests\Feature\CopyFileTests;
 use Zenstruck\Filesystem\Tests\Feature\CreateDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\DeleteDirectoryTests;
@@ -15,11 +16,12 @@ use Zenstruck\Filesystem\Tests\Feature\DeleteFileTests;
 use Zenstruck\Filesystem\Tests\Feature\MoveFileTests;
 use Zenstruck\Filesystem\Tests\Feature\ReadDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\WriteFileTests;
+use Zenstruck\Filesystem\Tests\FilesystemTest;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class FlysystemV2AdapterTest extends AdapterTest
+final class FlysystemV2AdapterTest extends FilesystemTest
 {
     use CopyFileTests, CreateDirectoryTests, DeleteDirectoryTests, DeleteFileTests, MoveFileTests, ReadDirectoryTests, WriteFileTests;
 
@@ -36,8 +38,8 @@ final class FlysystemV2AdapterTest extends AdapterTest
         (new SymfonyFilesystem())->remove(self::ROOT);
     }
 
-    protected function createAdapter(): Adapter
+    protected function createFilesystem(): Filesystem
     {
-        return new FlysystemV2Adapter(new Filesystem(new LocalFilesystemAdapter(self::ROOT)));
+        return new AdapterFilesystem(new FlysystemV2Adapter(new FlysystemFilesystem(new LocalFilesystemAdapter(self::ROOT))));
     }
 }

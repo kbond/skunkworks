@@ -2,10 +2,8 @@
 
 namespace Zenstruck\Filesystem\Tests\Adapter;
 
-use Zenstruck\Filesystem\Adapter;
-use Zenstruck\Filesystem\Adapter\InMemoryAdapter;
-use Zenstruck\Filesystem\Adapter\UrlPrefixAdapter;
-use Zenstruck\Filesystem\AdapterFilesystem;
+use Zenstruck\Filesystem;
+use Zenstruck\Filesystem\FilesystemFactory;
 use Zenstruck\Filesystem\Tests\Feature\CopyDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\CopyFileTests;
 use Zenstruck\Filesystem\Tests\Feature\CreateDirectoryTests;
@@ -15,11 +13,12 @@ use Zenstruck\Filesystem\Tests\Feature\MoveDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\MoveFileTests;
 use Zenstruck\Filesystem\Tests\Feature\ReadDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\WriteFileTests;
+use Zenstruck\Filesystem\Tests\FilesystemTest;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class UrlPrefixAdapterTest extends AdapterTest
+final class UrlPrefixAdapterTest extends FilesystemTest
 {
     use CopyDirectoryTests, CopyFileTests, CreateDirectoryTests, DeleteDirectoryTests, DeleteFileTests, MoveDirectoryTests, MoveFileTests, ReadDirectoryTests, WriteFileTests;
 
@@ -43,7 +42,9 @@ final class UrlPrefixAdapterTest extends AdapterTest
      */
     public function can_use_multiple_prefixes_to_provide_a_deterministic_distribution_strategy(): void
     {
-        $filesystem = new AdapterFilesystem(new UrlPrefixAdapter(new InMemoryAdapter(), 'https://sub1.example.com', 'https://sub2.example.com'));
+        $filesystem = (new FilesystemFactory())
+            ->create('url-prefix(in-memory:)?prefix[]=https://sub1.example.com&prefix[]=https://sub2.example.com')
+        ;
         $filesystem->write('file1.txt', 'contents');
         $filesystem->write('file2.txt', 'contents');
 
@@ -51,8 +52,8 @@ final class UrlPrefixAdapterTest extends AdapterTest
         $this->assertSame('https://sub1.example.com/file2.txt', $filesystem->file('file2.txt')->url()->toString());
     }
 
-    protected function createAdapter(): Adapter
+    protected function createFilesystem(): Filesystem
     {
-        return new UrlPrefixAdapter(new InMemoryAdapter(), 'https://example.com/sub');
+        return (new FilesystemFactory())->create('url-prefix(in-memory:)?prefix=https://example.com/sub');
     }
 }

@@ -2,9 +2,8 @@
 
 namespace Zenstruck\Filesystem\Tests\Adapter;
 
-use Zenstruck\Filesystem\Adapter;
-use Zenstruck\Filesystem\Adapter\StaticInMemoryAdapter;
-use Zenstruck\Filesystem\AdapterFilesystem;
+use Zenstruck\Filesystem;
+use Zenstruck\Filesystem\FilesystemFactory;
 use Zenstruck\Filesystem\Test\ResetStaticInMemoryAdapter;
 use Zenstruck\Filesystem\Tests\Feature\CopyDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\CopyFileTests;
@@ -16,11 +15,12 @@ use Zenstruck\Filesystem\Tests\Feature\MoveDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\MoveFileTests;
 use Zenstruck\Filesystem\Tests\Feature\ReadDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\WriteFileTests;
+use Zenstruck\Filesystem\Tests\FilesystemTest;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class StaticInMemoryAdapterTest extends AdapterTest
+final class StaticInMemoryAdapterTest extends FilesystemTest
 {
     use CopyDirectoryTests, CopyFileTests, CreateDirectoryTests, DeleteDirectoryTests, DeleteFileTests, FileChecksumTests, MoveDirectoryTests, MoveFileTests, ReadDirectoryTests, ResetStaticInMemoryAdapter, WriteFileTests;
 
@@ -42,16 +42,16 @@ final class StaticInMemoryAdapterTest extends AdapterTest
      */
     public function state_is_kept_by_name(): void
     {
-        $filesystem1 = new AdapterFilesystem(new StaticInMemoryAdapter('first'));
-        $filesystem2 = new AdapterFilesystem(new StaticInMemoryAdapter('second'));
+        $filesystem1 = $this->createFilesystem();
+        $filesystem2 = (new FilesystemFactory())->create('in-memory:?static=true&name=second');
         $filesystem1->write('file.txt', 'contents');
 
         $this->assertTrue($filesystem1->exists('file.txt'));
         $this->assertFalse($filesystem2->exists('file.txt'));
     }
 
-    protected function createAdapter(): Adapter
+    protected function createFilesystem(): Filesystem
     {
-        return new StaticInMemoryAdapter();
+        return (new FilesystemFactory())->create('in-memory:?static=true');
     }
 }

@@ -3,8 +3,8 @@
 namespace Zenstruck\Filesystem\Tests\Adapter;
 
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
-use Zenstruck\Filesystem\Adapter;
-use Zenstruck\Filesystem\Adapter\StreamAdapter;
+use Zenstruck\Filesystem;
+use Zenstruck\Filesystem\FilesystemFactory;
 use Zenstruck\Filesystem\TempFile;
 use Zenstruck\Filesystem\Tests\Feature\AccessRealDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\AccessRealFileTests;
@@ -18,11 +18,12 @@ use Zenstruck\Filesystem\Tests\Feature\MoveDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\MoveFileTests;
 use Zenstruck\Filesystem\Tests\Feature\ReadDirectoryTests;
 use Zenstruck\Filesystem\Tests\Feature\WriteFileTests;
+use Zenstruck\Filesystem\Tests\FilesystemTest;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class StreamAdapterTest extends AdapterTest
+final class StreamAdapterTest extends FilesystemTest
 {
     use AccessRealDirectoryTests, AccessRealFileTests, CopyDirectoryTests, CopyFileTests, CreateDirectoryTests, DeleteDirectoryTests, DeleteFileTests, FileChecksumTests, MoveDirectoryTests, MoveFileTests, ReadDirectoryTests, WriteFileTests;
 
@@ -55,8 +56,8 @@ final class StreamAdapterTest extends AdapterTest
         $this->assertSame('contents', $newFile->contents());
     }
 
-    protected function createAdapter(): Adapter
+    protected function createFilesystem(): Filesystem
     {
-        return new StreamAdapter(self::ROOT);
+        return (new FilesystemFactory())->create(self::ROOT);
     }
 }
