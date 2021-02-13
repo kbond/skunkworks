@@ -17,7 +17,7 @@ final class Dsn
 {
     private static ?ChainParser $defaultParser = null;
 
-    public static function parse(string $value): object
+    public static function parse(string $value): \Stringable
     {
         return self::defaultParser()->parse($value);
     }
