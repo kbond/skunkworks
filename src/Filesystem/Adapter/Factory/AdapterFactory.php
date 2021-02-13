@@ -2,6 +2,8 @@
 
 namespace Zenstruck\Filesystem\Adapter\Factory;
 
+use League\Flysystem\Adapter\Ftp;
+use League\Flysystem\Ftp\FtpAdapter;
 use Zenstruck\Filesystem\Adapter;
 use Zenstruck\Filesystem\Adapter\Factory;
 use Zenstruck\Filesystem\Exception\UnableToParseDsn;
@@ -52,6 +54,10 @@ final class AdapterFactory implements Factory
 
         foreach ($this->factories as $factory) {
             $this->cachedFactories[] = $factory;
+        }
+
+        if (\class_exists(FtpAdapter::class) || \class_exists(Ftp::class)) {
+            $this->cachedFactories[] = new FlysystemFtpAdapterFactory();
         }
 
         $this->cachedFactories[] = new InMemoryAdapterFactory();
