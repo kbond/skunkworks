@@ -12,9 +12,6 @@ final class Decorated extends Wrapped
 {
     private \Stringable $inner;
 
-    /**
-     * @param \Stringable[] $children
-     */
     public function __construct(Scheme $scheme, Query $query, \Stringable $inner)
     {
         $this->inner = $inner;
