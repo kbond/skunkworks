@@ -23,9 +23,9 @@ final class StaticInMemoryAdapter implements Adapter, DeleteDirectory, MoveDirec
     private static array $adapters = [];
     private string $name;
 
-    public function __construct(string $name = 'default')
+    public function __construct(?string $name = null)
     {
-        $this->name = $name;
+        $this->name = $name ?? 'default';
     }
 
     public static function reset(): void
