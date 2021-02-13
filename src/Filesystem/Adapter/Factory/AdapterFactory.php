@@ -2,7 +2,6 @@
 
 namespace Zenstruck\Filesystem\Adapter\Factory;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Zenstruck\Filesystem\Adapter;
 use Zenstruck\Filesystem\Adapter\Factory;
 use Zenstruck\Filesystem\Exception\UnableToParseDsn;
@@ -53,10 +52,6 @@ final class AdapterFactory implements Factory
 
         foreach ($this->factories as $factory) {
             $this->cachedFactories[] = $factory;
-        }
-
-        if (\interface_exists(HttpClientInterface::class)) {
-            $this->cachedFactories[] = new HttpClientAdapterFactory();
         }
 
         $this->cachedFactories[] = new InMemoryAdapterFactory();
