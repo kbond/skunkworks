@@ -4,7 +4,6 @@ namespace Zenstruck\Filesystem\Tests\Feature;
 
 use Zenstruck\Filesystem;
 use Zenstruck\Filesystem\Exception\RuntimeException;
-use Zenstruck\Filesystem\Node\File;
 use Zenstruck\Filesystem\Util\ResourceWrapper;
 
 /**
@@ -209,18 +208,6 @@ trait WriteFileTests
         }
 
         $this->fail('Exception not thrown.');
-    }
-
-    /**
-     * @test
-     */
-    public function can_use_file_named_constructor(): void
-    {
-        $filesystem = $this->createFilesystem();
-        $file = File::create($filesystem, 'dir/file.txt', 'contents');
-
-        $this->assertSame('contents', $file->contents());
-        $this->assertStringContainsString('/dir/file.txt', $file->path());
     }
 
     abstract protected function createFilesystem(): Filesystem;

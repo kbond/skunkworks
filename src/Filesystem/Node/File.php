@@ -3,7 +3,6 @@
 namespace Zenstruck\Filesystem\Node;
 
 use Symfony\Component\Mime\MimeTypes;
-use Zenstruck\Filesystem;
 use Zenstruck\Filesystem\Exception\RuntimeException;
 use Zenstruck\Filesystem\Exception\UnknownProperty;
 use Zenstruck\Filesystem\Exception\UnsupportedFeature;
@@ -18,16 +17,6 @@ final class File extends Node
     private ?\DateTimeImmutable $lastModified = null;
     private ?string $mimeType = null;
     private ?string $contents = null;
-
-    /**
-     * @see Filesystem::write()
-     */
-    public static function create(Filesystem $filesystem, string $path, $value): self
-    {
-        $filesystem->write($path, $value);
-
-        return $filesystem->file($path);
-    }
 
     public function filename(): string
     {

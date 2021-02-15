@@ -5,12 +5,9 @@ namespace Zenstruck\Filesystem\Tests\Bridge\HttpFoundation;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Zenstruck\Filesystem\Adapter\InMemoryAdapter;
-use Zenstruck\Filesystem\Adapter\StreamAdapter;
-use Zenstruck\Filesystem\Adapter\TempFileAdapter;
-use Zenstruck\Filesystem\AdapterFilesystem;
 use Zenstruck\Filesystem\Bridge\HttpFoundation\ResponseFactory;
 use Zenstruck\Filesystem\Bridge\HttpFoundation\StreamedFileResponse;
+use Zenstruck\Filesystem\FilesystemFactory;
 use Zenstruck\Filesystem\Node\File;
 
 /**
@@ -79,8 +76,16 @@ final class ResponseFactoryTest extends TestCase
 
     public static function fileProvider(): iterable
     {
-        yield [File::create(new AdapterFilesystem(new InMemoryAdapter()), 'some/file.txt', 'content'), StreamedFileResponse::class];
-        yield [(new AdapterFilesystem(new StreamAdapter(__DIR__.'/../../Fixture/directory')))->file('nested/file2.txt'), BinaryFileResponse::class];
-        yield [File::create(new AdapterFilesystem(new TempFileAdapter(new InMemoryAdapter())), 'some/file.txt', 'content'), BinaryFileResponse::class];
+        yield [(new FilesystemFactory())->create(__DIR__.'/../../Fixture/directory')->file('nested/file2.txt'), BinaryFileResponse::class];
+
+        $filesystem = (new FilesystemFactory())->create('in-memory:');
+        $filesystem->write('some/file.txt', 'content');
+
+        yield [$filesystem->file('some/file.txt'), StreamedFileResponse::class];
+
+        $filesystem = (new FilesystemFactory())->create('temp-file(in-memory:)');
+        $filesystem->write('some/file.txt', 'content');
+
+        yield [$filesystem->file('some/file.txt'), BinaryFileResponse::class];
     }
 }
