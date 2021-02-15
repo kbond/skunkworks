@@ -35,6 +35,7 @@ final class FlysystemFtpAdapterFactory implements Factory
                 'password' => $dsn->pass(),
                 'port' => $dsn->port() ?? 21,
                 'root' => $dsn->path()->absolute(),
+                'ssl' => $dsn->query()->getBool('ssl'),
             ]))
         ));
     }
@@ -48,6 +49,7 @@ final class FlysystemFtpAdapterFactory implements Factory
                 'password' => $dsn->pass(),
                 'port' => $dsn->port() ?? 21,
                 'root' => $dsn->path()->absolute(),
+                'ssl' => $dsn->query()->getBool('ssl'),
             ]))
         ));
     }
