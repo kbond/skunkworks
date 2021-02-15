@@ -14,7 +14,7 @@ use Zenstruck\Filesystem\Exception\UnableToParseDsn;
 final class AdapterFactory implements Factory
 {
     private iterable $factories;
-    private ?array $cachedFactories = null;
+    private static ?array $defaultFactories = null;
 
     /**
      * @param Factory[] $factories
@@ -44,27 +44,25 @@ final class AdapterFactory implements Factory
     /**
      * @return Factory[]
      */
-    private function factories(): array
+    private function factories(): iterable
     {
-        if ($this->cachedFactories) {
-            return $this->cachedFactories;
-        }
+        yield from $this->factories;
+        yield from self::defaultFactories();
+    }
 
-        $this->cachedFactories = [];
-
-        foreach ($this->factories as $factory) {
-            $this->cachedFactories[] = $factory;
+    private static function defaultFactories(): iterable
+    {
+        if (self::$defaultFactories) {
+            yield from self::$defaultFactories;
         }
 
         if (\class_exists(FtpAdapter::class) || \class_exists(Ftp::class)) {
-            $this->cachedFactories[] = new FlysystemFtpAdapterFactory();
+            yield self::$defaultFactories[] = new FlysystemFtpAdapterFactory();
         }
 
-        $this->cachedFactories[] = new InMemoryAdapterFactory();
-        $this->cachedFactories[] = new StreamAdapterFactory();
-        $this->cachedFactories[] = new UrlPrefixAdapterFactory();
-        $this->cachedFactories[] = new TempFileAdapterFactory();
-
-        return $this->cachedFactories;
+        yield self::$defaultFactories[] = new InMemoryAdapterFactory();
+        yield self::$defaultFactories[] = new StreamAdapterFactory();
+        yield self::$defaultFactories[] = new UrlPrefixAdapterFactory();
+        yield self::$defaultFactories[] = new TempFileAdapterFactory();
     }
 }
