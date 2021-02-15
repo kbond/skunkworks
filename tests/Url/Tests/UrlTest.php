@@ -402,6 +402,51 @@ final class UrlTest extends TestCase
     /**
      * @test
      */
+    public function can_get_dirname(): void
+    {
+        $this->assertSame('/', (new Url('https://example.com/'))->path()->dirname());
+        $this->assertSame('/', (new Url('https://example.com'))->path()->dirname());
+        $this->assertSame('/', (new Url('https://example.com/foo.txt'))->path()->dirname());
+        $this->assertSame('/', (new Url('/foo.txt'))->path()->dirname());
+        $this->assertSame('/', (new Url('file:///foo.txt'))->path()->dirname());
+        $this->assertSame('/foo/bar', (new Url('https://example.com/foo/bar/baz.txt'))->path()->dirname());
+        $this->assertSame('/foo/bar', (new Url('https://example.com/foo/bar/baz'))->path()->dirname());
+        $this->assertSame('/foo/bar', (new Url('https://example.com/foo/bar/baz/'))->path()->dirname());
+    }
+
+    /**
+     * @test
+     */
+    public function can_get_filename(): void
+    {
+        $this->assertNull((new Url('https://example.com/'))->path()->filename());
+        $this->assertNull((new Url('https://example.com'))->path()->filename());
+        $this->assertSame('foo', (new Url('https://example.com/foo.txt'))->path()->filename());
+        $this->assertSame('foo', (new Url('/foo.txt'))->path()->filename());
+        $this->assertSame('foo', (new Url('file:///foo.txt'))->path()->filename());
+        $this->assertSame('baz', (new Url('https://example.com/foo/bar/baz.txt'))->path()->filename());
+        $this->assertSame('baz', (new Url('https://example.com/foo/bar/baz'))->path()->filename());
+        $this->assertSame('baz', (new Url('https://example.com/foo/bar/baz/'))->path()->filename());
+    }
+
+    /**
+     * @test
+     */
+    public function can_get_basename(): void
+    {
+        $this->assertNull((new Url('https://example.com/'))->path()->basename());
+        $this->assertNull((new Url('https://example.com'))->path()->basename());
+        $this->assertSame('foo.txt', (new Url('https://example.com/foo.txt'))->path()->basename());
+        $this->assertSame('foo.txt', (new Url('/foo.txt'))->path()->basename());
+        $this->assertSame('foo.txt', (new Url('file:///foo.txt'))->path()->basename());
+        $this->assertSame('baz.txt', (new Url('https://example.com/foo/bar/baz.txt'))->path()->basename());
+        $this->assertSame('baz', (new Url('https://example.com/foo/bar/baz'))->path()->basename());
+        $this->assertSame('baz', (new Url('https://example.com/foo/bar/baz/'))->path()->basename());
+    }
+
+    /**
+     * @test
+     */
     public function can_get_the_host_tld(): void
     {
         $this->assertNull((new Url('/foo'))->host()->tld());

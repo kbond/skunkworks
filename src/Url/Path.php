@@ -81,6 +81,21 @@ final class Path extends Part
         return \pathinfo($this->toString(), \PATHINFO_EXTENSION) ?: null;
     }
 
+    public function dirname(): string
+    {
+        return \pathinfo($this->absolute(), \PATHINFO_DIRNAME);
+    }
+
+    public function filename(): ?string
+    {
+        return \pathinfo($this->absolute(), \PATHINFO_FILENAME) ?: null;
+    }
+
+    public function basename(): ?string
+    {
+        return \pathinfo($this->absolute(), \PATHINFO_BASENAME) ?: null;
+    }
+
     public function encoded(): string
     {
         return \implode('/', \array_map('rawurlencode', \explode('/', $this->toString())));
