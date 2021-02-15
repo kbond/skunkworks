@@ -25,7 +25,7 @@ final class AdapterFilesystem implements Filesystem
 
     public function __construct(Adapter $adapter)
     {
-        $this->adapter = new AdapterWrapper($adapter);
+        $this->adapter = AdapterWrapper::wrap($adapter);
     }
 
     /**

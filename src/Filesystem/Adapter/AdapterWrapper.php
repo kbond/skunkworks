@@ -32,6 +32,11 @@ class AdapterWrapper implements Adapter, All
         $this->next = $adapter;
     }
 
+    final public static function wrap(Adapter $adapter): self
+    {
+        return $adapter instanceof self ? $adapter : new self($adapter);
+    }
+
     public function type(string $path): string
     {
         return $this->next->type($path);
