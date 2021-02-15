@@ -6,6 +6,7 @@ use Symfony\Component\Mime\MimeTypes;
 use Zenstruck\Filesystem\Exception\RuntimeException;
 use Zenstruck\Filesystem\Exception\UnknownProperty;
 use Zenstruck\Filesystem\Exception\UnsupportedFeature;
+use Zenstruck\Filesystem\FilesystemFactory;
 use Zenstruck\Filesystem\Node;
 
 /**
@@ -17,6 +18,11 @@ final class File extends Node
     private ?\DateTimeImmutable $lastModified = null;
     private ?string $mimeType = null;
     private ?string $contents = null;
+
+    public static function forDsn(string $dsn, ?FilesystemFactory $factory = null): self
+    {
+        return ($factory ?? new FilesystemFactory())->file($dsn);
+    }
 
     public function filename(): string
     {
