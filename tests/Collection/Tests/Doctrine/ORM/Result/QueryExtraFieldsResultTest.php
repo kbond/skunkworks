@@ -15,6 +15,13 @@ final class QueryExtraFieldsResultTest extends TestCase
 {
     use HasDatabase, PagintableCollectionTests;
 
+    protected function setUp(): void
+    {
+        // see https://github.com/doctrine/orm/pull/8467 & https://github.com/doctrine/orm/issues/8520 for more details
+        // leaving the code here in case there is a future fix
+        $this->markTestSkipped('Iterating "mixed" results (results with entity and scalar) is no longer supported as of doctrine/orm 2.8.2.');
+    }
+
     /**
      * @test
      */
