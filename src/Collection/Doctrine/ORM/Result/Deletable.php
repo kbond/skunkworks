@@ -5,6 +5,8 @@ namespace Zenstruck\Collection\Doctrine\ORM\Result;
 use Zenstruck\Collection\Doctrine\ORM\Result;
 
 /**
+ * Enables your results to be deleted from the db.
+ *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 trait Deletable

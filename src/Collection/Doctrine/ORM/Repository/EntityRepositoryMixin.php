@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityRepository;
 use Zenstruck\Collection\Doctrine\ORM\Repository;
 
 /**
+ * Allows your repository to have access to Doctrine\ORM\EntityRepository
+ * methods (except count()).
+ *
  * @mixin EntityRepository
  *
  * @author Kevin Bond <kevinbond@gmail.com>

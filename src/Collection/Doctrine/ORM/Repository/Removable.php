@@ -5,6 +5,8 @@ namespace Zenstruck\Collection\Doctrine\ORM\Repository;
 use Zenstruck\Collection\Doctrine\ORM\Repository;
 
 /**
+ * Allows your repository to remove objects from the db.
+ *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 trait Removable
