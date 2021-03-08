@@ -1,10 +1,10 @@
 <?php
 
-namespace Zenstruck\Collection\Tests\Bridge\Doctrine\Collection;
+namespace Zenstruck\Collection\Tests\Doctrine\Collection;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Zenstruck\Collection\Bridge\Doctrine\CollectionDecorator;
-use Zenstruck\Collection\Tests\Bridge\Doctrine\CollectionDecoratorTest;
+use Zenstruck\Collection\Doctrine\CollectionDecorator;
+use Zenstruck\Collection\Tests\Doctrine\CollectionDecoratorTest;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

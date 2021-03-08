@@ -1,9 +1,9 @@
 <?php
 
-namespace Zenstruck\Collection\Tests\Bridge\Doctrine;
+namespace Zenstruck\Collection\Tests\Doctrine;
 
 use PHPUnit\Framework\TestCase;
-use Zenstruck\Collection\Bridge\Doctrine\CollectionDecorator;
+use Zenstruck\Collection\Doctrine\CollectionDecorator;
 use Zenstruck\Collection\Tests\PagintableCollectionTests;
 
 /**

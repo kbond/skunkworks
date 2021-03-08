@@ -47,10 +47,10 @@ final class IterableCollection implements Collection
         }
 
         if (0 === $limit) {
-            return new static();
+            return new self();
         }
 
-        return new static(function() use ($limit, $offset) {
+        return new self(function() use ($limit, $offset) {
             $i = 0;
 
             foreach ($this as $key => $value) {
