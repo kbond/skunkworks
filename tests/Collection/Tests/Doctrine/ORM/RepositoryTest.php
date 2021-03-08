@@ -8,6 +8,7 @@ use Zenstruck\Collection\Doctrine\ORM\Batch\CountableBatchIterator;
 use Zenstruck\Collection\Doctrine\ORM\Batch\CountableBatchProcessor;
 use Zenstruck\Collection\Tests\Doctrine\Fixture\Entity;
 use Zenstruck\Collection\Tests\Doctrine\HasDatabase;
+use Zenstruck\Collection\Tests\Doctrine\MatchableRepositoryTests;
 use Zenstruck\Collection\Tests\Doctrine\ORM\Fixture\KitchenSinkRepository;
 use Zenstruck\Collection\Tests\PagintableCollectionTests;
 
@@ -16,7 +17,7 @@ use Zenstruck\Collection\Tests\PagintableCollectionTests;
  */
 final class RepositoryTest extends TestCase
 {
-    use HasDatabase, PagintableCollectionTests;
+    use HasDatabase, MatchableRepositoryTests, PagintableCollectionTests;
 
     /**
      * @test
@@ -149,6 +150,18 @@ final class RepositoryTest extends TestCase
 
         $this->assertInstanceOf(Entity::class, $result);
         $this->assertFalse($this->em->contains($result));
+    }
+
+    /**
+     * @test
+     */
+    public function can_match_for_callback(): void
+    {
+        $object = $this->createWithItems(3)->matchOne(function(QueryBuilder $qb, $alias) {
+            $qb->where("{$alias}.value = 'value 2'");
+        });
+
+        $this->assertSame('value 2', $object->value);
     }
 
     protected function createWithItems(int $count): KitchenSinkRepository
