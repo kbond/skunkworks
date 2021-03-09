@@ -27,7 +27,7 @@ final class KitchenSinkRepository extends ObjectRepository implements Collection
         $this->em = $em;
     }
 
-    protected static function className(): string
+    public function getClassName(): string
     {
         return Entity::class;
     }

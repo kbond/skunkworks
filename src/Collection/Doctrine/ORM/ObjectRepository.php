@@ -41,12 +41,4 @@ abstract class ObjectRepository extends Repository implements DoctrineObjectRepo
     {
         return $this->repo()->findOneBy($criteria, $orderBy);
     }
-
-    /**
-     * @see EntityRepository::getClassName()
-     */
-    final public function getClassName(): string
-    {
-        return static::className();
-    }
 }

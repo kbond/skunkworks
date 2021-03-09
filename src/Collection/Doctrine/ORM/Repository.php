@@ -33,6 +33,8 @@ abstract class Repository implements \IteratorAggregate, \Countable
         return $this->repo()->count([]);
     }
 
+    abstract public function getClassName(): string;
+
     protected static function createResult(QueryBuilder $qb, bool $fetchCollection = true, ?bool $useOutputWalkers = null): Result
     {
         return new Result($qb, $fetchCollection, $useOutputWalkers);
@@ -40,15 +42,13 @@ abstract class Repository implements \IteratorAggregate, \Countable
 
     final protected function repo(): EntityRepository
     {
-        return $this->repo ??= new EntityRepository($this->em(), $this->em()->getClassMetadata(static::className()));
+        return $this->repo ??= new EntityRepository($this->em(), $this->em()->getClassMetadata($this->getClassName()));
     }
 
     final protected function qb(string $alias = 'entity', ?string $indexBy = null): QueryBuilder
     {
         return $this->repo()->createQueryBuilder($alias, $indexBy);
     }
-
-    abstract protected static function className(): string;
 
     abstract protected function em(): EntityManagerInterface;
 }
