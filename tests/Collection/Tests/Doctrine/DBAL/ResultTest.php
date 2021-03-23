@@ -25,6 +25,6 @@ final class ResultTest extends TestCase
 
     protected function expectedValueAt(int $position): array
     {
-        return ['id' => $position, 'value' => 'value '.$position];
+        return ['id' => $position, 'value' => 'value '.$position, 'relation_id' => null];
     }
 }

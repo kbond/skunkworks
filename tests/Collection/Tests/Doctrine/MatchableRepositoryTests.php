@@ -2,6 +2,7 @@
 
 namespace Zenstruck\Collection\Tests\Doctrine;
 
+use Zenstruck\Collection\Doctrine\Specification\Context;
 use Zenstruck\Collection\Exception\NotFound;
 use Zenstruck\Collection\Spec;
 use Zenstruck\Collection\Specification\Nested;
@@ -437,6 +438,33 @@ trait MatchableRepositoryTests
             public function child()
             {
                 return Spec::eq('value', 'value 2');
+            }
+        });
+
+        $this->assertSame('value 2', $object->value);
+    }
+
+    /**
+     * @test
+     */
+    public function can_match_for_callback(): void
+    {
+        $object = $this->createWithItems(3)->matchOne(function(Context $context) {
+            $context->qb()->where($context->prefixAlias("value = 'value 2'"));
+        });
+
+        $this->assertSame('value 2', $object->value);
+    }
+
+    /**
+     * @test
+     */
+    public function can_match_for_callable_class(): void
+    {
+        $object = $this->createWithItems(3)->matchOne(new class() {
+            public function __invoke(Context $context): void
+            {
+                $context->qb()->where($context->prefixAlias("value = 'value 2'"));
             }
         });
 

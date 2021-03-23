@@ -16,7 +16,7 @@ final class OrderByNormalizer extends DoctrineNormalizer
      */
     public function normalize($specification, $context): void
     {
-        $context->qb()->addOrderBy("{$context->alias()}.{$specification->field()}", $specification->direction());
+        $context->qb()->addOrderBy($context->prefixAlias($specification->field()), $specification->direction());
     }
 
     protected function supportsSpecification($specification): bool

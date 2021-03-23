@@ -17,7 +17,7 @@ use Zenstruck\Collection\Specification\SpecificationNormalizer;
  */
 abstract class Context
 {
-    private static ?SpecificationNormalizer $defaultNormalizer = null;
+    private static array $defaultNormalizer = [];
 
     private string $alias;
 
@@ -31,20 +31,35 @@ abstract class Context
         return $this->alias;
     }
 
+    final public function prefixAlias(string $value): string
+    {
+        return "{$this->alias}.{$value}";
+    }
+
     /**
      * @return ORMQueryBuilder|DBALQueryBuilder
      */
     abstract public function qb(): object;
 
+    /**
+     * @return static
+     */
+    abstract public function scopeTo(string $alias): self;
+
     final public static function defaultNormalizer(): SpecificationNormalizer
     {
-        return self::$defaultNormalizer ??= new SpecificationNormalizer([
+        return self::$defaultNormalizer[static::class] ??= new SpecificationNormalizer(static::defaultNormalizers());
+    }
+
+    protected static function defaultNormalizers(): array
+    {
+        return [
             new NestedNormalizer(),
             new CallableNormalizer(),
             new ComparisonNormalizer(),
             new CompositeNormalizer(),
             new NullNormalizer(),
             new OrderByNormalizer(),
-        ]);
+        ];
     }
 }

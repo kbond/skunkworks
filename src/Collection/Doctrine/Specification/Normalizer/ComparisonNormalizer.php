@@ -39,7 +39,7 @@ final class ComparisonNormalizer extends DoctrineNormalizer
         );
 
         return $context->qb()->expr()->{self::methodFor($specification)}(
-            "{$context->alias()}.{$specification->field()}",
+            $context->prefixAlias($specification->field()),
             ":{$parameter}"
         );
     }

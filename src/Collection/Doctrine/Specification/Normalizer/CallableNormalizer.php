@@ -15,7 +15,7 @@ final class CallableNormalizer extends DoctrineNormalizer
      */
     public function normalize($specification, $context)
     {
-        return $specification($context->qb(), $context->alias());
+        return $specification($context);
     }
 
     protected function supportsSpecification($specification): bool

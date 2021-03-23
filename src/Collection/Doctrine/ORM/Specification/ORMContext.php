@@ -3,6 +3,8 @@
 namespace Zenstruck\Collection\Doctrine\ORM\Specification;
 
 use Doctrine\ORM\QueryBuilder;
+use Zenstruck\Collection\Doctrine\ORM\Specification\Normalizer\AntiJoinNormalizer;
+use Zenstruck\Collection\Doctrine\ORM\Specification\Normalizer\JoinNormalizer;
 use Zenstruck\Collection\Doctrine\Specification\Context;
 
 /**
@@ -22,5 +24,18 @@ final class ORMContext extends Context
     public function qb(): QueryBuilder
     {
         return $this->qb;
+    }
+
+    public function scopeTo(string $alias): self
+    {
+        return new self($this->qb, $alias);
+    }
+
+    protected static function defaultNormalizers(): array
+    {
+        return \array_merge(parent::defaultNormalizers(), [
+            new JoinNormalizer(),
+            new AntiJoinNormalizer(),
+        ]);
     }
 }

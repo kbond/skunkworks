@@ -27,6 +27,7 @@ final class RepositoryTest extends TestCase
         return [
             'id' => $position,
             'value' => "value {$position}",
+            'relation_id' => null,
         ];
     }
 }

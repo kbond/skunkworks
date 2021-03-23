@@ -6,7 +6,10 @@ use Doctrine\ORM\QueryBuilder;
 use PHPUnit\Framework\TestCase;
 use Zenstruck\Collection\Doctrine\ORM\Batch\CountableBatchIterator;
 use Zenstruck\Collection\Doctrine\ORM\Batch\CountableBatchProcessor;
+use Zenstruck\Collection\Doctrine\ORM\Specification\Join;
+use Zenstruck\Collection\Spec;
 use Zenstruck\Collection\Tests\Doctrine\Fixture\Entity;
+use Zenstruck\Collection\Tests\Doctrine\Fixture\Relation;
 use Zenstruck\Collection\Tests\Doctrine\HasDatabase;
 use Zenstruck\Collection\Tests\Doctrine\MatchableRepositoryTests;
 use Zenstruck\Collection\Tests\Doctrine\ORM\Fixture\KitchenSinkRepository;
@@ -155,24 +158,178 @@ final class RepositoryTest extends TestCase
     /**
      * @test
      */
-    public function can_match_for_callback(): void
+    public function match_with_inner_join(): void
     {
-        $object = $this->createWithItems(3)->matchOne(function(QueryBuilder $qb, $alias) {
-            $qb->where("{$alias}.value = 'value 2'");
-        });
+        $this->persistEntitiesForJoinTest();
 
-        $this->assertSame('value 2', $object->value);
+        $this->assertCount(5, $this->repo());
+
+        $results = \iterator_to_array($this->repo()->match(Join::inner('relation')));
+
+        $this->assertCount(3, $results);
+        $this->assertQueryCount(2, function() use ($results) {
+            $this->assertSame(2, $results[1]->relation->value);
+            $this->assertSame(3, $results[2]->relation->value);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function match_with_eager_inner_join(): void
+    {
+        $this->persistEntitiesForJoinTest();
+
+        $this->assertCount(5, $this->repo());
+
+        $results = \iterator_to_array($this->repo()->match(Join::inner('relation')->eager()));
+
+        $this->assertCount(3, $results);
+        $this->assertQueryCount(0, function() use ($results) {
+            $this->assertSame(2, $results[1]->relation->value);
+            $this->assertSame(3, $results[2]->relation->value);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function match_with_left_join(): void
+    {
+        $this->persistEntitiesForJoinTest();
+
+        $this->assertCount(5, $this->repo());
+
+        $results = \iterator_to_array($this->repo()->match(Join::left('relation')));
+
+        $this->assertCount(5, $results);
+        $this->assertQueryCount(2, function() use ($results) {
+            $this->assertSame(1, $results[1]->relation->value);
+            $this->assertSame(2, $results[2]->relation->value);
+            $this->assertNull($results[3]->relation);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function match_with_eager_left_join(): void
+    {
+        $this->persistEntitiesForJoinTest();
+
+        $this->assertCount(5, $this->repo());
+
+        $results = \iterator_to_array($this->repo()->match(Join::left('relation')->eager()));
+
+        $this->assertCount(5, $results);
+        $this->assertQueryCount(0, function() use ($results) {
+            $this->assertSame(1, $results[1]->relation->value);
+            $this->assertSame(2, $results[2]->relation->value);
+            $this->assertNull($results[3]->relation);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function match_with_join_and_scoped_select(): void
+    {
+        $this->persistEntitiesForJoinTest();
+
+        $this->assertCount(5, $this->repo());
+
+        $results = \iterator_to_array($this->repo()->match(Join::inner('relation')->scope(
+            Spec::andX(Spec::gt('value', 1), Spec::lt('value', 3))
+        )));
+
+        $this->assertCount(1, $results);
+        $this->assertQueryCount(1, function() use ($results) {
+            $this->assertSame(2, $results[0]->relation->value);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function match_with_join_and_eager_scoped_select(): void
+    {
+        $this->persistEntitiesForJoinTest();
+
+        $this->assertCount(5, $this->repo());
+
+        $results = \iterator_to_array($this->repo()->match(Join::inner('relation')->eager()->scope(
+            Spec::andX(Spec::gt('value', 1), Spec::lt('value', 3))
+        )));
+
+        $this->assertCount(1, $results);
+        $this->assertQueryCount(0, function() use ($results) {
+            $this->assertSame(2, $results[0]->relation->value);
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function match_with_left_anti_join(): void
+    {
+        $this->persistEntitiesForJoinTest();
+
+        $this->assertCount(5, $this->repo());
+
+        $results = \iterator_to_array($this->repo()->match(Join::anti('relation')));
+
+        $this->assertCount(2, $results);
+    }
+
+    /**
+     * @test
+     */
+    public function match_with_join_and_multiple_scope(): void
+    {
+        $this->persistEntitiesForJoinTest();
+
+        $this->assertCount(5, $this->repo());
+
+        $results = $this->repo()->match(
+            Spec::andX(
+                Join::inner('relation')->eager()->scope(Spec::gt('value', 1)),
+                Join::inner('relation')->eager()->scope(Spec::lt('value', 3))
+            )
+        );
+
+        $this->assertCount(1, $results);
+
+        $results = \iterator_to_array($results);
+
+        $this->assertQueryCount(0, function() use ($results) {
+            $this->assertSame(2, $results[0]->relation->value);
+        });
     }
 
     protected function createWithItems(int $count): KitchenSinkRepository
     {
         $this->persistEntities($count);
 
-        return new KitchenSinkRepository($this->em);
+        return $this->repo();
     }
 
     protected function expectedValueAt(int $position): Entity
     {
         return new Entity("value {$position}", $position);
+    }
+
+    protected function repo(): KitchenSinkRepository
+    {
+        return new KitchenSinkRepository($this->em);
+    }
+
+    private function persistEntitiesForJoinTest(): void
+    {
+        $this->em->persist(new Entity('e1'));
+        $this->em->persist(Entity::withRelation('e2', new Relation(1)));
+        $this->em->persist(Entity::withRelation('e3', new Relation(2)));
+        $this->em->persist(new Entity('e4'));
+        $this->em->persist(Entity::withRelation('e5', new Relation(3)));
+        $this->flushAndClear();
     }
 }

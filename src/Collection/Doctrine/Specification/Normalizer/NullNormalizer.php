@@ -21,7 +21,7 @@ final class NullNormalizer extends DoctrineNormalizer
      */
     public function normalize($specification, $context): string
     {
-        return $context->qb()->expr()->{self::methodFor($specification)}("{$context->alias()}.{$specification->field()}");
+        return $context->qb()->expr()->{self::methodFor($specification)}($context->prefixAlias($specification->field()));
     }
 
     protected static function classMethodMap(): array
