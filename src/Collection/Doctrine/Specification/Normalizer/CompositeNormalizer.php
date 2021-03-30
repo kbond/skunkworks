@@ -1,13 +1,11 @@
 <?php
 
-namespace Zenstruck\Collection\Doctrine\DBAL\Specification\Normalizer;
+namespace Zenstruck\Collection\Doctrine\Specification\Normalizer;
 
-use Doctrine\DBAL\Query\Expression\CompositeExpression;
-use Zenstruck\Collection\Doctrine\DBAL\Specification\DBALContext;
+use Zenstruck\Collection\Doctrine\Specification\Context;
 use Zenstruck\Collection\Specification\Logic\AndX;
 use Zenstruck\Collection\Specification\Logic\Composite;
 use Zenstruck\Collection\Specification\Logic\OrX;
-use Zenstruck\Collection\Specification\Normalizer;
 use Zenstruck\Collection\Specification\Normalizer\ClassMethodMap;
 use Zenstruck\Collection\Specification\Normalizer\HasNormalizer;
 use Zenstruck\Collection\Specification\Normalizer\NormalizerAware;
@@ -15,15 +13,15 @@ use Zenstruck\Collection\Specification\Normalizer\NormalizerAware;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class CompositeNormalizer implements Normalizer, NormalizerAware
+final class CompositeNormalizer extends DoctrineNormalizer implements NormalizerAware
 {
-    use ClassMethodMap, DBALNormalizer, HasNormalizer;
+    use ClassMethodMap, HasNormalizer;
 
     /**
-     * @param Composite   $specification
-     * @param DBALContext $context
+     * @param Composite $specification
+     * @param Context   $context
      */
-    public function normalize($specification, $context): ?CompositeExpression
+    public function normalize($specification, $context)
     {
         $children = \array_filter(\array_map(
             function($child) use ($context) {

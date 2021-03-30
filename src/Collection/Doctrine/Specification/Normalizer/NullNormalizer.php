@@ -1,24 +1,23 @@
 <?php
 
-namespace Zenstruck\Collection\Doctrine\ORM\Specification\Normalizer;
+namespace Zenstruck\Collection\Doctrine\Specification\Normalizer;
 
-use Zenstruck\Collection\Doctrine\ORM\Specification\ORMContext;
+use Zenstruck\Collection\Doctrine\Specification\Context;
 use Zenstruck\Collection\Specification\Field;
 use Zenstruck\Collection\Specification\Filter\IsNotNull;
 use Zenstruck\Collection\Specification\Filter\IsNull;
-use Zenstruck\Collection\Specification\Normalizer;
 use Zenstruck\Collection\Specification\Normalizer\ClassMethodMap;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class NullNormalizer implements Normalizer
+final class NullNormalizer extends DoctrineNormalizer
 {
-    use ClassMethodMap, ORMNormalizer;
+    use ClassMethodMap;
 
     /**
-     * @param Field      $specification
-     * @param ORMContext $context
+     * @param Field   $specification
+     * @param Context $context
      */
     public function normalize($specification, $context): string
     {

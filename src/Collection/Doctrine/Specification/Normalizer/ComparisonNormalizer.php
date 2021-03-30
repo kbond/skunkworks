@@ -1,9 +1,9 @@
 <?php
 
-namespace Zenstruck\Collection\Doctrine\DBAL\Specification\Normalizer;
+namespace Zenstruck\Collection\Doctrine\Specification\Normalizer;
 
 use Doctrine\DBAL\Connection;
-use Zenstruck\Collection\Doctrine\DBAL\Specification\DBALContext;
+use Zenstruck\Collection\Doctrine\Specification\Context;
 use Zenstruck\Collection\Specification\Filter\Comparison;
 use Zenstruck\Collection\Specification\Filter\Equal;
 use Zenstruck\Collection\Specification\Filter\GreaterThan;
@@ -15,19 +15,18 @@ use Zenstruck\Collection\Specification\Filter\Like;
 use Zenstruck\Collection\Specification\Filter\NotEqual;
 use Zenstruck\Collection\Specification\Filter\NotIn;
 use Zenstruck\Collection\Specification\Filter\NotLike;
-use Zenstruck\Collection\Specification\Normalizer;
 use Zenstruck\Collection\Specification\Normalizer\ClassMethodMap;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class ComparisonNormalizer implements Normalizer
+final class ComparisonNormalizer extends DoctrineNormalizer
 {
-    use ClassMethodMap, DBALNormalizer;
+    use ClassMethodMap;
 
     /**
-     * @param Comparison  $specification
-     * @param DBALContext $context
+     * @param Comparison $specification
+     * @param Context    $context
      */
     public function normalize($specification, $context): string
     {
@@ -40,7 +39,7 @@ final class ComparisonNormalizer implements Normalizer
         );
 
         return $context->qb()->expr()->{self::methodFor($specification)}(
-            $specification->field(),
+            "{$context->alias()}.{$specification->field()}",
             ":{$parameter}"
         );
     }

@@ -25,9 +25,9 @@ abstract class Repository implements \IteratorAggregate, \Countable
         return new Result($qb, static::countModifier());
     }
 
-    final protected function qb(): QueryBuilder
+    final protected function qb(?string $alias = null): QueryBuilder
     {
-        return $this->connection()->createQueryBuilder()->select('*')->from(static::tableName());
+        return $this->connection()->createQueryBuilder()->select('*')->from(static::tableName(), $alias);
     }
 
     /**

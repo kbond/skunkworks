@@ -1,20 +1,17 @@
 <?php
 
-namespace Zenstruck\Collection\Doctrine\ORM\Specification\Normalizer;
+namespace Zenstruck\Collection\Doctrine\Specification\Normalizer;
 
-use Zenstruck\Collection\Doctrine\ORM\Specification\ORMContext;
-use Zenstruck\Collection\Specification\Normalizer;
+use Zenstruck\Collection\Doctrine\Specification\Context;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class CallableNormalizer implements Normalizer
+final class CallableNormalizer extends DoctrineNormalizer
 {
-    use ORMNormalizer;
-
     /**
-     * @param callable   $specification
-     * @param ORMContext $context
+     * @param callable $specification
+     * @param Context  $context
      */
     public function normalize($specification, $context)
     {

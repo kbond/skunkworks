@@ -47,8 +47,8 @@ trait MatchableRepository
 
     final protected function qbForSpecification($specification): QueryBuilder
     {
-        $qb = $this->qb();
-        $result = $this->specificationNormalizer()->normalize($specification, new DBALContext($qb));
+        $qb = $this->qb('entity');
+        $result = $this->specificationNormalizer()->normalize($specification, new DBALContext($qb, 'entity'));
 
         if ($result) {
             $qb->where($result);
