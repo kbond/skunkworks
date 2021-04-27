@@ -15,10 +15,7 @@
         "symfony/filesystem": "^4.4|^5.0"
     },
     "require-dev": {
-        "doctrine/collections": "^1.6",
-        "doctrine/orm": "^2.8",
         "league/flysystem": "^1.1|^2.0",
-        "pagerfanta/pagerfanta": "^1.0|^2.0",
         "phpunit/phpunit": "^9.5",
         "psr/container": "^1.0",
         "symfony/finder": "^4.4|^5.0",
