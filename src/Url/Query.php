@@ -11,7 +11,6 @@ final class Query implements \Stringable
 
     /** @var array|string */
     private $value;
-    private ?string $string;
 
     /**
      * @param array|string $value
@@ -23,11 +22,6 @@ final class Query implements \Stringable
         }
 
         $this->value = $value;
-    }
-
-    public function toString(): string
-    {
-        return $this->string ??= \http_build_query($this->all(), '', '&', \PHP_QUERY_RFC3986);
     }
 
     public function all(): array
@@ -116,5 +110,10 @@ final class Query implements \Stringable
         $array[$param] = $value;
 
         return new self($array);
+    }
+
+    protected function generateString(): string
+    {
+        return \http_build_query($this->all(), '', '&', \PHP_QUERY_RFC3986);
     }
 }

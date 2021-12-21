@@ -22,18 +22,6 @@ final class Authority implements \Stringable
         $this->password = null !== $password ? \rawurldecode($password) : null;
     }
 
-    public function toString(): string
-    {
-        $ret = $this->userInfo();
-        $ret = $ret ? "{$ret}@{$this->host}" : (string) $this->host;
-
-        if (null !== $this->port) {
-            $ret .= ":{$this->port}";
-        }
-
-        return $ret;
-    }
-
     public function host(): Host
     {
         return $this->host;
@@ -104,7 +92,7 @@ final class Authority implements \Stringable
 
     public function withPort(?int $port): self
     {
-        if (null !== $port && ($port < 0 || 0xffff < $port)) {
+        if (null !== $port && ($port < 0 || 0xFFFF < $port)) {
             throw new \InvalidArgumentException("Invalid port: {$port}. Must be between 0 and 65535.");
         }
 
@@ -112,5 +100,17 @@ final class Authority implements \Stringable
         $authority->port = $port;
 
         return $authority;
+    }
+
+    protected function generateString(): string
+    {
+        $ret = $this->userInfo();
+        $ret = $ret ? "{$ret}@{$this->host}" : (string) $this->host;
+
+        if (null !== $this->port) {
+            $ret .= ":{$this->port}";
+        }
+
+        return $ret;
     }
 }

@@ -47,38 +47,6 @@ final class Url implements \Stringable
         return $value instanceof self ? $value : new self($value);
     }
 
-    public function toString(): string
-    {
-        $ret = '';
-
-        if (!$this->scheme->isEmpty()) {
-            $ret .= "{$this->scheme}:";
-        }
-
-        if (!$this->authority->isEmpty() || $this->scheme->equals('file')) {
-            // The file scheme is special in that it requires the "//" prefix.
-            // PHP stream functions do not work with "file:/myfile.txt".
-            $ret .= "//{$this->authority}";
-        }
-
-        if (!$this->path->isEmpty() && !$this->path->isAbsolute() && !$this->host()->isEmpty()) {
-            // if host is set and path is non-absolute, make path absolute
-            $ret .= '/';
-        }
-
-        $ret .= $this->path->encoded();
-
-        if (!$this->query->isEmpty()) {
-            $ret .= "?{$this->query}";
-        }
-
-        if ('' !== $this->fragment) {
-            $ret .= '#'.\rawurlencode($this->fragment);
-        }
-
-        return $ret;
-    }
-
     public function scheme(): Scheme
     {
         return $this->scheme;
@@ -268,5 +236,37 @@ final class Url implements \Stringable
     public function withoutFragment(): self
     {
         return $this->withFragment(null);
+    }
+
+    protected function generateString(): string
+    {
+        $ret = '';
+
+        if (!$this->scheme->isEmpty()) {
+            $ret .= "{$this->scheme}:";
+        }
+
+        if (!$this->authority->isEmpty() || $this->scheme->equals('file')) {
+            // The file scheme is special in that it requires the "//" prefix.
+            // PHP stream functions do not work with "file:/myfile.txt".
+            $ret .= "//{$this->authority}";
+        }
+
+        if (!$this->path->isEmpty() && !$this->path->isAbsolute() && !$this->host()->isEmpty()) {
+            // if host is set and path is non-absolute, make path absolute
+            $ret .= '/';
+        }
+
+        $ret .= $this->path->encoded();
+
+        if (!$this->query->isEmpty()) {
+            $ret .= "?{$this->query}";
+        }
+
+        if ('' !== $this->fragment) {
+            $ret .= '#'.\rawurlencode($this->fragment);
+        }
+
+        return $ret;
     }
 }

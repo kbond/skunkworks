@@ -16,7 +16,7 @@ abstract class Part implements \Stringable
         $this->value = $value;
     }
 
-    final public function toString(): string
+    final protected function generateString(): string
     {
         return $this->value;
     }
