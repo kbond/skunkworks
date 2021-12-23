@@ -44,7 +44,7 @@ final class Url implements \Stringable
     }
 
     /**
-     * @param string|Request|null $value
+     * @param string|self|Request|null $value
      */
     public static function new($value = null): self
     {
