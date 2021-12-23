@@ -18,19 +18,38 @@ final class UrlTest extends TestCase
      */
     public function parses_provided_url(): void
     {
-        $url = new Url('https://user:pass@example.com:8080/path/123?q=abc#test');
+        $url = 'https://user:pass@example.com:8080/path/123?q=abc#test';
 
-        $this->assertSame('https', (string) $url->scheme());
-        $this->assertSame('user:pass@example.com:8080', (string) $url->authority());
-        $this->assertSame('user:pass', $url->authority()->userInfo());
-        $this->assertSame('user', $url->user());
-        $this->assertSame('pass', $url->pass());
-        $this->assertSame('example.com', (string) $url->host());
-        $this->assertSame(8080, $url->port());
-        $this->assertSame('/path/123', (string) $url->path());
-        $this->assertSame('q=abc', (string) $url->query());
-        $this->assertSame('test', $url->fragment());
-        $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string) $url);
+        $urls = [
+            Url::create($url),
+            Url::create(new class($url) {
+                private $url;
+
+                public function __construct($url)
+                {
+                    $this->url = $url;
+                }
+
+                public function __toString(): string
+                {
+                    return $this->url;
+                }
+            }),
+        ];
+
+        foreach ($urls as $url) {
+            $this->assertSame('https', (string) $url->scheme());
+            $this->assertSame('user:pass@example.com:8080', (string) $url->authority());
+            $this->assertSame('user:pass', $url->authority()->userInfo());
+            $this->assertSame('user', $url->user());
+            $this->assertSame('pass', $url->pass());
+            $this->assertSame('example.com', (string) $url->host());
+            $this->assertSame(8080, $url->port());
+            $this->assertSame('/path/123', (string) $url->path());
+            $this->assertSame('q=abc', (string) $url->query());
+            $this->assertSame('test', $url->fragment());
+            $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string) $url);
+        }
     }
 
     /**

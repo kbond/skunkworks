@@ -43,6 +43,9 @@ final class Url implements \Stringable
         );
     }
 
+    /**
+     * @param string|Request|null $value
+     */
     public static function create($value = null): self
     {
         if ($value instanceof Request) {
