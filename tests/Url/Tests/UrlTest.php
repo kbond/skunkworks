@@ -97,7 +97,7 @@ final class UrlTest extends TestCase
      */
     public function can_transform_and_retrieve_parts_individually(): void
     {
-        $url = (new Url())
+        $url = Url::create()
             ->withScheme('https')
             ->withHost('example.com')
             ->withUser('user')
@@ -124,7 +124,7 @@ final class UrlTest extends TestCase
      */
     public function can_remove_all_parts(): void
     {
-        $url = (new Url('https://user:pass@example.com:8080/path/123?q=abc#test'))
+        $url = Url::create('https://user:pass@example.com:8080/path/123?q=abc#test')
             ->withoutHost()
             ->withoutPass()
             ->withoutUser()
@@ -143,7 +143,7 @@ final class UrlTest extends TestCase
      */
     public function can_transform_query_with_array(): void
     {
-        $url = (new Url('http://example.com?foo=bar'))
+        $url = Url::create('http://example.com?foo=bar')
             ->withQuery(['q' => 'abc'])
         ;
 
@@ -157,7 +157,7 @@ final class UrlTest extends TestCase
      */
     public function valid_urls_stay_valid(string $input): void
     {
-        $this->assertSame($input, (string) new Url($input));
+        $this->assertSame($input, (string) Url::create($input));
     }
 
     public static function getValidUrls(): iterable
@@ -205,12 +205,12 @@ final class UrlTest extends TestCase
      */
     public function can_parse_filesystem_path_url(): void
     {
-        $url = new Url('file:///var/run/foo.txt');
+        $url = Url::create('file:///var/run/foo.txt');
 
         $this->assertSame('/var/run/foo.txt', (string) $url->path());
         $this->assertSame('file', (string) $url->scheme());
 
-        $url = new Url('file:/var/run/foo.txt');
+        $url = Url::create('file:/var/run/foo.txt');
 
         $this->assertSame('/var/run/foo.txt', (string) $url->path());
         $this->assertSame('file', (string) $url->scheme());
@@ -225,7 +225,7 @@ final class UrlTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Unable to parse \"{$input}\".");
 
-        new Url($input);
+        Url::create($input);
     }
 
     public function getInvalidUrls(): iterable
@@ -247,7 +247,7 @@ final class UrlTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid port: 100000. Must be between 0 and 65535.');
 
-        (new Url('//example.com'))->withPort(100000);
+        Url::create('//example.com')->withPort(100000);
     }
 
     /**
@@ -258,7 +258,7 @@ final class UrlTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid port: -1. Must be between 0 and 65535.');
 
-        (new Url('//example.com'))->withPort(-1);
+        Url::create('//example.com')->withPort(-1);
     }
 
     /**
@@ -266,7 +266,7 @@ final class UrlTest extends TestCase
      */
     public function can_parse_falsey_url_parts(): void
     {
-        $url = new Url('0://0:0@0/0?0#0');
+        $url = Url::create('0://0:0@0/0?0#0');
 
         $this->assertSame('0', (string) $url->scheme());
         $this->assertSame('0:0@0', (string) $url->authority());
@@ -283,7 +283,7 @@ final class UrlTest extends TestCase
      */
     public function can_construct_falsey_url_parts(): void
     {
-        $url = (new Url())
+        $url = Url::create()
             ->withScheme('0')
             ->withHost('0')
             ->withUser('0')
@@ -308,12 +308,12 @@ final class UrlTest extends TestCase
      */
     public function scheme_is_normalized_to_lowercase(): void
     {
-        $url = new Url('HTTP://example.com');
+        $url = Url::create('HTTP://example.com');
 
         $this->assertSame('http', (string) $url->scheme());
         $this->assertSame('http://example.com', (string) $url);
 
-        $url = (new Url('//example.com'))->withScheme('HTTP');
+        $url = Url::create('//example.com')->withScheme('HTTP');
 
         $this->assertSame('http', (string) $url->scheme());
         $this->assertSame('http://example.com', (string) $url);
@@ -324,12 +324,12 @@ final class UrlTest extends TestCase
      */
     public function host_is_normalized_to_lowercase(): void
     {
-        $url = new Url('//eXaMpLe.CoM');
+        $url = Url::create('//eXaMpLe.CoM');
 
         $this->assertSame('example.com', (string) $url->host());
         $this->assertSame('//example.com', (string) $url);
 
-        $url = (new Url())->withHost('eXaMpLe.CoM');
+        $url = Url::create()->withHost('eXaMpLe.CoM');
 
         $this->assertSame('example.com', (string) $url->host());
         $this->assertSame('//example.com', (string) $url);
@@ -340,7 +340,7 @@ final class UrlTest extends TestCase
      */
     public function port_can_be_removed(): void
     {
-        $url = (new Url('http://example.com:8080'))->withPort(null);
+        $url = Url::create('http://example.com:8080')->withPort(null);
 
         $this->assertNull($url->port());
         $this->assertSame('http://example.com', (string) $url);
@@ -351,7 +351,7 @@ final class UrlTest extends TestCase
      */
     public function immutability(): void
     {
-        $url = new Url('http://user@example.com');
+        $url = Url::create('http://user@example.com');
 
         $this->assertNotSame($url, $url->withScheme('https'));
         $this->assertNotSame($url, $url->withUser('user'));
@@ -370,7 +370,7 @@ final class UrlTest extends TestCase
      */
     public function adding_user_and_pass_urlencodes_them(): void
     {
-        $url = (new Url())->withUser('foo@bar.com')->withPass('pass#word');
+        $url = Url::create()->withUser('foo@bar.com')->withPass('pass#word');
 
         $this->assertSame('foo%40bar.com:pass%23word', $url->authority()->userInfo());
     }
@@ -380,7 +380,7 @@ final class UrlTest extends TestCase
      */
     public function user_and_pass_are_urldecoded(): void
     {
-        $url = new Url('http://foo%40bar.com:pass%23word@example.com');
+        $url = Url::create('http://foo%40bar.com:pass%23word@example.com');
 
         $this->assertSame('foo@bar.com', $url->user());
         $this->assertSame('pass#word', $url->pass());
@@ -391,8 +391,8 @@ final class UrlTest extends TestCase
      */
     public function prefixing_fragment_with_hash_removes_it(): void
     {
-        $this->assertSame('fragment', (new Url())->withFragment('fragment')->fragment());
-        $this->assertSame('fragment', (new Url())->withFragment('#fragment')->fragment());
+        $this->assertSame('fragment', Url::create()->withFragment('fragment')->fragment());
+        $this->assertSame('fragment', Url::create()->withFragment('#fragment')->fragment());
     }
 
     /**
@@ -400,7 +400,7 @@ final class UrlTest extends TestCase
      */
     public function default_return_values_of_getters(): void
     {
-        $url = new Url();
+        $url = Url::create();
 
         $this->assertSame('', (string) $url->scheme());
         $this->assertSame('', (string) $url->authority());
@@ -417,9 +417,9 @@ final class UrlTest extends TestCase
      */
     public function absolute(): void
     {
-        $this->assertTrue((new Url('https://example.com/foo'))->isAbsolute());
-        $this->assertFalse((new Url('example.com/foo'))->isAbsolute());
-        $this->assertFalse((new Url('/foo'))->isAbsolute());
+        $this->assertTrue(Url::create('https://example.com/foo')->isAbsolute());
+        $this->assertFalse(Url::create('example.com/foo')->isAbsolute());
+        $this->assertFalse(Url::create('/foo')->isAbsolute());
     }
 
     /**
@@ -430,7 +430,7 @@ final class UrlTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot have a password without a username.');
 
-        (new Url('https://example.com/foo'))->withPass('pass');
+        Url::create('https://example.com/foo')->withPass('pass');
     }
 
     /**
@@ -438,14 +438,14 @@ final class UrlTest extends TestCase
      */
     public function path_without_host(): void
     {
-        $this->assertSame('https://example.com', (new Url('https://example.com'))->toString());
-        $this->assertSame('https://example.com/foo', (new Url('https://example.com'))->withPath('foo')->toString());
-        $this->assertSame('https://example.com/foo', (new Url('https://example.com'))->withPath('/foo')->toString());
-        $this->assertSame('https://example.com/', (new Url('https://example.com/'))->toString());
-        $this->assertSame('foo/bar', (new Url())->withPath('foo/bar')->toString());
-        $this->assertSame('/foo/bar', (new Url())->withPath('/foo/bar')->toString());
-        $this->assertSame('//example.com/foo/bar', (new Url('foo/bar'))->withHost('example.com')->toString());
-        $this->assertSame('//example.com/foo/bar', (new Url('/foo/bar'))->withHost('example.com')->toString());
+        $this->assertSame('https://example.com', Url::create('https://example.com')->toString());
+        $this->assertSame('https://example.com/foo', Url::create('https://example.com')->withPath('foo')->toString());
+        $this->assertSame('https://example.com/foo', Url::create('https://example.com')->withPath('/foo')->toString());
+        $this->assertSame('https://example.com/', Url::create('https://example.com/')->toString());
+        $this->assertSame('foo/bar', Url::create()->withPath('foo/bar')->toString());
+        $this->assertSame('/foo/bar', Url::create()->withPath('/foo/bar')->toString());
+        $this->assertSame('//example.com/foo/bar', Url::create('foo/bar')->withHost('example.com')->toString());
+        $this->assertSame('//example.com/foo/bar', Url::create('/foo/bar')->withHost('example.com')->toString());
     }
 
     /**
@@ -453,10 +453,10 @@ final class UrlTest extends TestCase
      */
     public function can_get_extension(): void
     {
-        $this->assertNull((new Url('https://example.com/foo'))->path()->extension());
-        $this->assertSame('txt', (new Url('https://example.com/foo.txt'))->path()->extension());
-        $this->assertSame('txt', (new Url('/foo.txt'))->path()->extension());
-        $this->assertSame('txt', (new Url('file:///foo.txt'))->path()->extension());
+        $this->assertNull(Url::create('https://example.com/foo')->path()->extension());
+        $this->assertSame('txt', Url::create('https://example.com/foo.txt')->path()->extension());
+        $this->assertSame('txt', Url::create('/foo.txt')->path()->extension());
+        $this->assertSame('txt', Url::create('file:///foo.txt')->path()->extension());
     }
 
     /**
@@ -464,14 +464,14 @@ final class UrlTest extends TestCase
      */
     public function can_get_dirname(): void
     {
-        $this->assertSame('/', (new Url('https://example.com/'))->path()->dirname());
-        $this->assertSame('/', (new Url('https://example.com'))->path()->dirname());
-        $this->assertSame('/', (new Url('https://example.com/foo.txt'))->path()->dirname());
-        $this->assertSame('/', (new Url('/foo.txt'))->path()->dirname());
-        $this->assertSame('/', (new Url('file:///foo.txt'))->path()->dirname());
-        $this->assertSame('/foo/bar', (new Url('https://example.com/foo/bar/baz.txt'))->path()->dirname());
-        $this->assertSame('/foo/bar', (new Url('https://example.com/foo/bar/baz'))->path()->dirname());
-        $this->assertSame('/foo/bar', (new Url('https://example.com/foo/bar/baz/'))->path()->dirname());
+        $this->assertSame('/', Url::create('https://example.com/')->path()->dirname());
+        $this->assertSame('/', Url::create('https://example.com')->path()->dirname());
+        $this->assertSame('/', Url::create('https://example.com/foo.txt')->path()->dirname());
+        $this->assertSame('/', Url::create('/foo.txt')->path()->dirname());
+        $this->assertSame('/', Url::create('file:///foo.txt')->path()->dirname());
+        $this->assertSame('/foo/bar', Url::create('https://example.com/foo/bar/baz.txt')->path()->dirname());
+        $this->assertSame('/foo/bar', Url::create('https://example.com/foo/bar/baz')->path()->dirname());
+        $this->assertSame('/foo/bar', Url::create('https://example.com/foo/bar/baz/')->path()->dirname());
     }
 
     /**
@@ -479,14 +479,14 @@ final class UrlTest extends TestCase
      */
     public function can_get_filename(): void
     {
-        $this->assertNull((new Url('https://example.com/'))->path()->filename());
-        $this->assertNull((new Url('https://example.com'))->path()->filename());
-        $this->assertSame('foo', (new Url('https://example.com/foo.txt'))->path()->filename());
-        $this->assertSame('foo', (new Url('/foo.txt'))->path()->filename());
-        $this->assertSame('foo', (new Url('file:///foo.txt'))->path()->filename());
-        $this->assertSame('baz', (new Url('https://example.com/foo/bar/baz.txt'))->path()->filename());
-        $this->assertSame('baz', (new Url('https://example.com/foo/bar/baz'))->path()->filename());
-        $this->assertSame('baz', (new Url('https://example.com/foo/bar/baz/'))->path()->filename());
+        $this->assertNull(Url::create('https://example.com/')->path()->filename());
+        $this->assertNull(Url::create('https://example.com')->path()->filename());
+        $this->assertSame('foo', Url::create('https://example.com/foo.txt')->path()->filename());
+        $this->assertSame('foo', Url::create('/foo.txt')->path()->filename());
+        $this->assertSame('foo', Url::create('file:///foo.txt')->path()->filename());
+        $this->assertSame('baz', Url::create('https://example.com/foo/bar/baz.txt')->path()->filename());
+        $this->assertSame('baz', Url::create('https://example.com/foo/bar/baz')->path()->filename());
+        $this->assertSame('baz', Url::create('https://example.com/foo/bar/baz/')->path()->filename());
     }
 
     /**
@@ -494,14 +494,14 @@ final class UrlTest extends TestCase
      */
     public function can_get_basename(): void
     {
-        $this->assertNull((new Url('https://example.com/'))->path()->basename());
-        $this->assertNull((new Url('https://example.com'))->path()->basename());
-        $this->assertSame('foo.txt', (new Url('https://example.com/foo.txt'))->path()->basename());
-        $this->assertSame('foo.txt', (new Url('/foo.txt'))->path()->basename());
-        $this->assertSame('foo.txt', (new Url('file:///foo.txt'))->path()->basename());
-        $this->assertSame('baz.txt', (new Url('https://example.com/foo/bar/baz.txt'))->path()->basename());
-        $this->assertSame('baz', (new Url('https://example.com/foo/bar/baz'))->path()->basename());
-        $this->assertSame('baz', (new Url('https://example.com/foo/bar/baz/'))->path()->basename());
+        $this->assertNull(Url::create('https://example.com/')->path()->basename());
+        $this->assertNull(Url::create('https://example.com')->path()->basename());
+        $this->assertSame('foo.txt', Url::create('https://example.com/foo.txt')->path()->basename());
+        $this->assertSame('foo.txt', Url::create('/foo.txt')->path()->basename());
+        $this->assertSame('foo.txt', Url::create('file:///foo.txt')->path()->basename());
+        $this->assertSame('baz.txt', Url::create('https://example.com/foo/bar/baz.txt')->path()->basename());
+        $this->assertSame('baz', Url::create('https://example.com/foo/bar/baz')->path()->basename());
+        $this->assertSame('baz', Url::create('https://example.com/foo/bar/baz/')->path()->basename());
     }
 
     /**
@@ -509,10 +509,10 @@ final class UrlTest extends TestCase
      */
     public function can_get_the_host_tld(): void
     {
-        $this->assertNull((new Url('/foo'))->host()->tld());
-        $this->assertNull((new Url('http://localhost/foo'))->host()->tld());
-        $this->assertSame('com', (new Url('https://example.com/foo'))->host()->tld());
-        $this->assertSame('com', (new Url('https://sub1.sub2.example.com/foo'))->host()->tld());
+        $this->assertNull(Url::create('/foo')->host()->tld());
+        $this->assertNull(Url::create('http://localhost/foo')->host()->tld());
+        $this->assertSame('com', Url::create('https://example.com/foo')->host()->tld());
+        $this->assertSame('com', Url::create('https://sub1.sub2.example.com/foo')->host()->tld());
     }
 
     /**
@@ -520,15 +520,15 @@ final class UrlTest extends TestCase
      */
     public function can_trim_path(): void
     {
-        $this->assertSame('', (new Url('http://localhost'))->path()->trim());
-        $this->assertSame('foo/bar', (new Url('http://localhost/foo/bar'))->path()->trim());
-        $this->assertSame('foo/bar', (new Url('http://localhost/foo/bar/'))->path()->trim());
-        $this->assertSame('', (new Url('http://localhost'))->path()->ltrim());
-        $this->assertSame('foo/bar', (new Url('http://localhost/foo/bar'))->path()->ltrim());
-        $this->assertSame('foo/bar/', (new Url('http://localhost/foo/bar/'))->path()->ltrim());
-        $this->assertSame('', (new Url('http://localhost'))->path()->rtrim());
-        $this->assertSame('/foo/bar', (new Url('http://localhost/foo/bar'))->path()->rtrim());
-        $this->assertSame('/foo/bar', (new Url('http://localhost/foo/bar/'))->path()->rtrim());
+        $this->assertSame('', Url::create('http://localhost')->path()->trim());
+        $this->assertSame('foo/bar', Url::create('http://localhost/foo/bar')->path()->trim());
+        $this->assertSame('foo/bar', Url::create('http://localhost/foo/bar/')->path()->trim());
+        $this->assertSame('', Url::create('http://localhost')->path()->ltrim());
+        $this->assertSame('foo/bar', Url::create('http://localhost/foo/bar')->path()->ltrim());
+        $this->assertSame('foo/bar/', Url::create('http://localhost/foo/bar/')->path()->ltrim());
+        $this->assertSame('', Url::create('http://localhost')->path()->rtrim());
+        $this->assertSame('/foo/bar', Url::create('http://localhost/foo/bar')->path()->rtrim());
+        $this->assertSame('/foo/bar', Url::create('http://localhost/foo/bar/')->path()->rtrim());
     }
 
     /**
@@ -583,21 +583,21 @@ final class UrlTest extends TestCase
      */
     public function can_get_path_segments(): void
     {
-        $this->assertSame([], (new Url('http://localhost'))->path()->segments());
-        $this->assertSame([], (new Url('http://localhost/'))->path()->segments());
-        $this->assertSame(['foo', 'bar'], (new Url('http://localhost/foo/bar'))->path()->segments());
-        $this->assertSame(['foo', 'bar'], (new Url('http://localhost/foo/bar/'))->path()->segments());
-        $this->assertSame(['foo', 'bar'], (new Url('/foo/bar/'))->path()->segments());
-        $this->assertSame(['foo', 'bar'], (new Url('foo/bar'))->path()->segments());
-        $this->assertSame(['foo', 'bar'], (new Url('foo/bar/'))->path()->segments());
+        $this->assertSame([], Url::create('http://localhost')->path()->segments());
+        $this->assertSame([], Url::create('http://localhost/')->path()->segments());
+        $this->assertSame(['foo', 'bar'], Url::create('http://localhost/foo/bar')->path()->segments());
+        $this->assertSame(['foo', 'bar'], Url::create('http://localhost/foo/bar/')->path()->segments());
+        $this->assertSame(['foo', 'bar'], Url::create('/foo/bar/')->path()->segments());
+        $this->assertSame(['foo', 'bar'], Url::create('foo/bar')->path()->segments());
+        $this->assertSame(['foo', 'bar'], Url::create('foo/bar/')->path()->segments());
 
-        $this->assertNull((new Url('http://localhost'))->path()->segment(1));
-        $this->assertSame('default', (new Url('http://localhost'))->path()->segment(1, 'default'));
-        $this->assertNull((new Url('http://localhost'))->path()->segment(2));
-        $this->assertNull((new Url('http://localhost/'))->path()->segment(1));
-        $this->assertSame('foo', (new Url('http://localhost/foo/bar'))->path()->segment(1));
-        $this->assertSame('bar', (new Url('http://localhost/foo/bar'))->path()->segment(2));
-        $this->assertNull((new Url('http://localhost/foo/bar'))->path()->segment(3));
+        $this->assertNull(Url::create('http://localhost')->path()->segment(1));
+        $this->assertSame('default', Url::create('http://localhost')->path()->segment(1, 'default'));
+        $this->assertNull(Url::create('http://localhost')->path()->segment(2));
+        $this->assertNull(Url::create('http://localhost/')->path()->segment(1));
+        $this->assertSame('foo', Url::create('http://localhost/foo/bar')->path()->segment(1));
+        $this->assertSame('bar', Url::create('http://localhost/foo/bar')->path()->segment(2));
+        $this->assertNull(Url::create('http://localhost/foo/bar')->path()->segment(3));
     }
 
     /**
@@ -605,28 +605,28 @@ final class UrlTest extends TestCase
      */
     public function can_append_path(): void
     {
-        $this->assertSame('http://localhost', (new Url('http://localhost'))->appendPath('')->toString());
-        $this->assertSame('http://localhost/', (new Url('http://localhost/'))->appendPath('')->toString());
-        $this->assertSame('http://localhost/', (new Url('http://localhost'))->appendPath('/')->toString());
-        $this->assertSame('http://localhost/', (new Url('http://localhost/'))->appendPath('/')->toString());
-        $this->assertSame('http://localhost/', (new Url('http://localhost'))->appendPath('/')->toString());
-        $this->assertSame('http://localhost/foo', (new Url('http://localhost'))->appendPath('foo')->toString());
-        $this->assertSame('http://localhost/foo', (new Url('http://localhost'))->appendPath('/foo')->toString());
-        $this->assertSame('http://localhost/foo/bar', (new Url('http://localhost'))->appendPath('/foo/bar')->toString());
-        $this->assertSame('http://localhost/foo/bar/baz', (new Url('http://localhost/foo'))->appendPath('/bar/baz')->toString());
-        $this->assertSame('http://localhost/foo/bar/baz', (new Url('http://localhost/foo/'))->appendPath('/bar/baz')->toString());
-        $this->assertSame('http://localhost/foo/bar/baz', (new Url('http://localhost/foo'))->appendPath('bar/baz')->toString());
-        $this->assertSame('http://localhost/foo/bar/baz', (new Url('http://localhost/foo/'))->appendPath('bar/baz')->toString());
-        $this->assertSame('http://localhost/foo/bar/baz/', (new Url('http://localhost/foo'))->appendPath('/bar/baz/')->toString());
-        $this->assertSame('http://localhost/foo/bar/baz/', (new Url('http://localhost/foo/'))->appendPath('/bar/baz/')->toString());
-        $this->assertSame('http://localhost/foo/bar/baz/', (new Url('http://localhost/foo'))->appendPath('bar/baz/')->toString());
-        $this->assertSame('http://localhost/foo/bar/baz/', (new Url('http://localhost/foo/'))->appendPath('bar/baz/')->toString());
-        $this->assertSame('foo', (new Url())->appendPath('foo')->toString());
-        $this->assertSame('/foo', (new Url())->appendPath('/foo')->toString());
-        $this->assertSame('foo/bar', (new Url('foo'))->appendPath('bar')->toString());
-        $this->assertSame('foo/bar', (new Url('foo'))->appendPath('/bar')->toString());
-        $this->assertSame('/foo/bar', (new Url('/foo'))->appendPath('bar')->toString());
-        $this->assertSame('/foo/bar', (new Url('/foo'))->appendPath('/bar')->toString());
+        $this->assertSame('http://localhost', Url::create('http://localhost')->appendPath('')->toString());
+        $this->assertSame('http://localhost/', Url::create('http://localhost/')->appendPath('')->toString());
+        $this->assertSame('http://localhost/', Url::create('http://localhost')->appendPath('/')->toString());
+        $this->assertSame('http://localhost/', Url::create('http://localhost/')->appendPath('/')->toString());
+        $this->assertSame('http://localhost/', Url::create('http://localhost')->appendPath('/')->toString());
+        $this->assertSame('http://localhost/foo', Url::create('http://localhost')->appendPath('foo')->toString());
+        $this->assertSame('http://localhost/foo', Url::create('http://localhost')->appendPath('/foo')->toString());
+        $this->assertSame('http://localhost/foo/bar', Url::create('http://localhost')->appendPath('/foo/bar')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz', Url::create('http://localhost/foo')->appendPath('/bar/baz')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz', Url::create('http://localhost/foo/')->appendPath('/bar/baz')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz', Url::create('http://localhost/foo')->appendPath('bar/baz')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz', Url::create('http://localhost/foo/')->appendPath('bar/baz')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz/', Url::create('http://localhost/foo')->appendPath('/bar/baz/')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz/', Url::create('http://localhost/foo/')->appendPath('/bar/baz/')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz/', Url::create('http://localhost/foo')->appendPath('bar/baz/')->toString());
+        $this->assertSame('http://localhost/foo/bar/baz/', Url::create('http://localhost/foo/')->appendPath('bar/baz/')->toString());
+        $this->assertSame('foo', Url::create()->appendPath('foo')->toString());
+        $this->assertSame('/foo', Url::create()->appendPath('/foo')->toString());
+        $this->assertSame('foo/bar', Url::create('foo')->appendPath('bar')->toString());
+        $this->assertSame('foo/bar', Url::create('foo')->appendPath('/bar')->toString());
+        $this->assertSame('/foo/bar', Url::create('/foo')->appendPath('bar')->toString());
+        $this->assertSame('/foo/bar', Url::create('/foo')->appendPath('/bar')->toString());
     }
 
     /**
@@ -634,27 +634,27 @@ final class UrlTest extends TestCase
      */
     public function can_prepend_path(): void
     {
-        $this->assertSame('http://localhost', (new Url('http://localhost'))->prependPath('')->toString());
-        $this->assertSame('http://localhost/', (new Url('http://localhost'))->prependPath('/')->toString());
-        $this->assertSame('http://localhost/', (new Url('http://localhost/'))->prependPath('/')->toString());
-        $this->assertSame('http://localhost/', (new Url('http://localhost'))->prependPath('/')->toString());
-        $this->assertSame('http://localhost/foo', (new Url('http://localhost'))->prependPath('foo')->toString());
-        $this->assertSame('http://localhost/foo', (new Url('http://localhost'))->prependPath('/foo')->toString());
-        $this->assertSame('http://localhost/foo/bar', (new Url('http://localhost'))->prependPath('/foo/bar')->toString());
-        $this->assertSame('http://localhost/bar/baz/foo', (new Url('http://localhost/foo'))->prependPath('/bar/baz')->toString());
-        $this->assertSame('http://localhost/bar/baz/foo/', (new Url('http://localhost/foo/'))->prependPath('/bar/baz')->toString());
-        $this->assertSame('http://localhost/bar/baz/foo', (new Url('http://localhost/foo'))->prependPath('bar/baz')->toString());
-        $this->assertSame('http://localhost/bar/baz/foo/', (new Url('http://localhost/foo/'))->prependPath('bar/baz')->toString());
-        $this->assertSame('http://localhost/bar/baz/foo', (new Url('http://localhost/foo'))->prependPath('/bar/baz/')->toString());
-        $this->assertSame('http://localhost/bar/baz/foo/', (new Url('http://localhost/foo/'))->prependPath('/bar/baz/')->toString());
-        $this->assertSame('http://localhost/bar/baz/foo', (new Url('http://localhost/foo'))->prependPath('bar/baz/')->toString());
-        $this->assertSame('http://localhost/bar/baz/foo/', (new Url('http://localhost/foo/'))->prependPath('bar/baz/')->toString());
-        $this->assertSame('foo', (new Url())->prependPath('foo')->toString());
-        $this->assertSame('/foo', (new Url())->prependPath('/foo')->toString());
-        $this->assertSame('bar/foo', (new Url('foo'))->prependPath('bar')->toString());
-        $this->assertSame('/bar/foo', (new Url('foo'))->prependPath('/bar')->toString());
-        $this->assertSame('/bar/foo', (new Url('/foo'))->prependPath('/bar')->toString());
-        $this->assertSame('/bar/foo', (new Url('/foo'))->prependPath('bar')->toString()); // absolute path must remain absolute
+        $this->assertSame('http://localhost', Url::create('http://localhost')->prependPath('')->toString());
+        $this->assertSame('http://localhost/', Url::create('http://localhost')->prependPath('/')->toString());
+        $this->assertSame('http://localhost/', Url::create('http://localhost/')->prependPath('/')->toString());
+        $this->assertSame('http://localhost/', Url::create('http://localhost')->prependPath('/')->toString());
+        $this->assertSame('http://localhost/foo', Url::create('http://localhost')->prependPath('foo')->toString());
+        $this->assertSame('http://localhost/foo', Url::create('http://localhost')->prependPath('/foo')->toString());
+        $this->assertSame('http://localhost/foo/bar', Url::create('http://localhost')->prependPath('/foo/bar')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo', Url::create('http://localhost/foo')->prependPath('/bar/baz')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo/', Url::create('http://localhost/foo/')->prependPath('/bar/baz')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo', Url::create('http://localhost/foo')->prependPath('bar/baz')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo/', Url::create('http://localhost/foo/')->prependPath('bar/baz')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo', Url::create('http://localhost/foo')->prependPath('/bar/baz/')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo/', Url::create('http://localhost/foo/')->prependPath('/bar/baz/')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo', Url::create('http://localhost/foo')->prependPath('bar/baz/')->toString());
+        $this->assertSame('http://localhost/bar/baz/foo/', Url::create('http://localhost/foo/')->prependPath('bar/baz/')->toString());
+        $this->assertSame('foo', Url::create()->prependPath('foo')->toString());
+        $this->assertSame('/foo', Url::create()->prependPath('/foo')->toString());
+        $this->assertSame('bar/foo', Url::create('foo')->prependPath('bar')->toString());
+        $this->assertSame('/bar/foo', Url::create('foo')->prependPath('/bar')->toString());
+        $this->assertSame('/bar/foo', Url::create('/foo')->prependPath('/bar')->toString());
+        $this->assertSame('/bar/foo', Url::create('/foo')->prependPath('bar')->toString()); // absolute path must remain absolute
     }
 
     /**
@@ -662,18 +662,18 @@ final class UrlTest extends TestCase
      */
     public function can_get_scheme_segments(): void
     {
-        $this->assertSame([], (new Url('/foo'))->scheme()->segments());
-        $this->assertSame(['http'], (new Url('http://localhost/foo/bar/'))->scheme()->segments());
-        $this->assertSame(['foo', 'bar'], (new Url('foo+bar://localhost/foo/bar'))->scheme()->segments());
+        $this->assertSame([], Url::create('/foo')->scheme()->segments());
+        $this->assertSame(['http'], Url::create('http://localhost/foo/bar/')->scheme()->segments());
+        $this->assertSame(['foo', 'bar'], Url::create('foo+bar://localhost/foo/bar')->scheme()->segments());
 
-        $this->assertNull((new Url('/foo'))->scheme()->segment(1));
-        $this->assertSame('default', (new Url('/foo'))->scheme()->segment(1, 'default'));
-        $this->assertNull((new Url('/foo'))->scheme()->segment(1));
-        $this->assertNull((new Url('/foo'))->scheme()->segment(2));
-        $this->assertSame('foo', (new Url('foo://localhost'))->scheme()->segment(1));
-        $this->assertSame('foo', (new Url('foo+bar://localhost'))->scheme()->segment(1));
-        $this->assertSame('bar', (new Url('foo+bar://localhost'))->scheme()->segment(2));
-        $this->assertNull((new Url('foo+bar://localhost'))->scheme()->segment(3));
+        $this->assertNull(Url::create('/foo')->scheme()->segment(1));
+        $this->assertSame('default', Url::create('/foo')->scheme()->segment(1, 'default'));
+        $this->assertNull(Url::create('/foo')->scheme()->segment(1));
+        $this->assertNull(Url::create('/foo')->scheme()->segment(2));
+        $this->assertSame('foo', Url::create('foo://localhost')->scheme()->segment(1));
+        $this->assertSame('foo', Url::create('foo+bar://localhost')->scheme()->segment(1));
+        $this->assertSame('bar', Url::create('foo+bar://localhost')->scheme()->segment(2));
+        $this->assertNull(Url::create('foo+bar://localhost')->scheme()->segment(3));
     }
 
     /**
@@ -681,10 +681,10 @@ final class UrlTest extends TestCase
      */
     public function scheme_equals(): void
     {
-        $this->assertFalse((new Url('/foo'))->scheme()->equals('http'));
-        $this->assertTrue((new Url('/foo'))->scheme()->equals(''));
-        $this->assertTrue((new Url('http://localhost/foo'))->scheme()->equals('http'));
-        $this->assertFalse((new Url('http://localhost/foo'))->scheme()->equals('https'));
+        $this->assertFalse(Url::create('/foo')->scheme()->equals('http'));
+        $this->assertTrue(Url::create('/foo')->scheme()->equals(''));
+        $this->assertTrue(Url::create('http://localhost/foo')->scheme()->equals('http'));
+        $this->assertFalse(Url::create('http://localhost/foo')->scheme()->equals('https'));
     }
 
     /**
@@ -692,10 +692,10 @@ final class UrlTest extends TestCase
      */
     public function scheme_in(): void
     {
-        $this->assertFalse((new Url('/foo'))->scheme()->in(['http', 'https']));
-        $this->assertTrue((new Url('/foo'))->scheme()->in(['http', 'https', '']));
-        $this->assertTrue((new Url('http://localhost/foo'))->scheme()->in(['http', 'https']));
-        $this->assertFalse((new Url('ftp://localhost/foo'))->scheme()->in(['http', 'https']));
+        $this->assertFalse(Url::create('/foo')->scheme()->in(['http', 'https']));
+        $this->assertTrue(Url::create('/foo')->scheme()->in(['http', 'https', '']));
+        $this->assertTrue(Url::create('http://localhost/foo')->scheme()->in(['http', 'https']));
+        $this->assertFalse(Url::create('ftp://localhost/foo')->scheme()->in(['http', 'https']));
     }
 
     /**
@@ -703,10 +703,10 @@ final class UrlTest extends TestCase
      */
     public function scheme_contains(): void
     {
-        $this->assertFalse((new Url('/foo'))->scheme()->contains('ftp'));
-        $this->assertTrue((new Url('foo+bar://localhost/foo'))->scheme()->contains('foo'));
-        $this->assertTrue((new Url('foo+bar://localhost/foo'))->scheme()->contains('bar'));
-        $this->assertFalse((new Url('foo+bar://localhost/foo'))->scheme()->contains('ftp'));
+        $this->assertFalse(Url::create('/foo')->scheme()->contains('ftp'));
+        $this->assertTrue(Url::create('foo+bar://localhost/foo')->scheme()->contains('foo'));
+        $this->assertTrue(Url::create('foo+bar://localhost/foo')->scheme()->contains('bar'));
+        $this->assertFalse(Url::create('foo+bar://localhost/foo')->scheme()->contains('ftp'));
     }
 
     /**
@@ -714,18 +714,18 @@ final class UrlTest extends TestCase
      */
     public function can_get_host_segments(): void
     {
-        $this->assertSame([], (new Url('/foo'))->host()->segments());
-        $this->assertSame(['localhost'], (new Url('http://localhost/foo/bar/'))->host()->segments());
-        $this->assertSame(['local', 'host'], (new Url('http://local.host/foo/bar'))->host()->segments());
+        $this->assertSame([], Url::create('/foo')->host()->segments());
+        $this->assertSame(['localhost'], Url::create('http://localhost/foo/bar/')->host()->segments());
+        $this->assertSame(['local', 'host'], Url::create('http://local.host/foo/bar')->host()->segments());
 
-        $this->assertNull((new Url('/foo'))->host()->segment(1));
-        $this->assertSame('default', (new Url('/foo'))->host()->segment(1, 'default'));
-        $this->assertNull((new Url('/foo'))->host()->segment(1));
-        $this->assertNull((new Url('/foo'))->host()->segment(2));
-        $this->assertSame('localhost', (new Url('http://localhost'))->host()->segment(1));
-        $this->assertSame('local', (new Url('http://local.host'))->host()->segment(1));
-        $this->assertSame('host', (new Url('http://local.host'))->host()->segment(2));
-        $this->assertNull((new Url('http://local.host'))->host()->segment(3));
+        $this->assertNull(Url::create('/foo')->host()->segment(1));
+        $this->assertSame('default', Url::create('/foo')->host()->segment(1, 'default'));
+        $this->assertNull(Url::create('/foo')->host()->segment(1));
+        $this->assertNull(Url::create('/foo')->host()->segment(2));
+        $this->assertSame('localhost', Url::create('http://localhost')->host()->segment(1));
+        $this->assertSame('local', Url::create('http://local.host')->host()->segment(1));
+        $this->assertSame('host', Url::create('http://local.host')->host()->segment(2));
+        $this->assertNull(Url::create('http://local.host')->host()->segment(3));
     }
 
     /**
@@ -733,14 +733,14 @@ final class UrlTest extends TestCase
      */
     public function can_read_query_array(): void
     {
-        $url = new Url('/');
+        $url = Url::create('/');
 
         $this->assertSame([], $url->query()->all());
         $this->assertNull($url->query()->get('foo'));
         $this->assertSame('default', $url->query()->get('foo', 'default'));
         $this->assertFalse($url->query()->has('foo'));
 
-        $url = new Url('/?a=b&c=d');
+        $url = Url::create('/?a=b&c=d');
 
         $this->assertSame(['a' => 'b', 'c' => 'd'], $url->query()->all());
         $this->assertSame('d', $url->query()->get('c'));
@@ -752,7 +752,7 @@ final class UrlTest extends TestCase
      */
     public function can_manipulate_query_params(): void
     {
-        $url = new Url('/?a=b&c=d&e=f');
+        $url = Url::create('/?a=b&c=d&e=f');
 
         $this->assertSame('/?c=d&e=f', (string) $url->withoutQueryParams('a'));
         $this->assertSame('/?c=d', (string) $url->withoutQueryParams('a', 'e'));
@@ -834,7 +834,7 @@ final class UrlTest extends TestCase
      */
     public function url_components_are_properly_encoded($input, $expectedPath, $expectedQ, $expectedUser, $expectedPass, $expectedFragment, $expectedString): void
     {
-        $url = new Url($input);
+        $url = Url::create($input);
 
         $this->assertSame($expectedPath, $url->path()->toString());
         $this->assertSame($expectedPath, (string) $url->path());

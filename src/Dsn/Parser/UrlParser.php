@@ -14,7 +14,7 @@ final class UrlParser implements Parser
     public function parse(string $value): Url
     {
         try {
-            return new Url($value);
+            return Url::create($value);
         } catch (\InvalidArgumentException $e) {
             throw new UnableToParse($value, $e);
         }

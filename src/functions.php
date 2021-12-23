@@ -7,7 +7,7 @@ namespace Zenstruck;
  */
 function url($value = null): Url
 {
-    return $value instanceof Url ? $value : new Url($value);
+    return Url::create($value);
 }
 
 /**

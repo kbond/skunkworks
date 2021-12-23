@@ -25,7 +25,7 @@ final class Url implements \Stringable
     private Query $query;
     private string $fragment;
 
-    public function __construct(?string $value = null)
+    private function __construct(?string $value = null)
     {
         if (false === $components = \parse_url($value)) {
             throw new \InvalidArgumentException("Unable to parse \"{$value}\".");
