@@ -160,6 +160,9 @@ final class ArrayAccessor implements \ArrayAccess
         return $this->has($offset);
     }
 
+    /**
+     * @return mixed
+     */
     public function offsetGet($offset)
     {
         return $this->get($offset);
