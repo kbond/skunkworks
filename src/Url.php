@@ -46,10 +46,10 @@ final class Url implements \Stringable
     /**
      * @param string|Request|null $value
      */
-    public static function create($value = null): self
+    public static function new($value = null): self
     {
         if ($value instanceof Request) {
-            return self::create($value->getUri())
+            return self::new($value->getUri())
                 ->withUser($value->getUser())
                 ->withPass($value->getPassword())
             ;

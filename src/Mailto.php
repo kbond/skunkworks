@@ -11,7 +11,7 @@ final class Mailto implements \Stringable
 
     public function __construct(?string $value = null)
     {
-        $url = Url::create($value);
+        $url = Url::new($value);
 
         $this->url = $url
             ->withScheme('mailto')

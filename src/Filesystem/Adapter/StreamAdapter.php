@@ -36,7 +36,7 @@ final class StreamAdapter implements Adapter, AccessRealFile, AccessRealDirector
      */
     public function __construct($root)
     {
-        $this->root = Url::create($root);
+        $this->root = Url::new($root);
     }
 
     public function realFile(string $path): \SplFileInfo

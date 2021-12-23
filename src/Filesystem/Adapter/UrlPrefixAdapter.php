@@ -25,7 +25,7 @@ final class UrlPrefixAdapter extends AdapterWrapper
             throw new \InvalidArgumentException('At least one prefix is required.');
         }
 
-        $this->prefixes = \array_values(\array_map(static fn($prefix) => Url::create($prefix), $prefixes));
+        $this->prefixes = \array_values(\array_map(static fn($prefix) => Url::new($prefix), $prefixes));
     }
 
     public function url(string $path): Url
