@@ -3,6 +3,7 @@
 namespace Zenstruck\Url\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Url;
 
 /**
@@ -30,6 +31,46 @@ final class UrlTest extends TestCase
         $this->assertSame('q=abc', (string) $url->query());
         $this->assertSame('test', $url->fragment());
         $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc#test', (string) $url);
+    }
+
+    /**
+     * @test
+     */
+    public function can_parse_symfony_request(): void
+    {
+        $url = Url::create(Request::create('https://user:pass@example.com:8080/path/123?q=abc#test'));
+
+        $this->assertSame('https', (string) $url->scheme());
+        $this->assertSame('user:pass@example.com:8080', (string) $url->authority());
+        $this->assertSame('user:pass', $url->authority()->userInfo());
+        $this->assertSame('user', $url->user());
+        $this->assertSame('pass', $url->pass());
+        $this->assertSame('example.com', (string) $url->host());
+        $this->assertSame(8080, $url->port());
+        $this->assertSame('/path/123', (string) $url->path());
+        $this->assertSame('q=abc', (string) $url->query());
+        $this->assertSame('', $url->fragment()); // Symfony Requests do not contain a fragment
+        $this->assertSame('https://user:pass@example.com:8080/path/123?q=abc', (string) $url);
+    }
+
+    /**
+     * @test
+     */
+    public function can_parse_symfony_request_without_user_info(): void
+    {
+        $url = Url::create(Request::create('https://example.com:8080/path/123?q=abc#test'));
+
+        $this->assertSame('https', (string) $url->scheme());
+        $this->assertSame('example.com:8080', (string) $url->authority());
+        $this->assertNull($url->authority()->userInfo());
+        $this->assertNull($url->user());
+        $this->assertNull($url->pass());
+        $this->assertSame('example.com', (string) $url->host());
+        $this->assertSame(8080, $url->port());
+        $this->assertSame('/path/123', (string) $url->path());
+        $this->assertSame('q=abc', (string) $url->query());
+        $this->assertSame('', $url->fragment()); // Symfony Requests do not contain a fragment
+        $this->assertSame('https://example.com:8080/path/123?q=abc', (string) $url);
     }
 
     /**

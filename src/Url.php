@@ -2,6 +2,7 @@
 
 namespace Zenstruck;
 
+use Symfony\Component\HttpFoundation\Request;
 use Zenstruck\Url\Authority;
 use Zenstruck\Url\Host;
 use Zenstruck\Url\Path;
@@ -44,6 +45,13 @@ final class Url implements \Stringable
 
     public static function create($value = null): self
     {
+        if ($value instanceof Request) {
+            return self::create($value->getUri())
+                ->withUser($value->getUser())
+                ->withPass($value->getPassword())
+            ;
+        }
+
         return $value instanceof self ? $value : new self($value);
     }
 
