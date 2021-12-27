@@ -2,14 +2,18 @@
 
 namespace Zenstruck;
 
+use Zenstruck\Url\Stringable;
+
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 final class Mailto implements \Stringable
 {
+    use Stringable;
+
     private Url $url;
 
-    public function __construct(?string $value = null)
+    private function __construct(?string $value = null)
     {
         $url = Url::new($value);
 
@@ -24,24 +28,27 @@ final class Mailto implements \Stringable
         ;
     }
 
-    public function __toString(): string
+    /**
+     * @param string|self|null $value
+     */
+    public static function new($value = null): self
     {
-        return (string) $this->url;
+        return $value instanceof self ? $value : new self(Url::new($value));
     }
 
     public function to(): array
     {
-        return \array_filter(\array_map('trim', $this->url->path()->segments(',')));
+        return \array_values(\array_filter(\array_map('trim', $this->url->path()->segments(','))));
     }
 
     public function cc(): array
     {
-        return \array_filter(\array_map('trim', \explode(',', $this->url->query()->get('cc'))));
+        return \array_values(\array_filter(\array_map('trim', \explode(',', $this->url->query()->get('cc')))));
     }
 
     public function bcc(): array
     {
-        return \array_filter(\array_map('trim', \explode(',', $this->url->query()->get('bcc'))));
+        return \array_values(\array_filter(\array_map('trim', \explode(',', $this->url->query()->get('bcc')))));
     }
 
     public function subject(): ?string
@@ -155,6 +162,11 @@ final class Mailto implements \Stringable
     public function withoutBcc(): self
     {
         return $this->withBcc();
+    }
+
+    protected function generateString(): string
+    {
+        return $this->url;
     }
 
     private static function createEmail(string $email, ?string $name = null): string

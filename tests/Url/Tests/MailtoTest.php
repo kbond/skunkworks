@@ -16,7 +16,7 @@ final class MailtoTest extends TestCase
      */
     public function convert_to_string($input, $expected): void
     {
-        $this->assertSame($expected, (string) new Mailto($input));
+        $this->assertSame($expected, Mailto::new($input)->toString());
     }
 
     public static function convertToStringProvider(): iterable
@@ -42,7 +42,7 @@ final class MailtoTest extends TestCase
      */
     public function can_access_parts(): void
     {
-        $mailto = new Mailto();
+        $mailto = Mailto::new();
 
         $this->assertEmpty($mailto->to());
         $this->assertEmpty($mailto->cc());
@@ -50,7 +50,7 @@ final class MailtoTest extends TestCase
         $this->assertNull($mailto->subject());
         $this->assertNull($mailto->body());
 
-        $mailto = new Mailto('user1@example.com,user2@example.com?subject=foo&body=bar&cc=user3@example.com,  user4@example.com&bcc=user5@example.com');
+        $mailto = Mailto::new('user1@example.com,user2@example.com?subject=foo&body=bar&cc=user3@example.com,  user4@example.com&bcc=user5@example.com');
 
         $this->assertSame(['user1@example.com', 'user2@example.com'], $mailto->to());
         $this->assertSame(['user3@example.com', 'user4@example.com'], $mailto->cc());
@@ -64,7 +64,7 @@ final class MailtoTest extends TestCase
      */
     public function can_manipulate(): void
     {
-        $mailto = new Mailto();
+        $mailto = Mailto::new();
 
         $this->assertSame('mailto:', (string) $mailto);
 
@@ -102,7 +102,7 @@ final class MailtoTest extends TestCase
      */
     public function immutable(): void
     {
-        $mailto = new Mailto();
+        $mailto = Mailto::new();
 
         $this->assertNotSame($mailto, $mailto->withSubject('value'));
         $this->assertNotSame($mailto, $mailto->withBody('value'));
@@ -122,7 +122,7 @@ final class MailtoTest extends TestCase
      */
     public function can_add_emails_with_names(): void
     {
-        $mailto = (new Mailto())
+        $mailto = Mailto::new()
             ->withSubject('my subject')
             ->withBody("my body\n\nsecond line")
             ->addTo('kevin@example.com', 'Kevin')

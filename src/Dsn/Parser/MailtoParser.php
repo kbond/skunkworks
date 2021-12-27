@@ -14,7 +14,7 @@ final class MailtoParser implements Parser
     public function parse(string $value): Mailto
     {
         if (0 === \mb_strpos($value, 'mailto:')) {
-            return new Mailto($value);
+            return Mailto::new($value);
         }
 
         throw new UnableToParse($value);

@@ -15,5 +15,5 @@ function url($value = null): Url
  */
 function mailto($value = null): Mailto
 {
-    return $value instanceof Mailto ? $value : new Mailto($value);
+    return Mailto::new($value);
 }
