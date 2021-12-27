@@ -368,22 +368,30 @@ final class UrlTest extends TestCase
     /**
      * @test
      */
-    public function adding_user_and_pass_urlencodes_them(): void
+    public function manipulating_parts_urlencodes_them(): void
     {
-        $url = Url::new()->withUser('foo@bar.com')->withPass('pass#word');
+        $url = Url::new('https://example.com')
+            ->withUser('foo@bar.com')
+            ->withPass('pass#word')
+            ->withPath('/foo bar/baz')
+            ->withQuery(['foo' => 'bar baz'])
+        ;
 
+        $this->assertSame('https://foo%40bar.com:pass%23word@example.com/foo%20bar/baz?foo=bar%20baz', $url->toString());
         $this->assertSame('foo%40bar.com:pass%23word', $url->authority()->userInfo());
     }
 
     /**
      * @test
      */
-    public function user_and_pass_are_urldecoded(): void
+    public function parts_are_url_decoded(): void
     {
-        $url = Url::new('http://foo%40bar.com:pass%23word@example.com');
+        $url = Url::new('http://foo%40bar.com:pass%23word@example.com/foo%20bar/baz?foo=bar%20baz');
 
         $this->assertSame('foo@bar.com', $url->user());
         $this->assertSame('pass#word', $url->pass());
+        $this->assertSame('/foo bar/baz', $url->path()->toString());
+        $this->assertSame(['foo' => 'bar baz'], $url->query()->all());
     }
 
     /**
