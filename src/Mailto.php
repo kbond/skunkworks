@@ -13,7 +13,7 @@ final class Mailto implements \Stringable
 
     private Url $url;
 
-    private function __construct(?string $value = null)
+    public function __construct(?string $value = null)
     {
         $url = Url::new($value);
 
