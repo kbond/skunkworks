@@ -599,13 +599,13 @@ final class UrlTest extends TestCase
         $this->assertSame(['foo', 'bar'], Url::new('foo/bar')->path()->segments());
         $this->assertSame(['foo', 'bar'], Url::new('foo/bar/')->path()->segments());
 
-        $this->assertNull(Url::new('http://localhost')->path()->segment(1));
-        $this->assertSame('default', Url::new('http://localhost')->path()->segment(1, 'default'));
+        $this->assertNull(Url::new('http://localhost')->path()->segment(0));
+        $this->assertSame('default', Url::new('http://localhost')->path()->segment(0, 'default'));
         $this->assertNull(Url::new('http://localhost')->path()->segment(2));
         $this->assertNull(Url::new('http://localhost/')->path()->segment(1));
-        $this->assertSame('foo', Url::new('http://localhost/foo/bar')->path()->segment(1));
-        $this->assertSame('bar', Url::new('http://localhost/foo/bar')->path()->segment(2));
-        $this->assertNull(Url::new('http://localhost/foo/bar')->path()->segment(3));
+        $this->assertSame('foo', Url::new('http://localhost/foo/bar')->path()->segment(0));
+        $this->assertSame('bar', Url::new('http://localhost/foo/bar')->path()->segment(1));
+        $this->assertNull(Url::new('http://localhost/foo/bar')->path()->segment(2));
     }
 
     /**

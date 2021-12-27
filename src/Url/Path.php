@@ -21,15 +21,15 @@ final class Path extends Part
      */
     public function segments(string $delimiter = self::DEFAULT_DELIMITER): array
     {
-        return \array_filter(\explode($delimiter, $this->trim()));
+        return \array_values(\array_filter(\explode($delimiter, $this->trim())));
     }
 
     /**
-     * @param int $index 1-based
+     * @param int $index 0-based
      */
     public function segment(int $index, ?string $default = null, string $delimiter = self::DEFAULT_DELIMITER): ?string
     {
-        return $this->segments($delimiter)[$index - 1] ?? $default;
+        return $this->segments($delimiter)[$index] ?? $default;
     }
 
     public function trim(): string
