@@ -27,11 +27,11 @@ final class Scheme extends LowercasePart
     }
 
     /**
-     * @param int $index 1-based
+     * @param int $index 0-based
      */
     public function segment(int $index, ?string $default = null, string $delimiter = self::DEFAULT_DELIMITER): ?string
     {
-        return $this->segments($delimiter)[$index - 1] ?? $default;
+        return $this->segments($delimiter)[$index] ?? $default;
     }
 
     public function equals(string $value): bool

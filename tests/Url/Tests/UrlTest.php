@@ -674,14 +674,13 @@ final class UrlTest extends TestCase
         $this->assertSame(['http'], Url::new('http://localhost/foo/bar/')->scheme()->segments());
         $this->assertSame(['foo', 'bar'], Url::new('foo+bar://localhost/foo/bar')->scheme()->segments());
 
-        $this->assertNull(Url::new('/foo')->scheme()->segment(1));
-        $this->assertSame('default', Url::new('/foo')->scheme()->segment(1, 'default'));
-        $this->assertNull(Url::new('/foo')->scheme()->segment(1));
+        $this->assertNull(Url::new('/foo')->scheme()->segment(0));
+        $this->assertSame('default', Url::new('/foo')->scheme()->segment(0, 'default'));
         $this->assertNull(Url::new('/foo')->scheme()->segment(2));
-        $this->assertSame('foo', Url::new('foo://localhost')->scheme()->segment(1));
-        $this->assertSame('foo', Url::new('foo+bar://localhost')->scheme()->segment(1));
-        $this->assertSame('bar', Url::new('foo+bar://localhost')->scheme()->segment(2));
-        $this->assertNull(Url::new('foo+bar://localhost')->scheme()->segment(3));
+        $this->assertSame('foo', Url::new('foo://localhost')->scheme()->segment(0));
+        $this->assertSame('foo', Url::new('foo+bar://localhost')->scheme()->segment(0));
+        $this->assertSame('bar', Url::new('foo+bar://localhost')->scheme()->segment(1));
+        $this->assertNull(Url::new('foo+bar://localhost')->scheme()->segment(2));
     }
 
     /**
@@ -726,14 +725,13 @@ final class UrlTest extends TestCase
         $this->assertSame(['localhost'], Url::new('http://localhost/foo/bar/')->host()->segments());
         $this->assertSame(['local', 'host'], Url::new('http://local.host/foo/bar')->host()->segments());
 
-        $this->assertNull(Url::new('/foo')->host()->segment(1));
+        $this->assertNull(Url::new('/foo')->host()->segment(0));
         $this->assertSame('default', Url::new('/foo')->host()->segment(1, 'default'));
         $this->assertNull(Url::new('/foo')->host()->segment(1));
-        $this->assertNull(Url::new('/foo')->host()->segment(2));
-        $this->assertSame('localhost', Url::new('http://localhost')->host()->segment(1));
-        $this->assertSame('local', Url::new('http://local.host')->host()->segment(1));
-        $this->assertSame('host', Url::new('http://local.host')->host()->segment(2));
-        $this->assertNull(Url::new('http://local.host')->host()->segment(3));
+        $this->assertSame('localhost', Url::new('http://localhost')->host()->segment(0));
+        $this->assertSame('local', Url::new('http://local.host')->host()->segment(0));
+        $this->assertSame('host', Url::new('http://local.host')->host()->segment(1));
+        $this->assertNull(Url::new('http://local.host')->host()->segment(2));
     }
 
     /**
