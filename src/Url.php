@@ -8,6 +8,7 @@ use Zenstruck\Url\Host;
 use Zenstruck\Url\Path;
 use Zenstruck\Url\Query;
 use Zenstruck\Url\Scheme;
+use Zenstruck\Url\SignedUrl\Builder;
 use Zenstruck\Url\Stringable;
 
 /**
@@ -247,6 +248,11 @@ final class Url implements \Stringable
     public function withoutFragment(): self
     {
         return $this->withFragment(null);
+    }
+
+    public function sign(string $secret): Builder
+    {
+        return new Builder($this, $secret);
     }
 
     protected function generateString(): string
