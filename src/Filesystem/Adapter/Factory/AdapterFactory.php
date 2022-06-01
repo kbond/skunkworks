@@ -2,7 +2,6 @@
 
 namespace Zenstruck\Filesystem\Adapter\Factory;
 
-use League\Flysystem\Adapter\Ftp;
 use League\Flysystem\Ftp\FtpAdapter;
 use Zenstruck\Filesystem\Adapter;
 use Zenstruck\Filesystem\Adapter\Factory;
@@ -56,7 +55,7 @@ final class AdapterFactory implements Factory
             yield from self::$defaultFactories;
         }
 
-        if (\class_exists(FtpAdapter::class) || \class_exists(Ftp::class)) {
+        if (\class_exists(FtpAdapter::class)) {
             yield self::$defaultFactories[] = new FlysystemFtpAdapterFactory();
         }
 

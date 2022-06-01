@@ -3,6 +3,8 @@
 namespace Zenstruck\Filesystem\Adapter\Factory;
 
 use League\Flysystem\Filesystem;
+use League\Flysystem\Ftp\FtpAdapter;
+use League\Flysystem\Ftp\FtpConnectionOptions;
 use Zenstruck\Filesystem\Adapter;
 use Zenstruck\Filesystem\Adapter\Factory;
 use Zenstruck\Filesystem\Adapter\FlysystemAdapter;
