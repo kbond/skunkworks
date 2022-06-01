@@ -2,14 +2,11 @@
 
 namespace Zenstruck\Filesystem\Tests\Adapter;
 
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem as V1Flysystem;
-use League\Flysystem\Filesystem as V2Flysystem;
+use League\Flysystem\Filesystem as Flysystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Zenstruck\Filesystem;
-use Zenstruck\Filesystem\Adapter;
 use Zenstruck\Filesystem\Adapter\FeatureParityAdapter;
-use Zenstruck\Filesystem\Adapter\FlysystemV2Adapter;
+use Zenstruck\Filesystem\Adapter\FlysystemAdapter;
 use Zenstruck\Filesystem\Adapter\InMemoryAdapter;
 use Zenstruck\Filesystem\AdapterFilesystem;
 use Zenstruck\Filesystem\Exception\UnsupportedFeature;
@@ -52,16 +49,7 @@ final class FeatureParityAdapterTest extends FilesystemTest
     {
         return new AdapterFilesystem(new FeatureParityAdapter(
             new InMemoryAdapter(),
-            $this->flysystemAdapter()
+            new FlysystemAdapter(new Flysystem(new LocalFilesystemAdapter(__DIR__)))
         ));
-    }
-
-    private function flysystemAdapter(): Adapter
-    {
-        if (\class_exists(LocalFilesystemAdapter::class)) {
-            return new FlysystemV2Adapter(new V2Flysystem(new LocalFilesystemAdapter(__DIR__)));
-        }
-
-        return new Filesystem\Adapter\FlysystemV1Adapter(new V1Flysystem(new Local(__DIR__)));
     }
 }

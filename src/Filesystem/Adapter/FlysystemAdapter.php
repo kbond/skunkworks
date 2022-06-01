@@ -18,7 +18,7 @@ use Zenstruck\Filesystem\Feature\WriteFile;
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-final class FlysystemV2Adapter implements Adapter, DeleteDirectory, DeleteFile, MoveFile, ReadDirectory, CreateDirectory, CopyFile, WriteFile
+final class FlysystemAdapter implements Adapter, DeleteDirectory, DeleteFile, MoveFile, ReadDirectory, CreateDirectory, CopyFile, WriteFile
 {
     private FilesystemOperator $flysystem;
 

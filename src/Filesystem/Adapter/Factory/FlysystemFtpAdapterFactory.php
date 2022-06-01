@@ -2,14 +2,10 @@
 
 namespace Zenstruck\Filesystem\Adapter\Factory;
 
-use League\Flysystem\Adapter\Ftp;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Ftp\FtpAdapter;
-use League\Flysystem\Ftp\FtpConnectionOptions;
 use Zenstruck\Filesystem\Adapter;
 use Zenstruck\Filesystem\Adapter\Factory;
-use Zenstruck\Filesystem\Adapter\FlysystemV1Adapter;
-use Zenstruck\Filesystem\Adapter\FlysystemV2Adapter;
+use Zenstruck\Filesystem\Adapter\FlysystemAdapter;
 use Zenstruck\Filesystem\Exception\UnableToParseDsn;
 use Zenstruck\Uri;
 
@@ -24,26 +20,8 @@ final class FlysystemFtpAdapterFactory implements Factory
             throw new UnableToParseDsn();
         }
 
-        if (\class_exists(Ftp::class)) {
-            return $this->createV1Adapter($dsn);
-        }
-
-        return new FlysystemV2Adapter(new Filesystem(
+        return new FlysystemAdapter(new Filesystem(
             new FtpAdapter(FtpConnectionOptions::fromArray([
-                'host' => $dsn->host()->toString(),
-                'username' => $dsn->user(),
-                'password' => $dsn->pass(),
-                'port' => $dsn->port() ?? 21,
-                'root' => $dsn->path()->absolute(),
-                'ssl' => $dsn->query()->getBool('ssl'),
-            ]))
-        ));
-    }
-
-    private function createV1Adapter(Uri $dsn): Adapter
-    {
-        return new FlysystemV1Adapter(new Filesystem(
-            new Ftp(\array_filter([
                 'host' => $dsn->host()->toString(),
                 'username' => $dsn->user(),
                 'password' => $dsn->pass(),
