@@ -18,7 +18,7 @@ use Zenstruck\Filesystem\Feature\MoveDirectory;
 use Zenstruck\Filesystem\Feature\MoveFile;
 use Zenstruck\Filesystem\Feature\ReadDirectory;
 use Zenstruck\Filesystem\Feature\WriteFile;
-use Zenstruck\Url;
+use Zenstruck\Uri;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -67,7 +67,7 @@ class AdapterWrapper implements Adapter, All
         return $this->next->size($path);
     }
 
-    public function url(string $path): Url
+    public function url(string $path): Uri
     {
         return $this->ensureSupports(AccessUrl::class)->url($path);
     }

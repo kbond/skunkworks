@@ -21,7 +21,7 @@ use Zenstruck\Filesystem\Feature\ReadDirectory;
 use Zenstruck\Filesystem\Feature\WriteFile;
 use Zenstruck\Filesystem\TempFile;
 use Zenstruck\Filesystem\Util\ResourceWrapper;
-use Zenstruck\Url;
+use Zenstruck\Uri;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -29,14 +29,14 @@ use Zenstruck\Url;
 final class StreamAdapter implements Adapter, AccessRealFile, AccessRealDirectory, DeleteDirectory, MoveDirectory, DeleteFile, MoveFile, ReadDirectory, CreateDirectory, CopyDirectory, CopyFile, WriteFile, FileChecksum
 {
     private static SymfonyFilesystem $fs;
-    private Url $root;
+    private Uri $root;
 
     /**
-     * @param Url|string $root
+     * @param Uri|string $root
      */
     public function __construct($root)
     {
-        $this->root = Url::new($root);
+        $this->root = Uri::new($root);
     }
 
     public function realFile(string $path): \SplFileInfo
@@ -151,7 +151,7 @@ final class StreamAdapter implements Adapter, AccessRealFile, AccessRealDirector
     public function listing(string $path): iterable
     {
         foreach (Finder::create()->in((string) $this->realFile($path))->depth(0) as $file) {
-            yield (new Url\Path($path))->append($file->getFilename()) => $file->isDir() ? Adapter::TYPE_DIRECTORY : Adapter::TYPE_FILE;
+            yield (new Uri\Path($path))->append($file->getFilename()) => $file->isDir() ? Adapter::TYPE_DIRECTORY : Adapter::TYPE_FILE;
         }
     }
 

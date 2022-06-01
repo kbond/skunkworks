@@ -11,7 +11,7 @@ use Zenstruck\Filesystem\Feature\DeleteFile;
 use Zenstruck\Filesystem\Feature\ReadDirectory;
 use Zenstruck\Filesystem\Feature\WriteFile;
 use Zenstruck\Filesystem\Util\ResourceWrapper;
-use Zenstruck\Url\Path;
+use Zenstruck\Uri\Path;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

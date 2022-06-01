@@ -15,7 +15,7 @@ use Zenstruck\Filesystem\Feature\MoveFile;
 use Zenstruck\Filesystem\Feature\ReadDirectory;
 use Zenstruck\Filesystem\Feature\WriteFile;
 use Zenstruck\Filesystem\Util\ResourceWrapper;
-use Zenstruck\Url\Path;
+use Zenstruck\Uri\Path;
 use Zenstruck\Utilities\ArrayAccessor;
 
 /**

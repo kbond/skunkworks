@@ -4,7 +4,7 @@ namespace Zenstruck\Dsn\Parser;
 
 use Zenstruck\Dsn\Exception\UnableToParse;
 use Zenstruck\Dsn\Parser;
-use Zenstruck\Mailto;
+use Zenstruck\Uri\Mailto;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

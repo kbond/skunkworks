@@ -7,8 +7,8 @@ use Zenstruck\Dsn;
 use Zenstruck\Dsn\Decorated;
 use Zenstruck\Dsn\Exception\UnableToParse;
 use Zenstruck\Dsn\Group;
-use Zenstruck\Mailto;
-use Zenstruck\Url;
+use Zenstruck\Uri;
+use Zenstruck\Uri\Mailto;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -30,13 +30,13 @@ final class DsnTest extends TestCase
     public static function validValueProvider(): iterable
     {
         yield ['mailto:kevin@example.com', Mailto::class, 'mailto:kevin%40example.com'];
-        yield ['http://www.example.com', Url::class, 'http://www.example.com'];
-        yield ['null', Url::class, 'null'];
-        yield ['scheme:', Url::class, 'scheme:'];
-        yield ['scheme:?foo=bar', Url::class, 'scheme:?foo=bar'];
+        yield ['http://www.example.com', Uri::class, 'http://www.example.com'];
+        yield ['null', Uri::class, 'null'];
+        yield ['scheme:', Uri::class, 'scheme:'];
+        yield ['scheme:?foo=bar', Uri::class, 'scheme:?foo=bar'];
         yield ['failover(smtp://default mail+api://default)?foo=bar', Group::class, 'failover(smtp://default mail+api://default)?foo=bar'];
         yield ['fail+over(smtp://default roundrobin(mail+api://default postmark+api://default))', Group::class, 'fail+over(smtp://default roundrobin(mail+api://default postmark+api://default))'];
-        yield ['failover()', Url::class, 'failover%28%29'];
+        yield ['failover()', Uri::class, 'failover%28%29'];
         yield ['fail+over(smtp://default)?foo=bar', Decorated::class, 'fail+over(smtp://default)?foo=bar'];
         yield ['fail-over(smtp://default)?foo=bar', Decorated::class, 'fail-over(smtp://default)?foo=bar'];
     }
@@ -68,9 +68,9 @@ final class DsnTest extends TestCase
         $this->assertInstanceOf(Group::class, $dsn);
         $this->assertEmpty($dsn->query()->all());
         $this->assertSame('fail+over', $dsn->scheme()->toString());
-        $this->assertInstanceOf(Url::class, $dsn->children()[0]);
+        $this->assertInstanceOf(Uri::class, $dsn->children()[0]);
         $this->assertSame('smtp', $dsn->children()[0]->scheme()->toString());
-        $this->assertInstanceOf(Url::class, $dsn->children()[1]);
+        $this->assertInstanceOf(Uri::class, $dsn->children()[1]);
         $this->assertSame('mail+api', $dsn->children()[1]->scheme()->toString());
     }
 
@@ -85,14 +85,14 @@ final class DsnTest extends TestCase
         $this->assertInstanceOf(Group::class, $dsn);
         $this->assertEmpty($dsn->query()->all());
         $this->assertCount(3, $dsn->children());
-        $this->assertInstanceOf(Url::class, $dsn->children()[0]);
+        $this->assertInstanceOf(Uri::class, $dsn->children()[0]);
         $this->assertSame('smtp://default', (string) $dsn->children()[0]);
         $this->assertInstanceOf(Group::class, $dsn->children()[1]);
         $this->assertSame('round+robin(mail+api://default?foo=bar#hash mailto:kevin)', (string) $dsn->children()[1]);
         $this->assertCount(2, $dsn->children()[1]->children());
         $this->assertCount(2, $dsn->children()[2]->children());
         $this->assertInstanceOf(Decorated::class, $dsn->children()[2]->children()[1]);
-        $this->assertInstanceOf(Url::class, $dsn->children()[2]->children()[1]->inner());
+        $this->assertInstanceOf(Uri::class, $dsn->children()[2]->children()[1]->inner());
         $this->assertSame('mail+api://default?foo=bar#hash', $dsn->children()[1]->children()[0]->toString());
     }
 
@@ -107,9 +107,9 @@ final class DsnTest extends TestCase
         $this->assertInstanceOf(Group::class, $dsn);
         $this->assertSame(['a' => 'b', 'c' => 'd'], $dsn->query()->all());
         $this->assertSame('fail+over', $dsn->scheme()->toString());
-        $this->assertInstanceOf(Url::class, $dsn->children()[0]);
+        $this->assertInstanceOf(Uri::class, $dsn->children()[0]);
         $this->assertSame('smtp', $dsn->children()[0]->scheme()->toString());
-        $this->assertInstanceOf(Url::class, $dsn->children()[1]);
+        $this->assertInstanceOf(Uri::class, $dsn->children()[1]);
         $this->assertSame('mail+api', $dsn->children()[1]->scheme()->toString());
     }
 
@@ -138,7 +138,7 @@ final class DsnTest extends TestCase
 
         $this->assertInstanceOf(Decorated::class, $dsn);
         $this->assertSame('fail+over', $dsn->scheme()->toString());
-        $this->assertInstanceOf(Url::class, $dsn->inner());
+        $this->assertInstanceOf(Uri::class, $dsn->inner());
         $this->assertSame('smtp://default', $dsn->inner()->toString());
         $this->assertSame(['foo' => 'bar'], $dsn->query()->all());
     }
@@ -150,13 +150,13 @@ final class DsnTest extends TestCase
     {
         $dsn = Dsn::parse('in-memory:');
 
-        $this->assertInstanceOf(Url::class, $dsn);
+        $this->assertInstanceOf(Uri::class, $dsn);
         $this->assertSame('in-memory', $dsn->scheme()->toString());
         $this->assertSame([], $dsn->query()->all());
 
         $dsn = Dsn::parse('in-memory:?foo=bar');
 
-        $this->assertInstanceOf(Url::class, $dsn);
+        $this->assertInstanceOf(Uri::class, $dsn);
         $this->assertSame('in-memory', $dsn->scheme()->toString());
         $this->assertSame(['foo' => 'bar'], $dsn->query()->all());
     }

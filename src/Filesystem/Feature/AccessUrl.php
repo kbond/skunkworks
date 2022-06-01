@@ -2,12 +2,12 @@
 
 namespace Zenstruck\Filesystem\Feature;
 
-use Zenstruck\Url;
+use Zenstruck\Uri;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 interface AccessUrl
 {
-    public function url(string $path): Url;
+    public function url(string $path): Uri;
 }

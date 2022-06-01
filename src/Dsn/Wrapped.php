@@ -2,8 +2,8 @@
 
 namespace Zenstruck\Dsn;
 
-use Zenstruck\Url\Query;
-use Zenstruck\Url\Scheme;
+use Zenstruck\Uri\Query;
+use Zenstruck\Uri\Scheme;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

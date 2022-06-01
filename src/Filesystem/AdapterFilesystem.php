@@ -13,8 +13,8 @@ use Zenstruck\Filesystem\Exception\RuntimeException;
 use Zenstruck\Filesystem\Exception\UnsupportedFeature;
 use Zenstruck\Filesystem\Node\Directory;
 use Zenstruck\Filesystem\Node\File;
-use Zenstruck\Url\Exception\PathOutsideRoot as UrlPathOutsideRoot;
-use Zenstruck\Url\Path;
+use Zenstruck\Uri\Exception\PathOutsideRoot as UrlPathOutsideRoot;
+use Zenstruck\Uri\Path;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

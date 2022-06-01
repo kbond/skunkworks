@@ -6,7 +6,7 @@ use Zenstruck\Filesystem\Adapter\AdapterWrapper;
 use Zenstruck\Filesystem\Exception\UnsupportedFeature;
 use Zenstruck\Filesystem\Node\Directory;
 use Zenstruck\Filesystem\Node\File;
-use Zenstruck\Url;
+use Zenstruck\Uri;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -51,7 +51,7 @@ abstract class Node
     /**
      * @throws UnsupportedFeature If adapter does not support accessing url
      */
-    final public function url(): Url
+    final public function url(): Uri
     {
         return $this->adapter->url($this->path);
     }

@@ -5,7 +5,7 @@ namespace Zenstruck\Filesystem;
 use Zenstruck\Filesystem;
 use Zenstruck\Filesystem\Node\Directory;
 use Zenstruck\Filesystem\Node\File;
-use Zenstruck\Url\Path;
+use Zenstruck\Uri\Path;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>

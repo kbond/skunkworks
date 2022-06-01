@@ -11,7 +11,7 @@ use Zenstruck\Filesystem\Adapter\Factory;
 use Zenstruck\Filesystem\Adapter\FlysystemV1Adapter;
 use Zenstruck\Filesystem\Adapter\FlysystemV2Adapter;
 use Zenstruck\Filesystem\Exception\UnableToParseDsn;
-use Zenstruck\Url;
+use Zenstruck\Uri;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
@@ -20,7 +20,7 @@ final class FlysystemFtpAdapterFactory implements Factory
 {
     public function create(\Stringable $dsn): Adapter
     {
-        if (!$dsn instanceof Url || !$dsn->scheme()->equals('flysystem+ftp')) {
+        if (!$dsn instanceof Uri || !$dsn->scheme()->equals('flysystem+ftp')) {
             throw new UnableToParseDsn();
         }
 
@@ -40,7 +40,7 @@ final class FlysystemFtpAdapterFactory implements Factory
         ));
     }
 
-    private function createV1Adapter(Url $dsn): Adapter
+    private function createV1Adapter(Uri $dsn): Adapter
     {
         return new FlysystemV1Adapter(new Filesystem(
             new Ftp(\array_filter([

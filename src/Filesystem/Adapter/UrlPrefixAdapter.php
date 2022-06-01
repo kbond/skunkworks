@@ -4,18 +4,18 @@ namespace Zenstruck\Filesystem\Adapter;
 
 use Zenstruck\Filesystem\Adapter;
 use Zenstruck\Filesystem\Feature\AccessUrl;
-use Zenstruck\Url;
+use Zenstruck\Uri;
 
 /**
  * @author Kevin Bond <kevinbond@gmail.com>
  */
 final class UrlPrefixAdapter extends AdapterWrapper
 {
-    /** @var Url[] */
+    /** @var Uri[] */
     private array $prefixes;
 
     /**
-     * @param string|Url ...$prefixes
+     * @param string|Uri ...$prefixes
      */
     public function __construct(Adapter $adapter, ...$prefixes)
     {
@@ -25,10 +25,10 @@ final class UrlPrefixAdapter extends AdapterWrapper
             throw new \InvalidArgumentException('At least one prefix is required.');
         }
 
-        $this->prefixes = \array_values(\array_map(static fn($prefix) => Url::new($prefix), $prefixes));
+        $this->prefixes = \array_values(\array_map(static fn($prefix) => Uri::new($prefix), $prefixes));
     }
 
-    public function url(string $path): Url
+    public function url(string $path): Uri
     {
         if (1 === \count($this->prefixes)) {
             return $this->prefixes[0]->appendPath($path);

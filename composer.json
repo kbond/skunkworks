@@ -24,7 +24,8 @@
         "symfony/phpunit-bridge": "^5.2",
         "symfony/polyfill-php80": "^1.22",
         "symfony/var-dumper": "^4.4|^5.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "zenstruck/uri": "^1.0@dev"
     },
     "config": {
         "preferred-install": "dist",
@@ -34,8 +35,7 @@
         "psr-4": { "Zenstruck\\": ["src/"] },
         "files": [
             "src/Utilities/functions.php",
-            "src/Dimension/functions.php",
-            "src/functions.php"
+            "src/Dimension/functions.php"
         ]
     },
     "autoload-dev": {
