@@ -15,7 +15,7 @@
         "symfony/filesystem": "^4.4|^5.0"
     },
     "require-dev": {
-        "league/flysystem": "^2.0",
+        "league/flysystem": "^2.0|^3.0",
         "phpunit/phpunit": "^9.5",
         "psr/container": "^1.0",
         "symfony/finder": "^4.4|^5.0",
