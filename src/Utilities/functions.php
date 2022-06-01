@@ -36,7 +36,7 @@ function null_trim($data, ?string $charlist = null)
         );
     }
 
-    $trimmed = null === $charlist ? \trim($data) : \trim($data, $charlist);
+    $trimmed = null === $charlist ? \trim((string) $data) : \trim((string) $data, $charlist);
 
     return '' === $trimmed ? null : $trimmed;
 }
@@ -49,7 +49,7 @@ function null_trim($data, ?string $charlist = null)
  */
 function truncate_word(?string $value, int $length = 255, string $suffix = '...'): string
 {
-    $output = remove_whitespace(\trim($value));
+    $output = remove_whitespace(\trim((string) $value));
 
     if (\mb_strlen($output) > $length) {
         $output = \wordwrap($output, $length - \mb_strlen($suffix));
