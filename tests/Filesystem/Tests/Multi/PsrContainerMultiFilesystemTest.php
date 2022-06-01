@@ -27,7 +27,7 @@ final class PsrContainerMultiFilesystemTest extends MultiFilesystemTest
                     return $this->filesystems[$id];
                 }
 
-                public function has($id)
+                public function has($id): bool
                 {
                     return \array_key_exists($id, $this->filesystems);
                 }
