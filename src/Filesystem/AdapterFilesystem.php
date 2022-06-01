@@ -234,7 +234,7 @@ final class AdapterFilesystem implements Filesystem
             throw RuntimeException::wrap($e, 'Unable to write "%s" to "%s".', $type, $path);
         }
 
-        if ($closeResource) {
+        if ($closeResource && \is_resource($value)) {
             \fclose($value);
         }
     }

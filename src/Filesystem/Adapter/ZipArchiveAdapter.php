@@ -106,7 +106,9 @@ final class ZipArchiveAdapter implements Adapter, DeleteDirectory, DeleteFile, R
         }
 
         if (\is_resource($value)) {
-            $value = ResourceWrapper::wrap($value)->contents();
+            $resource = ResourceWrapper::wrap($value);
+            $value = $resource->contents();
+            $resource->close();
         }
 
         if (false === $this->archive()->addFromString(self::normalizePath($path), $value)) {
