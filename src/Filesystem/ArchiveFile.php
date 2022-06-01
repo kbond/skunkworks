@@ -17,7 +17,12 @@ final class ArchiveFile extends \SplFileInfo implements Filesystem
 
     public function __construct(?string $filename = null)
     {
-        $filename = $filename ?? (string) new TempFile();
+        if (!$filename) {
+            $tempFile = new TempFile();
+            $tempFile->delete();
+
+            $filename = (string) $tempFile;
+        }
 
         parent::__construct($filename);
 
