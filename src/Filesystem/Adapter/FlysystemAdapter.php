@@ -33,14 +33,11 @@ final class FlysystemAdapter implements Adapter, DeleteDirectory, DeleteFile, Mo
             return self::TYPE_FILE;
         }
 
-        try {
-            // I believe this is the only way to check if path is a directory (exception thrown means does not exist)
-            $this->flysystem->visibility($path);
-        } catch (FilesystemException $e) {
-            throw NotFound::forPath($path, $e);
+        if ($this->directoryExists($path)) {
+            return self::TYPE_DIRECTORY;
         }
 
-        return self::TYPE_DIRECTORY;
+        throw NotFound::forPath($path);
     }
 
     public function read(string $path)
@@ -115,5 +112,21 @@ final class FlysystemAdapter implements Adapter, DeleteDirectory, DeleteFile, Mo
         }
 
         $this->flysystem->writeStream($path, $value);
+    }
+
+    private function directoryExists(string $path): bool
+    {
+        if (\method_exists($this->flysystem, 'directoryExists')) {
+            return $this->flysystem->directoryExists($path);
+        }
+
+        try {
+            // I believe this is the only way to check if path is a directory in V2 (exception thrown means does not exist)
+            $this->flysystem->visibility($path);
+
+            return true;
+        } catch (FilesystemException $e) {
+            return false;
+        }
     }
 }
