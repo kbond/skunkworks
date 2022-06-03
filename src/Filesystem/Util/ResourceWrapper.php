@@ -40,6 +40,11 @@ final class ResourceWrapper
         return self::open('php://output', 'rw');
     }
 
+    public static function fromString(string $value): self
+    {
+        return self::inMemory()->write($value)->rewind();
+    }
+
     /**
      * @see \fopen
      */
