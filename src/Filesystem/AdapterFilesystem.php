@@ -217,7 +217,7 @@ final class AdapterFilesystem implements Filesystem
         if ($value instanceof \SplFileInfo && $value->isDir()) {
             $relative = new Path($path);
 
-            foreach (Finder::create()->in($value)->files() as $file) {
+            foreach (Finder::create()->in((string) $value)->files() as $file) {
                 $this->write($relative->append($file->getRelativePathname()), $file);
             }
 
