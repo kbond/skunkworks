@@ -81,7 +81,7 @@ interface Filesystem
      * Write to a file with an existing file, string contents or resource.
      * Always overwrites if exists.
      *
-     * @param resource|string|\SplFileInfo|File $value string: file contents or filename
+     * @param resource|string|\SplFileInfo|Node $value string: file contents or filename
      *
      * @throws UnsupportedFeature If adapter does not support writing files
      * @throws PathOutsideRoot    If $path is outside of the filesystem's root

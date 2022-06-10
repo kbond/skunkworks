@@ -195,6 +195,48 @@ trait WriteFileTests
     /**
      * @test
      */
+    public function can_write_filesystem_directory_to_root(): void
+    {
+        $tempFilesystem = new Filesystem\AdapterFilesystem(new Filesystem\Adapter\InMemoryAdapter());
+        $tempFilesystem->write('subdir/nested/file3.txt', 'file3');
+        $tempFilesystem->write('subdir/nested/nested1/file4.txt', 'file4');
+        $dir = $tempFilesystem->directory();
+
+        $filesystem = $this->createFilesystem();
+
+        $this->assertFalse($filesystem->exists('subdir/nested/file3.txt'));
+        $this->assertFalse($filesystem->exists('subdir/nested/nested1/file4.txt'));
+
+        $filesystem->write('/', $dir);
+
+        $this->assertTrue($filesystem->exists('subdir/nested/file3.txt'));
+        $this->assertTrue($filesystem->exists('subdir/nested/nested1/file4.txt'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_write_filesystem_directory_to_path(): void
+    {
+        $tempFilesystem = new Filesystem\AdapterFilesystem(new Filesystem\Adapter\InMemoryAdapter());
+        $tempFilesystem->write('subdir/nested/file3.txt', 'file3');
+        $tempFilesystem->write('subdir/nested/nested1/file4.txt', 'file4');
+        $dir = $tempFilesystem->directory('subdir');
+
+        $filesystem = $this->createFilesystem();
+
+        $this->assertFalse($filesystem->exists('foo/nested/file3.txt'));
+        $this->assertFalse($filesystem->exists('foo/nested/nested1/file4.txt'));
+
+        $filesystem->write('foo', $dir);
+
+        $this->assertTrue($filesystem->exists('foo/nested/file3.txt'));
+        $this->assertTrue($filesystem->exists('foo/nested/nested1/file4.txt'));
+    }
+
+    /**
+     * @test
+     */
     public function can_write_directory_to_root(): void
     {
         $filesystem = $this->createFilesystem();

@@ -51,7 +51,7 @@ final class AdapterFilesystem implements Filesystem
      */
     public function file(string $path): File
     {
-        $file = $this->node(self::normalizePath($path));
+        $file = $this->node($path);
 
         if (!$file instanceof File) {
             throw new NodeTypeMismatch("{$path} is not a file.");
@@ -67,7 +67,7 @@ final class AdapterFilesystem implements Filesystem
      */
     public function directory(string $path = ''): Directory
     {
-        $directory = $this->node(self::normalizePath($path));
+        $directory = $this->node($path);
 
         if (!$directory instanceof Directory) {
             throw new NodeTypeMismatch("{$path} is not a directory.");
@@ -219,6 +219,17 @@ final class AdapterFilesystem implements Filesystem
 
             foreach (Finder::create()->in($value)->files() as $file) {
                 $this->write($relative->append($file->getRelativePathname()), $file);
+            }
+
+            return;
+        }
+
+        if ($value instanceof Directory) {
+            $relative = new Path($path);
+            $prefixLength = \mb_strlen($value->path());
+
+            foreach ($value->recursive()->files() as $file) {
+                $this->write($relative->append(\mb_substr($file->path(), $prefixLength)), $file);
             }
 
             return;

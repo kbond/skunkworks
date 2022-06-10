@@ -87,14 +87,7 @@ final class MultiFilesystem implements Filesystem
             return;
         }
 
-        /** @var Node $sourceFile */
-        $sourceFile = $sourceFilesystem->node($sourcePath);
-
-        if ($sourceFile->isDirectory()) {
-            throw new \LogicException('Cannot copy directories across filesystems.');
-        }
-
-        $destFilesystem->write($destPath, $sourceFile);
+        $destFilesystem->write($destPath, $sourceFilesystem->node($sourcePath));
     }
 
     public function move(string $source, string $destination): void
@@ -109,14 +102,7 @@ final class MultiFilesystem implements Filesystem
             return;
         }
 
-        /** @var Node $sourceFile */
-        $sourceFile = $sourceFilesystem->node($sourcePath);
-
-        if ($sourceFile->isDirectory()) {
-            throw new \LogicException('Cannot move directories across filesystems.');
-        }
-
-        $destFilesystem->write($destPath, $sourceFile);
+        $destFilesystem->write($destPath, $sourceFilesystem->node($sourcePath));
         $sourceFilesystem->delete($sourcePath);
     }
 
