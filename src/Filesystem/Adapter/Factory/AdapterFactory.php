@@ -49,19 +49,21 @@ final class AdapterFactory implements Factory
         yield from self::defaultFactories();
     }
 
-    private static function defaultFactories(): iterable
+    private static function defaultFactories(): array
     {
         if (self::$defaultFactories) {
-            yield from self::$defaultFactories;
+            return self::$defaultFactories;
         }
 
         if (\class_exists(FtpAdapter::class)) {
-            yield self::$defaultFactories[] = new FlysystemFtpAdapterFactory();
+            self::$defaultFactories[] = new FlysystemFtpAdapterFactory();
         }
 
-        yield self::$defaultFactories[] = new InMemoryAdapterFactory();
-        yield self::$defaultFactories[] = new StreamAdapterFactory();
-        yield self::$defaultFactories[] = new UrlPrefixAdapterFactory();
-        yield self::$defaultFactories[] = new TempFileAdapterFactory();
+        self::$defaultFactories[] = new InMemoryAdapterFactory();
+        self::$defaultFactories[] = new StreamAdapterFactory();
+        self::$defaultFactories[] = new UrlPrefixAdapterFactory();
+        self::$defaultFactories[] = new TempFileAdapterFactory();
+
+        return self::defaultFactories();
     }
 }
