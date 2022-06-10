@@ -4,6 +4,7 @@ namespace Zenstruck\Filesystem;
 
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
+use Symfony\Component\Finder\Finder;
 use Zenstruck\Filesystem;
 use Zenstruck\Filesystem\Adapter\AdapterWrapper;
 use Zenstruck\Filesystem\Exception\NodeTypeMismatch;
@@ -201,6 +202,8 @@ final class AdapterFilesystem implements Filesystem
      */
     public function write(string $path, $value): void
     {
+        $path = self::normalizePath($path);
+
         if (\is_string($value)) {
             try {
                 if ((new SymfonyFilesystem())->exists($value)) {
@@ -209,6 +212,16 @@ final class AdapterFilesystem implements Filesystem
             } catch (IOException $e) {
                 // value length was too long to be a filename, keep as string
             }
+        }
+
+        if ($value instanceof \SplFileInfo && $value->isDir()) {
+            $relative = new Path($path);
+
+            foreach (Finder::create()->in($value)->files() as $file) {
+                $this->write($relative->append($file->getRelativePathname()), $file);
+            }
+
+            return;
         }
 
         $closeResource = false;
@@ -221,8 +234,6 @@ final class AdapterFilesystem implements Filesystem
         if (!\is_string($value) && !\is_resource($value) && !$value instanceof \SplFileInfo) {
             throw new \InvalidArgumentException(\sprintf('"%s" is an invalid $value.', get_debug_type($value)));
         }
-
-        $path = self::normalizePath($path);
 
         try {
             $this->adapter->write($path, $value);

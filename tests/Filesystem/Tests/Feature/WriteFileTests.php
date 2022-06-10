@@ -105,24 +105,6 @@ trait WriteFileTests
     /**
      * @test
      */
-    public function cannot_write_file_that_is_directory(): void
-    {
-        $filesystem = $this->createFilesystem();
-
-        try {
-            $filesystem->write('dir', __DIR__);
-        } catch (RuntimeException $e) {
-            $this->assertFalse($filesystem->exists('dir'));
-
-            return;
-        }
-
-        $this->fail('Exception not thrown.');
-    }
-
-    /**
-     * @test
-     */
     public function can_write_resource(): void
     {
         $filesystem = $this->createFilesystem();
@@ -208,6 +190,40 @@ trait WriteFileTests
         }
 
         $this->fail('Exception not thrown.');
+    }
+
+    /**
+     * @test
+     */
+    public function can_write_directory_to_root(): void
+    {
+        $filesystem = $this->createFilesystem();
+        $dir = __DIR__.'/../Fixture/directory';
+
+        $this->assertFalse($filesystem->exists('file1.txt'));
+        $this->assertFalse($filesystem->exists('nested/file2.txt'));
+
+        $filesystem->write('/', $dir);
+
+        $this->assertTrue($filesystem->exists('file1.txt'));
+        $this->assertTrue($filesystem->exists('nested/file2.txt'));
+    }
+
+    /**
+     * @test
+     */
+    public function can_write_directory_to_path(): void
+    {
+        $filesystem = $this->createFilesystem();
+        $dir = __DIR__.'/../Fixture/directory';
+
+        $this->assertFalse($filesystem->exists('foo/file1.txt'));
+        $this->assertFalse($filesystem->exists('foo/nested/file2.txt'));
+
+        $filesystem->write('foo', $dir);
+
+        $this->assertTrue($filesystem->exists('foo/file1.txt'));
+        $this->assertTrue($filesystem->exists('foo/nested/file2.txt'));
     }
 
     abstract protected function createFilesystem(): Filesystem;
