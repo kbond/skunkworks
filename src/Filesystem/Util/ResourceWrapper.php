@@ -45,6 +45,15 @@ final class ResourceWrapper
         return self::inMemory()->write($value)->rewind();
     }
 
+    public static function tempFile(): self
+    {
+        if (false === $handle = \tmpfile()) {
+            throw new \RuntimeException('Unable to create temporary handle.');
+        }
+
+        return new self($handle);
+    }
+
     /**
      * @see \fopen
      */
@@ -62,6 +71,10 @@ final class ResourceWrapper
      */
     public function get()
     {
+        if (!\is_resource($this->resource)) {
+            throw new \RuntimeException('Resource is closed.');
+        }
+
         return $this->resource;
     }
 
@@ -71,7 +84,7 @@ final class ResourceWrapper
             $this->rewind();
         }
 
-        if (false === $contents = \stream_get_contents($this->resource)) {
+        if (false === $contents = \stream_get_contents($this->get())) {
             throw new \RuntimeException('Unable to get contents of stream.');
         }
 
@@ -111,11 +124,11 @@ final class ResourceWrapper
     }
 
     /**
-     * @return mixed
+     * @return mixed|array<string,mixed>
      */
     public function metadata(?string $key = null)
     {
-        $metadata = \stream_get_meta_data($this->resource);
+        $metadata = \stream_get_meta_data($this->get());
 
         if (!$key) {
             return $metadata;
@@ -143,7 +156,7 @@ final class ResourceWrapper
 
     private function writeString(string $data): self
     {
-        if (false === \fwrite($this->resource, $data)) {
+        if (false === \fwrite($this->get(), $data)) {
             throw new \RuntimeException('Unable to write to stream.');
         }
 
@@ -155,7 +168,7 @@ final class ResourceWrapper
      */
     private function writeStream($data): self
     {
-        if (false === \stream_copy_to_stream($data, $this->resource)) {
+        if (false === \stream_copy_to_stream($data, $this->get())) {
             throw new \RuntimeException('Unable to copy stream.');
         }
 

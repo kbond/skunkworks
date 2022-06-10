@@ -27,4 +27,22 @@ final class ResourceWrapperTest extends TestCase
         $this->assertSame('some data', ResourceWrapper::fromString('some data')->contents());
         $this->assertSame('different data', \stream_get_contents(ResourceWrapper::fromString('different data')->get()));
     }
+
+    /**
+     * @test
+     */
+    public function can_create_temp_file(): void
+    {
+        $resource = ResourceWrapper::tempFile();
+        $path = $resource->uri();
+
+        $resource->write('foo bar');
+
+        $this->assertSame('foo bar', $resource->contents());
+        $this->assertFileExists($path);
+
+        $resource->close();
+
+        $this->assertFileDoesNotExist($path);
+    }
 }
