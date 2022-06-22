@@ -21,6 +21,15 @@ final class ChainParser implements Parser
         $this->parsers = $parsers;
     }
 
+    public static function default(): self
+    {
+        return new self([
+            new WrappedParser(),
+            new MailtoParser(),
+            new UrlParser(),
+        ]);
+    }
+
     public function parse(string $value): \Stringable
     {
         foreach ($this->parsers as $parser) {

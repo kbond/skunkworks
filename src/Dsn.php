@@ -2,11 +2,7 @@
 
 namespace Zenstruck;
 
-use Zenstruck\Dsn\Parser;
 use Zenstruck\Dsn\Parser\ChainParser;
-use Zenstruck\Dsn\Parser\MailtoParser;
-use Zenstruck\Dsn\Parser\UrlParser;
-use Zenstruck\Dsn\Parser\WrappedParser;
 
 /**
  * Helper for parsing DSN objects provided by this component.
@@ -15,19 +11,10 @@ use Zenstruck\Dsn\Parser\WrappedParser;
  */
 final class Dsn
 {
-    private static ?ChainParser $defaultParser = null;
+    private static ChainParser $defaultParser;
 
     public static function parse(string $value): \Stringable
     {
-        return self::defaultParser()->parse($value);
-    }
-
-    public static function defaultParser(): Parser
-    {
-        return self::$defaultParser ??= new ChainParser([
-            new WrappedParser(),
-            new MailtoParser(),
-            new UrlParser(),
-        ]);
+        return (self::$defaultParser ??= ChainParser::default())->parse($value);
     }
 }
