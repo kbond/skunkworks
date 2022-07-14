@@ -43,7 +43,7 @@ final class UrlPrefixAdapterTest extends FilesystemTest
     public function can_use_multiple_prefixes_to_provide_a_deterministic_distribution_strategy(): void
     {
         $filesystem = (new FilesystemFactory())
-            ->create('url-prefix(in-memory:)?prefix[]=https://sub1.example.com&prefix[]=https://sub2.example.com')
+            ->create('url-prefix(in-memory: https://sub1.example.com https://sub2.example.com)')
         ;
         $filesystem->write('file1.txt', 'contents');
         $filesystem->write('file2.txt', 'contents');
@@ -54,6 +54,6 @@ final class UrlPrefixAdapterTest extends FilesystemTest
 
     protected function createFilesystem(): Filesystem
     {
-        return (new FilesystemFactory())->create('url-prefix(in-memory:)?prefix=https://example.com/sub');
+        return (new FilesystemFactory())->create('url-prefix(in-memory: https://example.com/sub)');
     }
 }

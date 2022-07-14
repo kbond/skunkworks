@@ -2,7 +2,7 @@
 
 namespace Zenstruck\Filesystem\Adapter\Factory;
 
-use Zenstruck\Dsn\Decorated;
+use Zenstruck\Dsn\Group;
 use Zenstruck\Filesystem\Adapter;
 use Zenstruck\Filesystem\Adapter\Factory;
 use Zenstruck\Filesystem\Adapter\UrlPrefixAdapter;
@@ -17,17 +17,15 @@ final class UrlPrefixAdapterFactory implements Factory, FactoryAware
 
     public function create(\Stringable $dsn): Adapter
     {
-        if (!$dsn instanceof Decorated || !$dsn->scheme()->equals('url-prefix')) {
+        if (!$dsn instanceof Group || !$dsn->scheme()->equals('url-prefix')) {
             throw new UnableToParseDsn();
         }
 
-        if (!$dsn->query()->has('prefix')) {
-            throw new \LogicException('url-prefix DSN must have a prefix parameter.');
-        }
+        $prefixes = $dsn->children();
+        $inner = $prefixes[0];
 
-        return new UrlPrefixAdapter(
-            $this->factory()->create($dsn->inner()),
-            ...(array) $dsn->query()->get('prefix')
-        );
+        \array_shift($prefixes);
+
+        return new UrlPrefixAdapter($this->factory()->create($inner), ...$prefixes);
     }
 }
