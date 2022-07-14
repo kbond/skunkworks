@@ -3,6 +3,7 @@
 namespace Zenstruck\Dimension\Tests;
 
 use PHPUnit\Framework\TestCase;
+
 use function Zenstruck\dimension;
 use function Zenstruck\Dimension\humanize_bytes;
 use function Zenstruck\Dimension\humanize_bytes_binary;

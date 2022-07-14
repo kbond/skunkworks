@@ -3,6 +3,7 @@
 namespace Zenstruck\Utilities\Tests;
 
 use PHPUnit\Framework\TestCase;
+
 use function Zenstruck\Utilities\array_accessor;
 use function Zenstruck\Utilities\null_trim;
 use function Zenstruck\Utilities\remove_whitespace;
