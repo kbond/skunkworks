@@ -1,8 +1,0 @@
---TEST--
-"humanize_bytes" filter
---TEMPLATE--
-{{ 1100|humanize_bytes }}
---DATA--
-return []
---EXPECT--
-1.1 kB
