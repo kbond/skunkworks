@@ -27,6 +27,7 @@
         "symfony/polyfill-php80": "^1.22",
         "symfony/var-dumper": "^4.4|^5.0|^6.0",
         "twig/twig": "^2.12|^3.0",
+        "zenstruck/dsn": "^0.1.0",
         "zenstruck/uri": "^1.0"
     },
     "config": {
