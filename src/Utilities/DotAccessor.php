@@ -7,7 +7,7 @@ namespace Zenstruck\Utilities;
  */
 final class DotAccessor
 {
-    public function __construct(private array|object $value)
+    public function __construct(private array|object &$value)
     {
     }
 

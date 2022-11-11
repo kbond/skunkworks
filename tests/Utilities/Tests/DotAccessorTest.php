@@ -92,6 +92,21 @@ final class DotAccessorTest extends TestCase
         yield [['obj' => SomeObject::create()], 'obj.prop2.self.method5.invalid', false];
         yield [['obj' => SomeObject::create()], 'obj.prop2.self.invalid.prop1', false];
     }
+
+    /**
+     * @test
+     */
+    public function array_passed_by_reference(): void
+    {
+        $array = ['foo' => ['bar' => 'baz']];
+        $accessor = new DotAccessor($array);
+
+        $this->assertSame('baz', $accessor->get('foo.bar'));
+
+        $array['foo']['bar'] = 'new';
+
+        $this->assertSame('new', $accessor->get('foo.bar'));
+    }
 }
 
 class SomeObject
